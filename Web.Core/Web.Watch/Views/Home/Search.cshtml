@@ -1,0 +1,50 @@
+﻿@using Web.Core.Dto;
+@model List<ProductDto>
+@{
+    ViewBag.Title = "Tìm kiếm";
+}
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="col-12">
+            <div>
+                <nav>
+                    <ul class="breadcrumb m-0" style="display:inline-flex">
+                        <li class="breadcrumb-item">
+                            <a href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Kết quả tìm kiếm
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-category">
+    <div class="row mb-2">
+        <div class="col-md-3">
+            <form id="formSearch" action="/tim-kiem" method="get">
+                <input type="hidden" name="q" value="@ViewBag.q" />
+                <div class="group-control-horizontal">
+                    <span class="text-nowrap mr-2">Sắp xếp theo</span>
+                    <select onchange="$('#formSearch').submit()" name="orderBy" class="form-control">
+                        <option value="" @(ViewBag.orderBy == null || ViewBag.orderBy == "" ? "selected" : "")>Phù hợp nhất</option>
+                        <option value="name-asc" @(ViewBag.orderBy == "name-asc" ? "selected" : "")>Tên (A - Z)</option>
+                        <option value="name-desc" @(ViewBag.orderBy == "name-desc" ? "selected" : "")>Tên (Z - A)</option>
+                        <option value="price-asc" @(ViewBag.orderBy == "price-asc" ? "selected" : "")>Giá (Low &gt; High)</option>
+                        <option value="price-desc" @(ViewBag.orderBy == "price-desc" ? "selected" : "")>Giá (High &gt; Low)</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-5">
+        @foreach (var product in Model)
+        {
+            <div class="col mb-5">
+                @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+            </div>
+        }
+    </div>
+</div>

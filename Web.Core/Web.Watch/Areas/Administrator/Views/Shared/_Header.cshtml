@@ -1,0 +1,34 @@
+﻿@using Web.Core.Dto;
+@{
+    UserDto user = (UserDto)Session["user_admin"];
+    if (user == null)
+    {
+        user = new UserDto();
+    }
+}
+<header class="main-header">
+    <a href="/Admin" class="logo">
+        <span class="logo-lg">Trang quản trị</span>
+    </a>
+
+    <nav class="navbar navbar-static-top">
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <span style="display: inline-block; color: white; font-size: 23px; position: absolute; top: 8px; margin-left: 20px;">@ViewBag.Title</span>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown user user-menu">
+                    <a href="#">
+                        <span class="hidden-xs">@(user.FullName)</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Administrator/Login/LogOut" title="Đăng xuất">
+                        <i class="fa fa-power-off"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

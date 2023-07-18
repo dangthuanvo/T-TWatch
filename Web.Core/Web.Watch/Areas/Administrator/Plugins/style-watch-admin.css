@@ -1,0 +1,87 @@
+﻿.thumbnail {
+    width: 100%;
+    margin-bottom: 5px
+}
+
+label {
+    font-weight: 600 !important;
+}
+
+.input-sm {
+    font-size: 14px;
+}
+
+.table td, .table th {
+    vertical-align: middle !important;
+}
+
+.form-group {
+    margin-bottom: 5px !important;
+}
+
+#box-product-gallery > div {
+    margin-bottom: 10px;
+}
+
+
+.table-product {
+    overflow: auto;
+}
+
+    .table-product img {
+        width: 50px;
+        margin: 0 auto;
+    }
+
+    .table-product th {
+        white-space: nowrap !important;
+    }
+
+
+.required {
+    color: red
+}
+
+.skin-blue-light .main-header .navbar, .skin-blue-light .main-header .logo {
+    background-color: #000000 !important;
+}
+
+.skin-blue-light .wrapper, .skin-blue-light .main-sidebar, .skin-blue-light .left-side {
+    background-color: #ffffff !important;
+}
+
+.skin-blue-light .sidebar-menu > li.active > a,
+.skin-blue-light .sidebar-menu > li > .treeview-menu {
+    background: #ffffff !important;
+}
+
+.sidebar-menu li a:hover {
+    background: #FEDC19 !important;
+}
+
+.menu_active {
+    background: #FEDC19 !important;
+}
+
+.skin-blue-light .main-header .navbar .sidebar-toggle:hover {
+    background-color: #fedc19;
+    color: black;
+}
+
+.btn-primary {
+    background-color: #00C0EF !important;
+    border-color: #05b7e2 !important;
+}
+
+.bg-light-blue, .label-primary, .modal-primary .modal-body {
+    background-color: #00C0EF !important;
+}
+
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    background-color: #00C0EF !important;
+    border-color: #00C0EF !important;
+}
+
+.box.box-primary {
+    border-top-color: #00C0EF !important;
+}

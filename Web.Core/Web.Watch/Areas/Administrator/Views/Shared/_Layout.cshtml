@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/Resources/files/wall-clock.png">
+    <title>@ViewBag.Title</title>
+    <link href="~/Areas/Administrator/Plugins/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administrator/Plugins/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administrator/Plugins/bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administrator/Plugins/dist/css/AdminLTE.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administrator/Plugins/dist/css/skins/_all-skins.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administrator/Plugins/style-watch-admin.css" rel="stylesheet" />
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <script src="~/Areas/Administrator/Plugins/bower_components/jquery/dist/jquery.min.js"></script>
+</head>
+<body class="skin-blue-light">
+    <div class="wrapper">
+        @Html.Partial("~/Areas/Administrator/Views/Shared/_Header.cshtml")
+        @Html.Partial("~/Areas/Administrator/Views/Shared/_Sidebar.cshtml")
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+        @Html.Partial("~/Areas/Administrator/Views/Shared/_Footer.cshtml")
+    </div>
+    <script src="~/Areas/Administrator/Plugins/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Areas/Administrator/Plugins/dist/js/adminlte.min.js"></script>
+    <script src="~/Areas/Administrator/Plugins/dist/js/demo.js"></script>
+</body>
+</html>

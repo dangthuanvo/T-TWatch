@@ -1,0 +1,129 @@
+﻿@using Web.Core.Dto;
+@using Web.Core.Util;
+@model ProductDto
+@{
+    List<ProductDto> productRelated = (List<ProductDto>)ViewData["products"];
+    ProductDto product = Model;
+    product.ProductImages.Insert(0, new ProductImageDto()
+    {
+        Image = product.Image
+    });
+    ViewBag.Title = product.Name;
+}
+
+<div class="container-fluid mt-2 mb-1">
+    <div class="row">
+        <div class="col-12">
+            <div>
+                <nav>
+                    <ul class="breadcrumb m-0" style="display:inline-flex">
+                        <li class="breadcrumb-item">
+                            <a href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            @product.Name
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-product-detail">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="product-large-slider">
+                @foreach (var item in product.ProductImages)
+                {
+                    <div class="pro-large-img">
+                        <img src="@item.Image" />
+                        <div class="img-view">
+                            <a class="img-popup" href="@item.Image">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="pro-nav">
+                @foreach (var item in product.ProductImages)
+                {
+                    <div class="pro-nav-thumb"><img src="@item.Image" /></div>
+                }
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div>
+                <div>
+                    <div>
+                        <h3>@product.Name</h3>
+                    </div>
+                    <div class="box-price">
+                        <div>
+                            <span>Giá niêm yết: </span>
+                            <span class="product-discount-price">@(DataHelper.ToCurrency(product.Price))đ</span>
+                        </div>
+                        <div>
+                            <span>Giá khuyễn mại: </span>
+                            <span class="product-price">@(DataHelper.ToCurrency(product.DiscountPrice))đ</span>
+                        </div>
+                    </div>
+                    <div class="box-property">
+                        @foreach (var item in product.ProductAttributes)
+                        {
+                            <div>
+                                <div>@item.Attribute.Name</div>
+                                <div><b>@item.ValueString</b></div>
+                            </div>
+                        }
+                    </div>
+                    <div style="margin: 5px 0 5px; overflow: hidden;">
+                        @Html.Raw(product.ShortDescription)
+                    </div>
+                    <div class="clearfix">
+                        <a href="/mua-hang/@product.Id" class="btn btn-buy-2">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 mb-5">
+        <div class="col-lg-12">
+            <div>
+                <ul class="nav nav-pills justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="nav_desctiption" data-toggle="pill"
+                           href="#tab_description">Chi tiết mặt hàng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav_review" data-toggle="pill" href="#tab_guide">
+                            Chế độ bảo hành
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3">
+                    <div class="tab-pane fade show active" id="tab_description">
+                        @Html.Raw(product.Description)
+                    </div>
+                    <div class="tab-pane fade" id="tab_guide">
+                        @Html.Raw(product.UserDef1)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <div>
+            <h5 class="title-border-right">SẢN PHẨM LIÊN QUAN</h5>
+        </div>
+        <div class="product-slider owl-carousel owl-arrow-style">
+            @foreach (var item in productRelated)
+            {
+                @Html.Partial("~/Views/Partial/_pProduct.cshtml", item)
+            }
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,57 @@
+﻿@using Web.Core.Dto;
+@model ArticleDto
+@{
+    ViewBag.Title = "Thông tin bài viết";
+}
+<script>
+    $("#menu_article").addClass("menu_active");
+</script>
+
+
+<script src="~/Areas/Administrator/Plugins/ckfinder/ckfinder.js"></script>
+<script src="~/Areas/Administrator/Plugins/ckeditor/ckeditor.js"></script>
+
+<form id="formSubmit" action="/Administrator/Article/Update" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="hidden" name="Type" value="@Model.Type" />
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Tiêu đề bài viết <span class="required">(*)</span></label>
+                            <input type="text" value="@Model.Title" name="Title" class="form-control input-sm" required />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Nội dung</label>
+                            <div>
+                                <textarea id="Description" name="Description" class="form-control">@Model.Description</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 text-center">
+                        <a href="/Administrator/Article" class="btn btn-default">
+                            Trở lại danh sách
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Cập nhật
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('Description')
+    })
+
+</script>

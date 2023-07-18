@@ -1,0 +1,39 @@
+﻿@using Web.Core.Dto;
+@using Web.Watch.Service;
+@{
+    WebsiteDto website = UtilService.GetWebsite();
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="@website.Favicon">
+    <title>@ViewBag.Title</title>
+    <meta name="title" content="@ViewBag.MetaTitle" />
+    <meta name="description" content="@ViewBag.MetaDescription">
+    <meta name="robots" content="@ViewBag.MetaRobots">
+    <meta name="revisit-after" content="@ViewBag.MetaRevisitAfter">
+    <meta http-equiv="content-language" content="@ViewBag.MetaContentLanguage" />
+    <meta http-equiv="Content-Type" content="@ViewBag.MetaContentType" />
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700,800,900" rel="stylesheet" />
+    <link href="~/Plugins/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Plugins/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Plugins/css/plugins.css" rel="stylesheet" />
+    <link href="~/Plugins/css/responsive.css" rel="stylesheet" />
+    <link href="~/Plugins/css/style-watch.css" rel="stylesheet" />
+    <script src="~/Plugins/js/modernizr-3.5.0.min.js"></script>
+    <script src="~/Plugins/js/jquery.min.js"></script>
+</head>
+<body>
+    @Html.Partial("~/Views/Shared/_Header.cshtml", website)
+    @RenderBody()
+    @Html.Partial("~/Views/Shared/_Footer.cshtml", website)
+    <script src="~/Plugins/js/popper.min.js"></script>
+    <script src="~/Plugins/js/bootstrap.min.js"></script>
+    <script src="~/Plugins/js/plugins.js"></script>
+    <script src="~/Plugins/js/watch.js"></script>
+</body>
+</html>

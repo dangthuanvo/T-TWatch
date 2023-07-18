@@ -1,0 +1,80 @@
+﻿@using Web.Core.Dto;
+@using Web.Watch.Service;
+@{
+    WebsiteDto website = UtilService.GetWebsite();
+    ViewBag.Title = website.MetaTitle;
+
+    List<GalleryDto> galleries = (List<GalleryDto>)ViewData["galleries"];
+    List<ProductDto> sellings = (List<ProductDto>)ViewData["sellings"];
+    List<MenuDto> menus = (List<MenuDto>)ViewData["menus"];
+}
+
+
+<div class="box-slider mt-1">
+    <div class="container-fluid">
+        <div class="box-slider-detail slick-dot-style slider-arrow-style">
+            @foreach (var item in galleries)
+            {
+                <img src="@item.Image" />
+            }
+        </div>
+    </div>
+</div>
+
+<div class="brand-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <div class="text-center mt-4">
+                    <h4 class="title-border-left-right">SẢN PHẨM BÁN CHẠY</h4>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="">
+                    <div class="">
+                        <div class="">
+                            <div class="product-slider owl-carousel owl-arrow-style sale-nav">
+                                @foreach (var item in sellings)
+                                {
+                                    @Html.Partial("~/Views/Partial/_pProduct.cshtml", item)
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    @foreach (var menu in menus)
+    {
+        <div class="container-fluid mt-5">
+            <div class="mt-2 mb-2">
+                <h5 class="title-border-right">@menu.Name</h5>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 d-sm-none d-none d-md-block ">
+                    <div>
+                        <a href="/@menu.Alias">
+                            <img src="@menu.Image" alt="@menu.Name" class="img-thumbnail">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="product-slider-v2 owl-carousel owl-arrow-style">
+                        @foreach (var product in menu.Products)
+                        {
+                            @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+

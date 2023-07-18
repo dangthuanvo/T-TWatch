@@ -1,0 +1,84 @@
+﻿@using Web.Core.Dto;
+@using Web.Core.Util;
+@model List<UserDto>
+@{
+    ViewBag.Title = "Tài khoản quản trị";
+}
+
+<script>
+    $("#menu_user").addClass("menu_active");
+</script>
+
+<link href="~/Areas/Administrator/Plugins/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<script src="~/Areas/Administrator/Plugins/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="~/Areas/Administrator/Plugins/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+    $(function () {
+        $('#table').DataTable({
+            "order": [],
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        })
+    })
+</script>
+
+<section class="content-header">
+    <a href="/Administrator/User/Add" class="btn btn-primary btn-sm">
+        <i class="fa fa-plus"></i>
+        Thêm mới tài khoản
+    </a>
+</section>
+
+<section class="content">
+    <div class="box box-primary">
+        <div class="box-body ">
+            <table id="table" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tên tài khoản</th>
+                        <th>Họ và tên</th>
+                        <th>Số điện thoại</th>
+                        <th>Ngày sinh</th>
+                        <th>Email</th>
+                        <th>Ngày đăng nhập gần nhất</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.UserName</td>
+                            <td>@item.FullName</td>
+                            <td>@item.Phone</td>
+                            <td>@item.Dob</td>
+                            <td>@item.Email</td>
+                            <td>@(item.LastLogin?.ToString("HH:mm dd-MM-yyyy")??"")</td>
+                            <td style="white-space:nowrap">
+                                <a href="/Administrator/User/Update?id=@item.UserName" class="btn btn-success btn-xs">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <button onclick="confirmDelete(@item.UserName)" class="btn btn-danger btn-xs">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<script>
+    function confirmDelete(id) {
+        if (confirm("Xác nhận xóa")) {
+            location.href = "/Administrator/User/Delete?id=" + id;
+        }
+    }
+</script>

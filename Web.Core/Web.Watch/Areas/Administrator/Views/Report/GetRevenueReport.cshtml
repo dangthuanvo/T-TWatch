@@ -1,0 +1,106 @@
+﻿@using Web.Core.Dto
+@using Web.Core.Util
+@model List<double>
+@{
+    ViewBag.Title = "Báo cáo doanh thu";
+}
+
+<script>
+    $("#menu_revenue").addClass("menu_active");
+</script>
+
+<script src="~/Areas/Administrator/Plugins/bower_components/moment/min/moment.min.js"></script>
+<script src="~/Areas/Administrator/Plugins/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<link href="~/Areas/Administrator/Plugins/bower_components/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+<script src="~/Areas/Administrator/Plugins/bower_components/chart.js/Chart.js"></script>
+
+<section class="content-header">
+    <h1>
+        Tổng quan
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h4 style="margin: 0;">Biều đồ doanh thu trong năm</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right input-sm" id="reservation">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <canvas id="barChart" style="height:400px"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        $('#reservation').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            startDate: moment('@(((DateTime)ViewBag.date).ToString("yyyy-MM-dd"))'),
+            locale: {
+                format: 'YYYY'
+            }
+        }, function (start) {
+            location.href = `/Administrator/Report/GetRevenueReport?date=${start.format("YYYY-MM-DD")}`;
+        })
+
+        var areaChartData = {
+            labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            datasets: [
+                {
+                    label: 'Digital Goods',
+                    fillColor: 'rgba(60,141,188,0.9)',
+                    strokeColor: 'rgba(60,141,188,0.8)',
+                    pointColor: '#3b8bba',
+                    pointStrokeColor: 'rgba(60,141,188,1)',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    data: @(Newtonsoft.Json.JsonConvert.SerializeObject(Model))
+                }
+            ]
+        }
+
+        var barChartCanvas = $('#barChart').get(0).getContext('2d')
+        var barChart = new Chart(barChartCanvas)
+        var barChartData = areaChartData
+        barChartData.datasets[0].fillColor = '#00BDEB'
+        barChartData.datasets[0].strokeColor = '#00BDEB'
+        barChartData.datasets[0].pointColor = '#00BDEB'
+        var barChartOptions = {
+            scaleBeginAtZero: true,
+            scaleShowGridLines: true,
+            scaleGridLineColor: 'rgba(0,0,0,.05)',
+            scaleGridLineWidth: 1,
+            scaleShowHorizontalLines: true,
+            scaleShowVerticalLines: true,
+            barShowStroke: true,
+            barStrokeWidth: 2,
+            barValueSpacing: 5,
+            barDatasetSpacing: 1,
+            legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+            responsive: true,
+            maintainAspectRatio: true
+        }
+
+        barChartOptions.datasetFill = false
+        barChart.Bar(barChartData, barChartOptions)
+    })
+</script>

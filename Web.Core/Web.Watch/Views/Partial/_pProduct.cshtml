@@ -1,0 +1,26 @@
+﻿@using Web.Core.Dto;
+@using Web.Core.Util;
+@model ProductDto
+@{
+    ProductDto product = Model ?? new ProductDto();
+}
+
+<div class="product-item">
+    <div class="product-thumb">
+        <a href="/san-pham/@product.Alias">
+            <img src="@product.Image" />
+        </a>
+    </div>
+    <div class="product-caption">
+        <div class="mb-2">
+            <a href="/san-pham/@product.Alias" class="item-name">@product.Name</a>
+        </div>
+        <div>
+            <span style="color: #ababab; float: right; text-decoration: line-through; ">@(DataHelper.ToCurrency(product.Price))đ</span>
+            <span style=" color: #d40b0b; font-size: 15px; font-weight: 600;">@(DataHelper.ToCurrency(product.DiscountPrice))đ</span>
+        </div>
+        <div class="text-center">
+            <a href="/mua-hang/@product.Id" class="btn btn-buy">Mua ngay</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,255 @@
+﻿@using Web.Core.Dto;
+
+@{
+    List<MenuDto> menus = (List<MenuDto>)ViewData["menus"];
+    List<ProductAttributeDto> attributes = (List<ProductAttributeDto>)ViewData["attributes"];
+    ViewBag.Title = "Thêm mới Sản phẩm";
+}
+
+<script>
+    $("#menu_product").addClass("menu_active");
+</script>
+
+
+<script src="~/Areas/Administrator/Plugins/ckfinder/ckfinder.js"></script>
+<script src="~/Areas/Administrator/Plugins/ckeditor/ckeditor.js"></script>
+
+<form id="formSubmit" action="/Administrator/Product/Add" method="post">
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-3 text-center">
+                        <div style="margin-bottom:10px">
+                            <label>Hình ảnh đại diện sản phẩm</label>
+                            <img id="img" src="~/Resources/Images/gallery.jpg" class="thumbnail" />
+                            <input id="inpImage" type="hidden" name="Image" value="/Resources/Images/gallery.jpg" />
+                            <button type="button" id="button-upload" class="btn btn-success btn-sm">Upload</button>
+                        </div>
+                        <div class="text-left">
+                            <div style="margin-bottom:5px">
+                                <button type="button" id="button-upload-more" class="btn btn-success btn-sm">Thêm ảnh</button>
+                            </div>
+                            <div id="box-product-gallery" class="row"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Danh mục sản phẩm <span class="required">(*)</span></label>
+                                            <select name="MenuId" class="form-control input-sm" required>
+                                                @foreach (var item in menus)
+                                                {
+                                                    <option value="@item.Id">
+                                                        @Html.Raw((item.ParentMenu != null ? "&emsp;_" : ""))
+                                                        @item.Name
+                                                    </option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Tên sản phẩm <span class="required">(*)</span></label>
+                                            <input type="text" name="Name" class="form-control input-sm" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Giá niêm yết <span class="required">(*)</span></label>
+                                            <input type="number" name="Price" value="0" min="0" class="form-control input-sm" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Giá khuyến mãi</label>
+                                            <input type="number" name="DiscountPrice" value="0" min="0" class="form-control input-sm" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Thứ tự hiển thị</label>
+                                            <input type="number" name="Index" value="1" min="1" class="form-control input-sm" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Trạng thái</label>
+                                            <select name="Status" class="form-control input-sm">
+                                                <option value="10" selected>Đang bán</option>
+                                                <option value="20">Hết hàng</option>
+                                                <option value="30">Ngưng bán</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Sản phẩm bán chạy</label>
+                                            <div>
+                                                <input type="checkbox" name="Selling" value="true" checked />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Thuộc tính sản phẩm <span class="required">(*)</span></label>
+                                        <table class="table table-bordered">
+                                            @for (int i = 0; i < attributes.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td>@attributes[i].Attribute.Name</td>
+                                                    <td>
+                                                        <input type="hidden" name="ProductAttributes[@i].AttributeId" value="@attributes[i].AttributeId" />
+                                                        <input type="text" name="ProductAttributes[@i].ValueString" value="" class="form-control input-sm" required />
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:5px">
+                                <div class="nav-tabs-custom">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#tab_1" data-toggle="tab">Mô tả ngắn</a></li>
+                                        <li><a href="#tab_2" data-toggle="tab">Mô tả chi tiết mặt hàng</a></li>
+                                        <li><a href="#tab_3" data-toggle="tab">Chế độ bảo hành</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="tab_1">
+                                            <div>
+                                                <textarea id="ShortDescription" name="ShortDescription" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab_2">
+                                            <div>
+                                                <textarea id="Description" name="Description" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab_3">
+                                            <div>
+                                                <textarea id="UserDef1" name="UserDef1" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" style="margin-bottom:20px">
+                                <fieldset>
+                                    <legend>SEO</legend>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>MetaDescription</label>
+                                                <input type="text" name="MetaDescription" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>MetaRobots</label>
+                                                <input type="text" name="MetaRobots" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>MetaRevisitAfter</label>
+                                                <input type="text" name="MetaRevisitAfter" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>MetaContentLanguage</label>
+                                                <input type="text" name="MetaContentLanguage" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>MetaContentType</label>
+                                                <input type="text" name="MetaContentType" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 text-center">
+                        <a href="/Administrator/Product" class="btn btn-default">
+                            <i class="fa fa-close"></i>
+                            Hủy
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Lưu lại
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+
+
+<script>
+    function deleteProductGallery(id) {
+        if (confirm("Xác nhận xóa")) {
+            $(`#${id}`).remove();
+        }
+    }
+
+    $("#formSubmit").submit(function (event) {
+        if ($(".impHiddenImage").length > 0) {
+            for (let i = 0; i < $(".impHiddenImage").length; i++) {
+                $($(".impHiddenImage")[i]).attr("name", `ProductImages[${i}].Image`)
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        $('#button-upload').click(function () {
+            var finder = new CKFinder();
+            finder.basePath = '../files';
+            finder.selectActionFunction = setFileField;
+            finder.popup();
+        });
+        function setFileField(fileUrl) {
+            $('#inpImage').val(fileUrl);
+            $("#img").attr("src", fileUrl)
+        }
+
+        $('#button-upload-more').click(function () {
+            var finder = new CKFinder();
+            finder.basePath = '../files';
+            finder.selectActionFunction = setFileFieldMore;
+            finder.popup();
+        });
+
+        function setFileFieldMore(fileUrl) {
+            let key = new Date().getTime();
+            $("#box-product-gallery").append(`
+                <div id="product_gallery_${key}" class="col-md-6 text-center">
+                    <input id="product_gallery_${key}" type="hidden" class="impHiddenImage" value="${fileUrl}" />
+                    <img id="img" src="${fileUrl}" class="thumbnail" />
+                    <div>
+                        <button onclick="deleteProductGallery('product_gallery_${key}')" type="button" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+            `);
+        }
+
+        CKEDITOR.replace('ShortDescription')
+        CKEDITOR.replace('Description')
+        CKEDITOR.replace('UserDef1')
+    })
+
+</script>
+

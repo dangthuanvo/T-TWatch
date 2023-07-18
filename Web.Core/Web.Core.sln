@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Core", "Web.Core\Web.Core.csproj", "{17590C66-CC45-417B-9C96-8D5B6C77C1CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Watch", "Web.Watch\Web.Watch.csproj", "{10A17C24-7B37-4264-AEDF-D20B74E02A00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17590C66-CC45-417B-9C96-8D5B6C77C1CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17590C66-CC45-417B-9C96-8D5B6C77C1CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17590C66-CC45-417B-9C96-8D5B6C77C1CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17590C66-CC45-417B-9C96-8D5B6C77C1CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10A17C24-7B37-4264-AEDF-D20B74E02A00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10A17C24-7B37-4264-AEDF-D20B74E02A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10A17C24-7B37-4264-AEDF-D20B74E02A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10A17C24-7B37-4264-AEDF-D20B74E02A00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA2CB221-3D01-47DA-970D-BFFD6F110B2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA2CB221-3D01-47DA-970D-BFFD6F110B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA2CB221-3D01-47DA-970D-BFFD6F110B2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA2CB221-3D01-47DA-970D-BFFD6F110B2B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BBB5932C-83C7-43BB-80AD-14F355279203}
+	EndGlobalSection
+EndGlobal

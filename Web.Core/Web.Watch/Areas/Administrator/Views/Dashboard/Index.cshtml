@@ -1,0 +1,158 @@
+﻿@using Web.Core.Dto
+@using Web.Core.Util
+@{
+    ViewBag.Title = "Tổng quan";
+    ReportHighlight data = (ReportHighlight)ViewData["data"];
+}
+<script src="~/Areas/Administrator/Plugins/bower_components/chart.js/Chart.js"></script>
+<script>
+    $("#menu_dashboard").addClass("menu_active");
+</script>
+
+<section class="content-header">
+    <h1>
+        Tổng quan
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>@data.TotalNewOrder</h3>
+                    <p>Đơn hàng trong ngày</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>@(DataHelper.ToCurrency(data.DailySales)) đ</h3>
+                    <p>Doanh thu trong ngày</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>@data.TotalOrder</h3>
+                    <p>Đơn hàng trong tháng</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>@(DataHelper.ToCurrency(data.SalesRevenue)) đ</h3>
+                    <p>Doanh thu trong tháng</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h4 style="margin: 0;">Top 10 đơn hàng mới nhất</h4>
+                </div>
+                <div class="box-body ">
+                    <div style="height:305px;overflow:auto">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Mã đơn hàng</th>
+                                    <th>Tên khách hàng</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Tổng tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in data.TenOrderLastest)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="/Administrator/Order/Update?id=@item.Id" target="_blank">@item.Id</a>
+                                        </td>
+                                        <td>@item.Customer.FullName</td>
+                                        <td>@item.OrderDate.ToString("HH:mm dd-MM-yyyy")</td>
+                                        <td>@(DataHelper.ToCurrency(item.TotalAmount)) đ</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h4 style="margin: 0;">Biều đồ doanh thu trong năm</h4>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <canvas id="barChart" style="height:300px"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        var areaChartData = {
+            labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            datasets: [
+                {
+                    label: 'Digital Goods',
+                    fillColor: 'rgba(60,141,188,0.9)',
+                    strokeColor: 'rgba(60,141,188,0.8)',
+                    pointColor: '#3b8bba',
+                    pointStrokeColor: 'rgba(60,141,188,1)',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    data: @(Newtonsoft.Json.JsonConvert.SerializeObject(data.Revenues))
+                }
+            ]
+        }
+
+        var barChartCanvas = $('#barChart').get(0).getContext('2d')
+        var barChart = new Chart(barChartCanvas)
+        var barChartData = areaChartData
+        barChartData.datasets[0].fillColor = '#00BDEB'
+        barChartData.datasets[0].strokeColor = '#00BDEB'
+        barChartData.datasets[0].pointColor = '#00BDEB'
+        var barChartOptions = {
+            scaleBeginAtZero: true,
+            scaleShowGridLines: true,
+            scaleGridLineColor: 'rgba(0,0,0,.05)',
+            scaleGridLineWidth: 1,
+            scaleShowHorizontalLines: true,
+            scaleShowVerticalLines: true,
+            barShowStroke: true,
+            barStrokeWidth: 2,
+            barValueSpacing: 5,
+            barDatasetSpacing: 1,
+            legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+            responsive: true,
+            maintainAspectRatio: true
+        }
+
+        barChartOptions.datasetFill = false
+        barChart.Bar(barChartData, barChartOptions)
+    })
+</script>

@@ -1,0 +1,76 @@
+﻿@using Web.Core.Dto;
+@model WebsiteDto
+@using Web.Watch.Service;
+
+@{
+    List<MenuDto> menus = UtilService.GetMenus();
+}
+
+<header>
+    <div class="box-search">
+        <div>
+            <div class="col-lg-5" style="margin: 0 auto;">
+                <form action="/tim-kiem" method="get">
+                    <input type="text" name="q" value="@ViewBag.q" class="input-search" placeholder="Nhập từ khóa tìm kiếm">
+                    <button type="submit" class="btn-search">Tìm kiếm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="header-menu">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="top-main-menu">
+                        <div class="main-menu menu-style3">
+                            <nav data-screen="1199" class="m-style3">
+                                <ul>
+                                    <li>
+                                        <div class="text-center">
+                                            <a href="/">
+                                                <img src="@Model.Logo" />
+                                            </a>
+                                        </div>
+                                    </li>
+                                    @foreach (var menu in menus)
+                                    {
+                                        <li>
+                                            @if (menu.SubMenus == null || menu.SubMenus.Count == 0)
+                                            {
+                                                <a href="/@menu.Alias">
+                                                    @menu.Name
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/@menu.Alias">
+                                                    @menu.Name
+                                                </a>
+                                                <ul class="dropdown">
+                                                    @foreach (var item in menu.SubMenus)
+                                                    {
+                                                        <li><a href="/@item.Alias">@item.Name</a></li>
+                                                    }
+                                                </ul>
+                                            }
+
+                                        </li>
+                                    }
+                                    <li>
+                                        <a href="/gio-hang">
+                                            <span class="fa fa-shopping-cart"></span>
+                                            @if (Session["cartCount"] != null && (int)Session["cartCount"] > 0)
+                                            {
+                                                <span class="cart-count">@Session["cartCount"]</span>
+                                            }
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,38 @@
+﻿@using Web.Core.Dto;
+@model List<ArticleDto>
+@{
+    ViewBag.Title = "Danh sách bài viết";
+}
+<script>
+    $("#menu_article").addClass("menu_active");
+</script>
+
+<section class="content">
+    <div class="box box-primary">
+        <div class="box-body ">
+            <div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Bài viết</th>
+                            <th style="width:50px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@(item.Title)</td>
+                                <td class="text-center">
+                                    <a href="/Administrator/Article/Update?id=@item.Id" class="btn btn-success btn-xs">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section> 

@@ -1,0 +1,93 @@
+﻿@using Web.Core.Dto;
+@using Web.Watch.Service;
+@model WebsiteDto
+@{
+    List<ArticleDto> articles = UtilService.GetArticle();
+}
+
+<div class="scroll-top not-visible">
+    <i class="fa fa-angle-up"></i>
+</div>
+<footer>
+    <div class="newsletter-group mt-5">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <h5>
+                        <span>HOTLINE:</span>
+                        <i class="fa fa-phone"></i>
+                        <span>@Model.Fax</span>
+                    </h5>
+                </div>
+                <div class="col-md-6 text-center">
+                    <h5>
+                        <span>GỌI ĐẶT HÀNG:</span>
+                        <i class="fa fa-phone"></i>
+                        <span>@Model.PhoneNumber</span>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-top">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                    <div>
+                        <div>
+                            <h5>@Model.Name</h5>
+                        </div>
+                        <div>
+                            <p>
+                                @Model.UserDef1
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div>
+                        <div>
+                            <h5>Thông tin</h5>
+                        </div>
+                        <div class="box-help">
+                            <ul>
+                                @foreach (var item in articles)
+                                {
+                                    <li>
+                                        <a href="/bai-viet/@item.Alias" class="item-name">@item.Title</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div>
+                        <div>
+                            <h5>Liên hệ</h5>
+                        </div>
+                        <div class="box-help">
+                            <ul>
+                                <li>
+                                    <span class="item-name">Địa chỉ: @Model.Address</span>
+                                </li>
+                                <li>
+                                    <span class="item-name">Email: @Model.Email</span>
+                                </li>
+                                <li>
+                                    <span class="item-name">Số điện thoại: <strong>@Model.PhoneNumber</strong></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <hr />
+        <div class="container-fluid">
+            <div class="mb-3">@Model.Copyright</div>
+        </div>
+    </div>
+</footer> 

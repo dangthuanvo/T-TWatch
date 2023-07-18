@@ -1,0 +1,40 @@
+﻿@using Web.Core.Dto;
+@model List<GalleryDto>
+@{
+    ViewBag.Title = "Gallery";
+}
+
+<script>
+    $("#menu_gallery").addClass("menu_active");
+</script>
+
+<section class="content-header">
+    <a href="/Administrator/Gallery/Add" class="btn btn-primary btn-sm">
+        <i class="fa fa-plus"></i>
+        Thêm mới
+    </a>
+</section>
+
+<section class="content">
+    <div class="box box-primary">
+        <div class="box-body">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-4 text-center">
+                        <img src="@item.Image" class="thumbnail" />
+                        <button onclick="confirmDelete(@item.Id)" type="button" class="btn btn-danger btn-sm">Xóa</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function confirmDelete(id) {
+        if (confirm("Xác nhận xóa")) {
+            location.href = "/Administrator/Gallery/Delete?id=" + id;
+        }
+    }
+</script>
