@@ -133,3 +133,7 @@ C:\Users\Thuan\Downloads\DWatch-dnx\Web.Core\Web.Watch\obj\Debug\Web.Watch.cspro
 C:\Users\Thuan\Downloads\DWatch-dnx\Web.Core\Web.Watch\obj\Debug\Web.Watch.csproj.CopyComplete
 C:\Users\Thuan\Downloads\DWatch-dnx\Web.Core\Web.Watch\obj\Debug\Web.Watch.dll
 C:\Users\Thuan\Downloads\DWatch-dnx\Web.Core\Web.Watch\obj\Debug\Web.Watch.pdb
+D:\T-TWatch\Web.Core\Web.Watch\obj\Debug\Web.Watch.csproj.AssemblyReference.cache
+D:\T-TWatch\Web.Core\Web.Watch\obj\Debug\Web.Watch.csproj.CoreCompileInputs.cache
+D:\T-TWatch\Web.Core\Web.Watch\obj\Debug\Web.Watch.dll
+D:\T-TWatch\Web.Core\Web.Watch\obj\Debug\Web.Watch.pdb
