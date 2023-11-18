@@ -84,7 +84,8 @@ namespace Web.Core.Service
                         DiscountPrice = x.DiscountPrice,
                         Image = x.Image,
                         Price = x.Price,
-                        Name = x.Name
+                        Name = x.Name,
+                        MetaDescription = x.MetaDescription,
                     })
                     .ToList();
             }

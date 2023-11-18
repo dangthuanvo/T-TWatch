@@ -1,0 +1,50 @@
+﻿@using Web.Core.Dto;
+@using Web.Core.Util;
+@model ProductDto
+@{
+    ProductDto product = Model ?? new ProductDto();
+}
+<div class="p-2 pb-3">
+    <div class="product-wap card rounded-5">
+        <div class="card rounded-5">
+            <img class="card-img rounded-5 img-fluid" src="@product.Image">
+            <div class="card-img-overlay rounded-5 product-overlay d-flex align-items-center justify-content-center">
+                <ul class="list-unstyled">
+                    <li><a class="btn btn-warning text-white mt-2" href="/san-pham/@product.Alias"><i class="far fa-eye"></i></a></li>
+                    <li><a class="btn btn-warning text-white mt-2" href="/mua-hang/@product.Id"><i class="fas fa-cart-arrow-down"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body">
+            <a href="/san-pham/@product.Alias" class="h3 text-decoration-none">@product.Name</a>
+            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                <li>
+                    @if (string.IsNullOrEmpty(@product.MetaDescription))
+                    {
+                        <p class="card-text">Nếu chưa có Description thì có 2 con gà chạy bộ </p>
+                    }
+                    else
+                    {
+                        <p class="card-text">@product.MetaDescription [MD] </p>
+                    }
+                </li>
+
+            </ul>
+            <ul class="list-unstyled d-flex justify-content-center mb-1">
+                <li>
+                    <i class="text-warning fa fa-star"></i>
+                    <i class="text-warning fa fa-star"></i>
+                    <i class="text-warning fa fa-star"></i>
+                    <i class="text-muted fa fa-star"></i>
+                    <i class="text-muted fa fa-star"></i>
+                </li>
+            </ul>
+            <p class="text-center mb-0">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <span style=" color: #d40b0b; font-size: 20px; font-weight: 600;">@(DataHelper.ToCurrency(product.DiscountPrice))đ</span>
+                    <span style="color: #ababab; font-size:15px; float: right; text-decoration: line-through">@(DataHelper.ToCurrency(product.Price))đ</span>
+                </div>
+            </p>
+        </div>
+    </div>
+</div>

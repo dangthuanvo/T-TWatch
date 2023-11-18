@@ -51,30 +51,6 @@
     $(".pro-nav").resize();
   });
 
-  $(".box-slider-detail").slick({
-    arrows: true,
-    autoplay: false,
-    autoplaySpeed: 5000,
-    dots: true,
-    pauseOnFocus: false,
-    pauseOnHover: false,
-    fade: true,
-    infinite: true,
-    prevArrow:
-      '<button type="button" class="slick-prev"><i class="fa fa-angle-left"></i></button>',
-    nextArrow:
-      '<button type="button" class="slick-next"><i class="fa fa-angle-right"></i></button>',
-    slidesToShow: 1,
-    responsive: [
-      {
-        breakpoint: 767,
-        settings: {
-          dots: true,
-        },
-      },
-    ],
-  });
-
   var product = $(".product-slider");
   product.owlCarousel({
     loop: true,

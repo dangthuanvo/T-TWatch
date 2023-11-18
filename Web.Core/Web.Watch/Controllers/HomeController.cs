@@ -17,7 +17,6 @@ namespace Web.Watch.Controllers
         GalleryService galleryService;
         OrderService orderService;
         ArticleService articleService;
-        CategoryService categoryService;
 
         public HomeController()
         {
@@ -27,8 +26,6 @@ namespace Web.Watch.Controllers
             this.galleryService = new GalleryService();
             this.orderService = new OrderService();
             this.articleService = new ArticleService();
-            this.categoryService = new CategoryService();
-
         }
 
         public ActionResult Index()
@@ -60,7 +57,7 @@ namespace Web.Watch.Controllers
         public ActionResult ProductDetail(string alias)
         {
             ProductDto product = this.productService.GetByAlias(alias);
-            List<ProductDto> products = this.productService.GetByMenu(product.MenuId.Value);
+                List<ProductDto> products = this.productService.GetByMenu(product.MenuId.Value);
             ViewData["products"] = products;
 
             ViewBag.MetaTitle = product.Name;
