@@ -4,73 +4,85 @@
 @{
     WebsiteDto website = UtilService.GetWebsite();
     ViewBag.Title = Model.Name;
-    List<MenuDto> menuall = (List<MenuDto>)ViewData["menuall"];
-}
-<div class="container-fluid mt-2">
+    //List<MenuDto> menuall = (List<MenuDto>)ViewData["menuall"];
+    List<MenuDto> menus = UtilService.GetMenus();
+}<div class="container py-5">
     <div class="row">
-        <div class="col-12">
-            <div>
-                <nav>
-                    <ul class="breadcrumb m-0" style="display:inline-flex">
-                        <li class="breadcrumb-item">
-                            <a href="/">Trang chủ</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            @Model.Name
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container-category">
-    <div class="row mb-2">
-        <div class="col-md-3">
-            <form id="formSearch" action="/@Model.Alias" method="get">
-                <div class="group-control-horizontal">
-                    <span class="text-nowrap mr-2">Sắp xếp theo</span>
-                    <select onchange="$('#formSearch').submit()" name="orderBy" class="form-control">
-                        <option value="" @(ViewBag.orderBy == null || ViewBag.orderBy == "" ? "selected" : "")>Phù hợp nhất</option>
-                        <option value="name-asc" @(ViewBag.orderBy == "name-asc" ? "selected" : "")>Tên (A - Z)</option>
-                        <option value="name-desc" @(ViewBag.orderBy == "name-desc" ? "selected" : "")>Tên (Z - A)</option>
-                        <option value="price-asc" @(ViewBag.orderBy == "price-asc" ? "selected" : "")>Giá (Low &gt; High)</option>
-                        <option value="price-desc" @(ViewBag.orderBy == "price-desc" ? "selected" : "")>Giá (High &gt; Low)</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-5">
-        @{
-            //if (Model.ParentMenu != null)
-            //{
-            foreach (var product in Model.Products)
-            {
-                    <div class="col mb-5">
-                        @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
-                    </div>
-                } 
-                @*}
-                 else { 
-                foreach (var menu in menuall)
+
+        <div class="col-lg-3">
+            <h1 class="h2 pb-4">Danh mục</h1>
+            <ul class="list-unstyled templatemo-accordion">
+
+                @foreach (var menu in menus)
                 {
-                    if (menu.ParentMenu.ToString() == Model.Id.ToString())
-                    {
-                        ProductService productService = new ProductService();
-                        List<ProductDto> products = productService.GetByMenu(menu.Id, "");
-                        menu.Products = products;
-                        foreach (var product in menu.Products)
+                    <li class="pb-3">
+                        @if (menu.SubMenus == null || menu.SubMenus.Count == 0)
                         {
-                            <div class="col mb-5">
-                                @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
-                            </div>
+                            <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="/@menu.Alias">
+                                @menu.Name
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="/@menu.Alias">
+                                @menu.Name
+                                <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                            </a>
+                            <ul class="collapse show list-unstyled pl-3">
+                                @foreach (var item in menu.SubMenus)
+                                {
+                                    <li><a class="text-decoration-none" href="/@item.Alias">@item.Name</a></li>
+                                }
+                            </ul>
                         }
 
-                    }
+                    </li>
+                }
 
-                }*@
-            }
-        
+            </ul>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-md-6 pb-4">
+                    <div class="d-flex">
+                        <form id="formSearch" action="/@Model.Alias" method="get">
+                            <div class="group-control-horizontal">
+                                <span class="text-nowrap mr-2">Sắp xếp theo: </span>
+                                <select onchange="$('#formSearch').submit()" name="orderBy" class="form-control">
+                                    <option value="" @(ViewBag.orderBy == null || ViewBag.orderBy == "" ? "selected" : "")>Phù hợp nhất</option>
+                                    <option value="name-asc" @(ViewBag.orderBy == "name-asc" ? "selected" : "")>Tên (A - Z)</option>
+                                    <option value="name-desc" @(ViewBag.orderBy == "name-desc" ? "selected" : "")>Tên (Z - A)</option>
+                                    <option value="price-asc" @(ViewBag.orderBy == "price-asc" ? "selected" : "")>Giá (Low &gt; High)</option>
+                                    <option value="price-desc" @(ViewBag.orderBy == "price-desc" ? "selected" : "")>Giá (High &gt; Low)</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-md-4">
+                        @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                    </div>   
+                }
+            </div>
+            <div div="row">
+                <ul class="pagination pagination-lg justify-content-end">
+                    <li class="page-item disabled">
+                        <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#" tabindex="-1">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" href="#">3</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
     </div>
 </div>
