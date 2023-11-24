@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 using Web.Core.Dto;
 using Web.Watch.Service;
 
@@ -17,7 +14,6 @@ namespace Web.Watch.Controllers
         GalleryService galleryService;
         OrderService orderService;
         ArticleService articleService;
-        CategoryService categoryService;
 
         public HomeController()
         {
@@ -27,7 +23,7 @@ namespace Web.Watch.Controllers
             this.galleryService = new GalleryService();
             this.orderService = new OrderService();
             this.articleService = new ArticleService();
-            this.categoryService = new CategoryService();
+
 
         }
 
@@ -128,7 +124,7 @@ namespace Web.Watch.Controllers
             if (cart == null)
             {
                 cart = new List<OrderDetailDto>();
-            } 
+            }
             return View(cart);
         }
 
@@ -157,7 +153,7 @@ namespace Web.Watch.Controllers
         public ActionResult Article(string alias)
         {
             this.SetSEO_Main();
-            ViewData["articles"] = this.articleService.GetAll(); 
+            ViewData["articles"] = this.articleService.GetAll();
             return View(this.articleService.GetByAlias(alias));
         }
 
