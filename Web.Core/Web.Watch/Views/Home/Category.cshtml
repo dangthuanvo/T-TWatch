@@ -18,9 +18,9 @@
                     <li class="pb-3">
                         @if (menu.SubMenus == null || menu.SubMenus.Count == 0)
                         {
-                            <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="/@menu.Alias">
+                            <span class="collapsed d-flex justify-content-between h3 text-decoration-none" onclick="window.location.href='@menu.Alias'" style="font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
                                 @menu.Name
-                            </a>
+                            </span>
                         }
                         else
                         {
