@@ -132,7 +132,7 @@
                         </ul>
 
                         <h6>Giới thiệu:</h6>
-                        @Html.Raw(product.Description)
+                        @Html.Raw(product.ShortDescription)
 
                     </div>
                     <div class="card-footer">
@@ -219,6 +219,9 @@
                 myModal.show();
             }
         });
+        setTimeout(function () {
+                window.location.href = "/san-pham/@product.Alias";
+            }, 1000);
     }
 
 </script>

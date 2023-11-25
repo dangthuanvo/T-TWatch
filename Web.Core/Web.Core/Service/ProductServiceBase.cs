@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Web.Core.Dto;
 using Web.Core.Model;
 using Web.Core.Util;
-using Web.Core.Service;
 //notthing
 
 namespace Web.Core.Service
@@ -69,47 +66,52 @@ namespace Web.Core.Service
                     .ToList();
             }
         }
-		public virtual List<ProductDto> GetAllOrder(string orderBy = "")
-		{
-			using (var context = new MyContext())
-			{
-				var query = context.Products
-					.Where(x => x.Status == 10);
-				if (!string.IsNullOrWhiteSpace(orderBy))
-				{
-					switch (orderBy)
-					{
-						case "name-asc":
-							query = query.OrderBy(x => x.Name);
-							break;
-						case "name-desc":
-							query = query.OrderByDescending(x => x.Name);
-							break;
-						case "price-asc":
-							query = query.OrderBy(x => x.Price);
-							break;
-						case "price-desc":
-							query = query.OrderByDescending(x => x.Price);
-							break;
-					}
-				}
-				return query
-					.Select(x => new ProductDto()
-					{
-						Id = x.Id,
-						Alias = x.Alias,
-						DiscountPercent = x.DiscountPercent,
-						DiscountPrice = x.DiscountPrice,
-						Image = x.Image,
-						Price = x.Price,
-						Name = x.Name
-					})
-					.ToList();
-			}
+        public virtual List<ProductDto> GetAllOrder(string orderBy = "")
+        {
+            using (var context = new MyContext())
+            {
+                var query = context.Products
+                    .Where(x => x.Status == 10);
+                if (!string.IsNullOrWhiteSpace(orderBy))
+                {
+                    switch (orderBy)
+                    {
+                        case "name-asc":
+                            query = query.OrderBy(x => x.Name);
+                            break;
+                        case "name-desc":
+                            query = query.OrderByDescending(x => x.Name);
+                            break;
+                        case "price-asc":
+                            query = query.OrderBy(x => x.Price);
+                            break;
+                        case "price-desc":
+                            query = query.OrderByDescending(x => x.Price);
+                            break;
+                    }
+                }
+                return query
+                    .Select(x => new ProductDto()
+                    {
+                        Id = x.Id,
+                        Alias = x.Alias,
+                        DiscountPercent = x.DiscountPercent,
+                        DiscountPrice = x.DiscountPrice,
+                        Image = x.Image,
+                        Price = x.Price,
+                        Name = x.Name,
+                        MetaContentLanguage = x.MetaContentLanguage,
+                        MetaContentType = x.MetaContentType,
+                        MetaDescription = x.MetaDescription,
+                        MetaRevisitAfter = x.MetaRevisitAfter,
+                        MetaRobots = x.MetaRobots
+                    })
+                    .ToList();
+            }
 
-		}
+        }
 
-		public virtual List<ProductDto> GetAllSelling()
+        public virtual List<ProductDto> GetAllSelling()
         {
             using (var context = new MyContext())
             {
@@ -195,7 +197,7 @@ namespace Web.Core.Service
                 else
                 {
                     List<int?> listMenuID = new List<int?>();
-                    foreach(var menu in context.Menus)
+                    foreach (var menu in context.Menus)
                     {
                         if (menu.ParentMenu == menuDto.Id)
                         {
