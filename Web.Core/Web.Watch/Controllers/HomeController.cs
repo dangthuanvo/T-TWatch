@@ -41,9 +41,19 @@ namespace Web.Watch.Controllers
         public ActionResult Category(string alias, string orderBy = "")
         {
             ViewBag.orderBy = orderBy;
-            MenuDto menu = this.menuService.GetByAlias(alias);
-            List<ProductDto> products = this.productService.GetByMenu(menu.Id, orderBy);
-            menu.Products = products;
+			MenuDto menu = new MenuDto();
+			List<ProductDto> products = null;
+			if (alias == "all-1")
+			{
+                menu.Alias = "all-1";
+				products = productService.GetAllOrder(orderBy);
+			}
+			else
+			{
+				menu = menuService.GetByAlias(alias);
+				products = productService.GetByMenu(menu.Id, orderBy);
+			}
+			menu.Products = products;
             ViewBag.MetaTitle = menu.Name;
             ViewBag.MetaDescription = menu.MetaDescription;
             ViewBag.MetaRobots = menu.MetaRobots;
@@ -98,6 +108,7 @@ namespace Web.Watch.Controllers
             Session["cartCount"] = cart.Sum(x => x.Qty ?? 0);
             return RedirectToAction("ShoppingCart");
         }
+
 
         [HttpPost]
         public ActionResult UpdateCart(List<OrderDetailDto> products)

@@ -69,8 +69,47 @@ namespace Web.Core.Service
                     .ToList();
             }
         }
+		public virtual List<ProductDto> GetAllOrder(string orderBy = "")
+		{
+			using (var context = new MyContext())
+			{
+				var query = context.Products
+					.Where(x => x.Status == 10);
+				if (!string.IsNullOrWhiteSpace(orderBy))
+				{
+					switch (orderBy)
+					{
+						case "name-asc":
+							query = query.OrderBy(x => x.Name);
+							break;
+						case "name-desc":
+							query = query.OrderByDescending(x => x.Name);
+							break;
+						case "price-asc":
+							query = query.OrderBy(x => x.Price);
+							break;
+						case "price-desc":
+							query = query.OrderByDescending(x => x.Price);
+							break;
+					}
+				}
+				return query
+					.Select(x => new ProductDto()
+					{
+						Id = x.Id,
+						Alias = x.Alias,
+						DiscountPercent = x.DiscountPercent,
+						DiscountPrice = x.DiscountPrice,
+						Image = x.Image,
+						Price = x.Price,
+						Name = x.Name
+					})
+					.ToList();
+			}
 
-        public virtual List<ProductDto> GetAllSelling()
+		}
+
+		public virtual List<ProductDto> GetAllSelling()
         {
             using (var context = new MyContext())
             {

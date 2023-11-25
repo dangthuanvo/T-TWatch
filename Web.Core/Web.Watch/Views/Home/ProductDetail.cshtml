@@ -10,8 +10,20 @@
     });
     ViewBag.Title = product.Name;
 }
-
+<!-- Modal Notify Add to card -->
+<div class="modal fade" id="NotifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="textModalLabel">Thêm thành công!</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Open Content -->
+<div id="message" />
 <section class="bg-light">
     <div class="container pb-5">
         <div class="row">
@@ -129,7 +141,7 @@
                                 <button class="btn btn-success btn-lg" type="button" id="btnbuynow">Mua ngay</button>
                             </div>
                             <div class="col d-grid">
-                                <button class="btn btn-success btn-lg">Thêm vào giỏ hàng</button>
+                                <button class="btn btn-success btn-lg" type="button" id="btnaddtocart">Thêm vào giỏ hàng</button>
                             </div>
                         </div>
                     </div>
@@ -191,6 +203,24 @@
         window.location.href = "/mua-hang/@product.Id";
     };
 
+    document.getElementById("btnaddtocart").onclick = function () {
+
+        $.ajax({
+            url: '/mua-hang/@product.Id',
+            type: 'GET',
+            success: function () {
+                document.getElementById('textModalLabel').textContent = 'Thêm sản phẩm vào giỏ hành thành công!'
+                var myModal = new bootstrap.Modal(document.getElementById('NotifyModal'));
+                myModal.show();
+            },
+            error: function () {
+                document.getElementById('textModalLabel').textContent = 'Không thể thêm sản phẩm vào giỏ hàng!'
+                var myModal = new bootstrap.Modal(document.getElementById('NotifyModal'));
+                myModal.show();
+            }
+        });
+    }
+
 </script>
 
 <!-- Start Slider Script -->
@@ -225,5 +255,8 @@
         }
         ]
     });
+    function addToCart(link) {
+        window.open(link);
+    }
 </script>
 <!-- End Slider Script -->
