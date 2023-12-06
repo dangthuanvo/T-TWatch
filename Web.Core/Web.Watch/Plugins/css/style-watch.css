@@ -1,4 +1,4 @@
-﻿body {
+﻿/*body {
     padding: 0;
     margin: 0;
     color: #444;
@@ -21,10 +21,10 @@ button:focus {
 img {
     height: auto;
     max-width: 100%;
-}
+}*/
 
 /*Brand image*/
-.brand-image {
+/*.brand-image {
     height: 80px;
     max-width: unset;
 }
@@ -60,10 +60,10 @@ p {
 
 .slick-slide:focus {
     outline: none;
-}
+}*/
 
 /* slick slider dot style */
-.slick-dot-style .slick-dots {
+/*.slick-dot-style .slick-dots {
     bottom: 30px;
     left: 0;
     position: absolute;
@@ -144,10 +144,10 @@ p {
     .main-menu li span.lnr {
         font-size: 20px;
         margin-left: 10px;
-    }
+    }*/
 
 /*dropdown menu css*/
-.main-menu ul li ul.dropdown {
+/*.main-menu ul li ul.dropdown {
     position: absolute;
     top: 100%;
     left: 0;
@@ -223,10 +223,10 @@ ul.dropdown li span {
     float: right;
     font-size: 10px;
     margin-top: 8px;
-}
+}*/
 
 /*mega menu css*/
-.main-menu ul li.static {
+/*.main-menu ul li.static {
     position: static;
 }
 
@@ -364,11 +364,11 @@ ul.dropdown li span {
 .pro-nav {
     margin: -5px;
     margin-right: 0px;
-}
+}*/
 
 
     /* ---slick arrow style--- */
-    .pro-nav button.slick-arrow {
+    /*.pro-nav button.slick-arrow {
         background: transparent;
         border: 1px solid #fedc19;
         cursor: pointer;
@@ -396,10 +396,10 @@ ul.dropdown li span {
 .slick-slider:hover button.slick-arrow {
     opacity: 1;
     visibility: visible;
-}
+}*/
 
 /* Slick vertical slider arrow */
-.pro-nav1 button {
+/*.pro-nav1 button {
     background: transparent none repeat scroll 0 0;
     border: 2px solid #fedc19;
     cursor: pointer;
@@ -594,11 +594,11 @@ label {
 .container-fluid {
     padding-left: 20px;
     padding-right: 20px;
-}
+}*/
 
 
 /* Magnific Popup CSS */
-.mfp-bg {
+/*.mfp-bg {
     top: 0;
     left: 0;
     width: 100%;
@@ -899,10 +899,10 @@ button::-moz-focus-inner {
         height: 100%;
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
         background: #000;
-    }
+    }*/
 
 /* Main image in popup */
-img.mfp-img {
+/*img.mfp-img {
     width: auto;
     max-width: 100%;
     height: auto;
@@ -911,10 +911,10 @@ img.mfp-img {
     box-sizing: border-box;
     padding: 40px 0 40px;
     margin: 0 auto;
-}
+}*/
 
 /* The shadow behind the image */
-.mfp-figure {
+/*.mfp-figure {
     line-height: 0;
 }
 
@@ -969,11 +969,11 @@ img.mfp-img {
     cursor: pointer;
 }
 
-@media screen and (max-width: 800px) and (orientation: landscape), screen and (max-height: 300px) {
+@media screen and (max-width: 800px) and (orientation: landscape), screen and (max-height: 300px) {*/
     /**
        * Remove all paddings around the image on small screen
        */
-    .mfp-img-mobile .mfp-image-holder {
+    /*.mfp-img-mobile .mfp-image-holder {
         padding-left: 0;
         padding-right: 0;
     }
@@ -1076,9 +1076,9 @@ img.mfp-img {
     font-size: 15px;
 }
 
-.box-slider {
+.box-slider {*/
     /*height: 290px;*/
-}
+/*}
 
     .box-slider .container-fluid {
         padding: 0;
@@ -1256,4 +1256,4 @@ strong {
 
 .box-help li {
     margin-bottom: 10px;
-}
+}*/
