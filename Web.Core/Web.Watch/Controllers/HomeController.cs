@@ -45,8 +45,7 @@ namespace Web.Watch.Controllers
 			List<ProductDto> products = null;
 			if (alias == "all-1")
 			{
-                menu.Alias = "all-1";
-				products = productService.GetAllOrder(orderBy);
+				products = productService.GetAll();
 			}
 			else
 			{
@@ -108,7 +107,6 @@ namespace Web.Watch.Controllers
             Session["cartCount"] = cart.Sum(x => x.Qty ?? 0);
             return RedirectToAction("ShoppingCart");
         }
-
 
         [HttpPost]
         public ActionResult UpdateCart(List<OrderDetailDto> products)

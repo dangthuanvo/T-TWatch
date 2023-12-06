@@ -6,9 +6,7 @@
     ViewBag.Title = Model.Name;
     //List<MenuDto> menuall = (List<MenuDto>)ViewData["menuall"];
     List<MenuDto> menus = UtilService.GetMenus();
-    int pageSize = 9;
-}
-<div class="container py-5">
+}<div class="container py-5">
     <div class="row">
 
         <div class="col-lg-3">
@@ -63,74 +61,28 @@
                     </div>
                 </div>
             </div>
-            <div class="row" id="listProducts">
-                @{
-                    int numProduct = 0;
-
-                    foreach (var product in Model.Products)
-                    {
-                        if (++numProduct <= pageSize)
-                        {
-                            <div class="col-md-4" id="product @numProduct" >
-                                @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-md-4" id="product @numProduct" style="display: none">
-                                @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
-                            </div>
-                        }
-
-                    }
+            <div class="row">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-md-4">
+                        @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                    </div>   
                 }
             </div>
             <div div="row">
                 <ul class="pagination pagination-lg justify-content-end">
-                    @{
-                        int count = Convert.ToInt32(Math.Ceiling((double)Model.Products.Count / 9));
-                        for (int i = 1; i <= count; i++)
-                        {
-                                        <li class="page-item">
-                                            @if (i == 1)
-                                            {
-                                            <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" id="page-link @i" onclick="showProducts(@i, @pageSize, @count)">1</a>
-                                            }
-                                            else
-                                            {
-                                            <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" id="page-link @i" onclick="showProducts(@i, @pageSize, @count)">@i</a>
-                                            }
-                                        </li>
-                        }
-                    }
-
+                    <li class="page-item disabled">
+                        <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#" tabindex="-1">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" href="#">3</a>
+                    </li>
                 </ul>
             </div>
         </div>
+
     </div>
 </div>
-<script>
-    function showProducts(pageIndex, pageSize, totalPageLink) {
-        var numberChild = document.getElementById('listProducts').childElementCount;
-        var startIndex = (pageIndex - 1) * pageSize + 1;
-        var endIndex = (startIndex + pageSize - 1) < numberChild ? (startIndex + pageSize - 1) : numberChild;
-        for (let i = 1; i <= numberChild; i++) {
-            if (i >= startIndex && i <= endIndex) {
-                document.getElementById('product ' + i).style.display = 'inline';
-            }
-            else {
-                document.getElementById('product ' + i).style.display = 'none';
-            }
-        }
-        for (let i = 1; i <= totalPageLink; i++) {
-            var element = document.getElementById('page-link ' + i);
-            element.classList.remove('active')
-            element.classList.add('text-dark');
-        }
-        var element = document.getElementById('page-link ' + pageIndex);
-        element.classList.add('active')
-        element.classList.remove('text-dark');
-        window.scrollTo(0, 0);
-        
-    }
-</script>

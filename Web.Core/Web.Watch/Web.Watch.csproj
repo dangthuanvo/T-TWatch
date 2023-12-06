@@ -1283,6 +1283,7 @@
     <Content Include="Plugins\css\font-awesome.min.css" />
     <Content Include="Plugins\css\owl.video.play.html" />
     <Content Include="Plugins\css\plugins.css" />
+    <Content Include="Plugins\css\PopupChat.css" />
     <Content Include="Plugins\css\responsive.css" />
     <Content Include="Plugins\css\style-watch.css" />
     <Content Include="Plugins\fonts\fontawesome-webfont3e6e.svg" />
@@ -1292,6 +1293,7 @@
     <Content Include="Plugins\js\popper.min.js" />
     <Content Include="Plugins\js\jquery.min.js" />
     <Content Include="Plugins\js\modernizr-3.5.0.min.js" />
+    <Content Include="Plugins\js\PopupChat.js" />
     <Content Include="Plugins\js\watch.js" />
     <Content Include="Resources\files\Gallery\Banner0.jpg" />
     <Content Include="Resources\files\Gallery\Banner1.jpg" />
