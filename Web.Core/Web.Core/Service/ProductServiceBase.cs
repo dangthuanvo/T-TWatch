@@ -67,6 +67,7 @@ namespace Web.Core.Service
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         public virtual List<ProductDto> GetAllOrder(string orderBy = "")
         {
             using (var context = new MyContext())
@@ -112,6 +113,9 @@ namespace Web.Core.Service
 
         }
 
+=======
+
+>>>>>>> parent of b674ebc (upadate category)
 =======
 
 >>>>>>> parent of b674ebc (upadate category)
