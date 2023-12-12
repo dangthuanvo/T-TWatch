@@ -4,73 +4,133 @@
 @{
     WebsiteDto website = UtilService.GetWebsite();
     ViewBag.Title = Model.Name;
-    List<MenuDto> menuall = (List<MenuDto>)ViewData["menuall"];
+    //List<MenuDto> menuall = (List<MenuDto>)ViewData["menuall"];
+    List<MenuDto> menus = UtilService.GetMenus();
+    int pageSize = 9;
 }
-<div class="container-fluid mt-2">
+<div class="container py-5">
     <div class="row">
-        <div class="col-12">
-            <div>
-                <nav>
-                    <ul class="breadcrumb m-0" style="display:inline-flex">
-                        <li class="breadcrumb-item">
-                            <a href="/">Trang chủ</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            @Model.Name
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container-category">
-    <div class="row mb-2">
-        <div class="col-md-3">
-            <form id="formSearch" action="/@Model.Alias" method="get">
-                <div class="group-control-horizontal">
-                    <span class="text-nowrap mr-2">Sắp xếp theo</span>
-                    <select onchange="$('#formSearch').submit()" name="orderBy" class="form-control">
-                        <option value="" @(ViewBag.orderBy == null || ViewBag.orderBy == "" ? "selected" : "")>Phù hợp nhất</option>
-                        <option value="name-asc" @(ViewBag.orderBy == "name-asc" ? "selected" : "")>Tên (A - Z)</option>
-                        <option value="name-desc" @(ViewBag.orderBy == "name-desc" ? "selected" : "")>Tên (Z - A)</option>
-                        <option value="price-asc" @(ViewBag.orderBy == "price-asc" ? "selected" : "")>Giá (Low &gt; High)</option>
-                        <option value="price-desc" @(ViewBag.orderBy == "price-desc" ? "selected" : "")>Giá (High &gt; Low)</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-5">
-        @{
-            //if (Model.ParentMenu != null)
-            //{
-            foreach (var product in Model.Products)
-            {
-                    <div class="col mb-5">
-                        @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
-                    </div>
-                } 
-                @*}
-                 else { 
-                foreach (var menu in menuall)
+
+        <div class="col-lg-3">
+            <h1 class="h2 pb-4">Danh mục</h1>
+            <ul class="list-unstyled templatemo-accordion">
+
+                @foreach (var menu in menus)
                 {
-                    if (menu.ParentMenu.ToString() == Model.Id.ToString())
-                    {
-                        ProductService productService = new ProductService();
-                        List<ProductDto> products = productService.GetByMenu(menu.Id, "");
-                        menu.Products = products;
-                        foreach (var product in menu.Products)
+                    <li class="pb-3">
+                        @if (menu.SubMenus == null || menu.SubMenus.Count == 0)
                         {
-                            <div class="col mb-5">
+                            <span class="collapsed d-flex justify-content-between h3 text-decoration-none" onclick="window.location.href='@menu.Alias'" style="font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
+                                @menu.Name
+                            </span>
+                        }
+                        else
+                        {
+                            <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="/@menu.Alias">
+                                @menu.Name
+                                <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                            </a>
+                            <ul class="collapse show list-unstyled pl-3">
+                                @foreach (var item in menu.SubMenus)
+                                {
+                                    <li><a class="text-decoration-none" href="/@item.Alias">@item.Name</a></li>
+                                }
+                            </ul>
+                        }
+
+                    </li>
+                }
+
+            </ul>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-md-6 pb-4">
+                    <div class="d-flex">
+                        <form id="formSearch" action="/@Model.Alias" method="get">
+                            <div class="group-control-horizontal">
+                                <span class="text-nowrap mr-2">Sắp xếp theo: </span>
+                                <select onchange="$('#formSearch').submit()" name="orderBy" class="form-control">
+                                    <option value="" @(ViewBag.orderBy == null || ViewBag.orderBy == "" ? "selected" : "")>Phù hợp nhất</option>
+                                    <option value="name-asc" @(ViewBag.orderBy == "name-asc" ? "selected" : "")>Tên (A - Z)</option>
+                                    <option value="name-desc" @(ViewBag.orderBy == "name-desc" ? "selected" : "")>Tên (Z - A)</option>
+                                    <option value="price-asc" @(ViewBag.orderBy == "price-asc" ? "selected" : "")>Giá (Low &gt; High)</option>
+                                    <option value="price-desc" @(ViewBag.orderBy == "price-desc" ? "selected" : "")>Giá (High &gt; Low)</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="listProducts">
+                @{
+                    int numProduct = 0;
+
+                    foreach (var product in Model.Products)
+                    {
+                        if (++numProduct <= pageSize)
+                        {
+                            <div class="col-md-4" id="product @numProduct" >
+                                @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-4" id="product @numProduct" style="display: none">
                                 @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
                             </div>
                         }
 
                     }
+                }
+            </div>
+            <div div="row">
+                <ul class="pagination pagination-lg justify-content-end">
+                    @{
+                        int count = Convert.ToInt32(Math.Ceiling((double)Model.Products.Count / 9));
+                        for (int i = 1; i <= count; i++)
+                        {
+                                        <li class="page-item">
+                                            @if (i == 1)
+                                            {
+                                            <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" id="page-link @i" onclick="showProducts(@i, @pageSize, @count)">1</a>
+                                            }
+                                            else
+                                            {
+                                            <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" id="page-link @i" onclick="showProducts(@i, @pageSize, @count)">@i</a>
+                                            }
+                                        </li>
+                        }
+                    }
 
-                }*@
-            }
-        
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
+<script>
+    function showProducts(pageIndex, pageSize, totalPageLink) {
+        var numberChild = document.getElementById('listProducts').childElementCount;
+        var startIndex = (pageIndex - 1) * pageSize + 1;
+        var endIndex = (startIndex + pageSize - 1) < numberChild ? (startIndex + pageSize - 1) : numberChild;
+        for (let i = 1; i <= numberChild; i++) {
+            if (i >= startIndex && i <= endIndex) {
+                document.getElementById('product ' + i).style.display = 'inline';
+            }
+            else {
+                document.getElementById('product ' + i).style.display = 'none';
+            }
+        }
+        for (let i = 1; i <= totalPageLink; i++) {
+            var element = document.getElementById('page-link ' + i);
+            element.classList.remove('active')
+            element.classList.add('text-dark');
+        }
+        var element = document.getElementById('page-link ' + pageIndex);
+        element.classList.add('active')
+        element.classList.remove('text-dark');
+        window.scrollTo(0, 0);
+        
+    }
+</script>

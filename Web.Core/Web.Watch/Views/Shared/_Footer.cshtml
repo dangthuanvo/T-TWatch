@@ -5,89 +5,69 @@
     List<ArticleDto> articles = UtilService.GetArticle();
 }
 
-<div class="scroll-top not-visible">
-    <i class="fa fa-angle-up"></i>
-</div>
-<footer>
-    <div class="newsletter-group mt-5">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6 text-center">
-                    <h5>
-                        <span>HOTLINE:</span>
-                        <i class="fa fa-phone"></i>
-                        <span>@Model.Fax</span>
-                    </h5>
-                </div>
-                <div class="col-md-6 text-center">
-                    <h5>
-                        <span>GỌI ĐẶT HÀNG:</span>
-                        <i class="fa fa-phone"></i>
-                        <span>@Model.PhoneNumber</span>
-                    </h5>
+<!-- Start Footer -->
+<footer class="bg-dark" id="tempaltemo_footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 pt-5">
+                <h2 class="h2 text-secondary border-bottom pb-3 border-light logo">
+                    <img src="~/Resources/files/logo.PNG" />
+                    @Model.Name
+                </h2>
+                <ul class="list-unstyled text-light footer-link-list">
+                    <li>
+                        <i class="fas fa-map-marker-alt fa-fw"></i>
+                        @Model.Address
+                    </li>
+                    <li>
+                        <i class="fa fa-phone fa-fw"></i>
+                        <a class="text-decoration-none" href="tel:@Model.PhoneNumber">Hotline: @Model.PhoneNumber<br /></a>
+                        <a class="text-decoration-none" href="tel:@Model.Fax">&emsp;&ensp;Fax: @Model.Fax</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-envelope fa-fw"></i>
+                        <a class="text-decoration-none" href="mailto:@Model.Email">@Model.Email</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-6 pt-5">
+                <h2 class="h2 text-light border-bottom pb-3 border-light">Về chúng tôi</h2>
+                <ul class="list-unstyled text-light footer-link-list">
+                    <li><a class="text-decoration-none">@Model.UserDef1</a></li>
+                    <li><a class="text-decoration-none">@Model.UserDef2</a></li>
+                    <li><a class="text-decoration-none">@Model.UserDef3</a></li>
+                    <li><a class="text-decoration-none">@Model.UserDef4</a></li>
+                    <li><a class="text-decoration-none">@Model.UserDef5</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-2 pt-5">
+                <h2 class="h2 text-light border-bottom pb-3 border-light">Sản phẩm</h2>
+                <ul class="list-unstyled text-light footer-link-list">
+                    <li><a class="text-decoration-none" href="#">Luxury</a></li>
+                    <li><a class="text-decoration-none" href="#">Sport Wear</a></li>
+                    <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
+                    <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
+                    <li><a class="text-decoration-none" href="#">Popular Dress</a></li>
+                    <li><a class="text-decoration-none" href="#">Gym Accessories</a></li>
+                    <li><a class="text-decoration-none" href="#">Sport Shoes</a></li>
+                </ul>
+            </div>
+
+
+        </div>
+
+    <div class="w-100 bg-black py-3">
+        <div class="container">
+            <div class="row pt-2">
+                <div class="col-12">
+                    <p class="text-left text-light">
+                        Copyright &copy; 2023 T-TWatch
+                    </p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="footer-top">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-5 col-md-6 col-sm-6">
-                    <div>
-                        <div>
-                            <h5>@Model.Name</h5>
-                        </div>
-                        <div>
-                            <p>
-                                @Model.UserDef1
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div>
-                        <div>
-                            <h5>Thông tin</h5>
-                        </div>
-                        <div class="box-help">
-                            <ul>
-                                @foreach (var item in articles)
-                                {
-                                    <li>
-                                        <a href="/bai-viet/@item.Alias" class="item-name">@item.Title</a>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                    <div>
-                        <div>
-                            <h5>Liên hệ</h5>
-                        </div>
-                        <div class="box-help">
-                            <ul>
-                                <li>
-                                    <span class="item-name">Địa chỉ: @Model.Address</span>
-                                </li>
-                                <li>
-                                    <span class="item-name">Email: @Model.Email</span>
-                                </li>
-                                <li>
-                                    <span class="item-name">Số điện thoại: <strong>@Model.PhoneNumber</strong></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
-    <div>
-        <hr />
-        <div class="container-fluid">
-            <div class="mb-3">@Model.Copyright</div>
-        </div>
-    </div>
-</footer> 
+</footer>
+<!-- End Footer -->

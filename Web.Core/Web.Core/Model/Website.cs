@@ -32,9 +32,9 @@ namespace Web.Core.Model
         public string MetaContentType { get; set; }
         public string UserDef1 { get; set; }
         public string UserDef2 { get; set; }
-        public double? UserDef3 { get; set; }
-        public bool? UserDef4 { get; set; }
-        public DateTime? UserDef5 { get; set; }
+        public string UserDef3 { get; set; }
+        public string UserDef4 { get; set; }
+        public string UserDef5 { get; set; }
 
     }
 }

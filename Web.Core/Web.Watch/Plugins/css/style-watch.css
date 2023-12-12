@@ -23,6 +23,12 @@ img {
     max-width: 100%;
 }
 
+/*Brand image*/
+.brand-image {
+    height: 80px;
+    max-width: unset;
+}
+
 ul,
 ol,
 li {

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Web.Core.Model;
 
 namespace Web.Core.Service
 {
     public class MyContext : DbContext
     {
-        public MyContext() : base("data source=PCOFACJ\\SQLEXPRESS;initial catalog=WatchStore;trusted_connection=true")
+        public MyContext() : base("data source=.\\SQLEXPRESS;initial catalog=WatchStore;trusted_connection=true")
         {
         }
 

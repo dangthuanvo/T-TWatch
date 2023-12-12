@@ -16,7 +16,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Web.Watch</RootNamespace>
     <AssemblyName>Web.Watch</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -28,6 +28,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>4.2</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -74,17 +75,15 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -126,6 +125,7 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -151,6 +151,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\ArticleService.cs" />
     <Compile Include="Service\AttributeService.cs" />
@@ -1274,6 +1275,8 @@
     <Content Include="Areas\Administrator\Plugins\plugins\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="Areas\Administrator\Plugins\plugins\timepicker\bootstrap-timepicker.min.js" />
     <Content Include="Areas\Administrator\Plugins\style-watch-admin.css" />
+    <Content Include="bin\Web.Watch.dll" />
+    <Content Include="bin\Web.Watch.pdb" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Plugins\css\bootstrap.min.css" />
@@ -1290,6 +1293,85 @@
     <Content Include="Plugins\js\jquery.min.js" />
     <Content Include="Plugins\js\modernizr-3.5.0.min.js" />
     <Content Include="Plugins\js\watch.js" />
+    <Content Include="Resources\files\Gallery\Banner0.jpg" />
+    <Content Include="Resources\files\Gallery\Banner1.jpg" />
+    <Content Include="Resources\files\Gallery\Banner2.jpg" />
+    <Content Include="Resources\files\Gallery\Banner3.jpg" />
+    <Content Include="Resources\files\logo.PNG" />
+    <Content Include="Resources\files\Product\1061147496_donghonu1.jpg" />
+    <Content Include="Resources\files\Product\1089513738_donghonu11.jpg" />
+    <Content Include="Resources\files\Product\1289690546_dmdweb2.jpg" />
+    <Content Include="Resources\files\Product\130545885_donghothoitrang6.jpg" />
+    <Content Include="Resources\files\Product\155860708_donghonu115.jpg" />
+    <Content Include="Resources\files\Product\1633326303_donghonhapkhau32.jpg" />
+    <Content Include="Resources\files\Product\282332138_kinh-mat-thoi-trang-2996%281%29.jpg" />
+    <Content Include="Resources\files\Product\282332138_kinh-mat-thoi-trang-2996.jpg" />
+    <Content Include="Resources\files\Product\555911225_kinhmatthoitrang21.jpg" />
+    <Content Include="Resources\files\Product\5643108_donghonu20.jpg" />
+    <Content Include="Resources\files\Product\721734088_kinh thoi trang 31%281%29.jpg" />
+    <Content Include="Resources\files\Product\721734088_kinh thoi trang 31.jpg" />
+    <Content Include="Resources\files\Product\838553811_kinh-mat-thoi-trang-29.jpg" />
+    <Content Include="Resources\files\Product\aries1.jpg" />
+    <Content Include="Resources\files\Product\aries2.jpg" />
+    <Content Include="Resources\files\Product\aries3.jpg" />
+    <Content Include="Resources\files\Product\AriesGold.jpg" />
+    <Content Include="Resources\files\Product\Atlatic.jpg" />
+    <Content Include="Resources\files\Product\atlatic3.jpg" />
+    <Content Include="Resources\files\Product\atlatic4.jpg" />
+    <Content Include="Resources\files\Product\Brunosohne.jpg" />
+    <Content Include="Resources\files\Product\Burberry1.jpg" />
+    <Content Include="Resources\files\Product\Coach.jpg" />
+    <Content Include="Resources\files\Product\dayat1.jpg" />
+    <Content Include="Resources\files\Product\daybru1.jpg" />
+    <Content Include="Resources\files\Product\DayDa\1.jpg" />
+    <Content Include="Resources\files\Product\DayDa\2.jpg" />
+    <Content Include="Resources\files\Product\DayDa\3.jpg" />
+    <Content Include="Resources\files\Product\DayDa\4.jpg" />
+    <Content Include="Resources\files\Product\DayDa\5.jpg" />
+    <Content Include="Resources\files\Product\daydd1.jpg" />
+    <Content Include="Resources\files\Product\DDThumb.jpg" />
+    <Content Include="Resources\files\Product\DiamondD.jpg" />
+    <Content Include="Resources\files\Product\epos1.jpg" />
+    <Content Include="Resources\files\Product\epos2.jpg" />
+    <Content Include="Resources\files\Product\gallery.jpg" />
+    <Content Include="Resources\files\Product\hop1.jpg" />
+    <Content Include="Resources\files\Product\hop2.jpg" />
+    <Content Include="Resources\files\Product\huami1.png" />
+    <Content Include="Resources\files\Product\Huawei-Logo.png" />
+    <Content Include="Resources\files\Product\huawei1.png" />
+    <Content Include="Resources\files\Product\huawei2.png" />
+    <Content Include="Resources\files\Product\huawei3.png" />
+    <Content Include="Resources\files\Product\Jacques.jpg" />
+    <Content Include="Resources\files\Product\kinhbb1.jpg" />
+    <Content Include="Resources\files\Product\kinhcoach1.jpg" />
+    <Content Include="Resources\files\Product\kinhdd1.jpg" />
+    <Content Include="Resources\files\Product\kinhdd2.jpg" />
+    <Content Include="Resources\files\Product\kinhprada1.jpg" />
+    <Content Include="Resources\files\Product\kinhrb1.jpg" />
+    <Content Include="Resources\files\Product\menu-1.jpg" />
+    <Content Include="Resources\files\Product\menu-2.jpg" />
+    <Content Include="Resources\files\Product\menu-3.jpg" />
+    <Content Include="Resources\files\Product\menu-4.jpg" />
+    <Content Include="Resources\files\Product\PA.jpg" />
+    <Content Include="Resources\files\Product\philip1jpg.jpg" />
+    <Content Include="Resources\files\Product\philip2.jpg" />
+    <Content Include="Resources\files\Product\philip3.jpg" />
+    <Content Include="Resources\files\Product\Prada.jpg" />
+    <Content Include="Resources\files\Product\rayban.jpg" />
+    <Content Include="Resources\files\Product\SP1\974268866_donghophienbangioihan2.jpg" />
+    <Content Include="Resources\files\Product\SP2\1.jpg" />
+    <Content Include="Resources\files\Product\SP2\2.jpg" />
+    <Content Include="Resources\files\Product\SP2\3.jpg" />
+    <Content Include="Resources\files\Product\SP2\4.jpg" />
+    <Content Include="Resources\files\Product\SP2\5.jpg" />
+    <Content Include="Resources\files\Product\SP2\6.jpg" />
+    <Content Include="Resources\files\Product\SP2\7.jpg" />
+    <Content Include="Resources\files\Product\SP3\1.jpg" />
+    <Content Include="Resources\files\Product\xiaomi.png" />
+    <Content Include="Resources\files\Product\xiaomi2.png" />
+    <Content Include="Resources\files\Product\xiaomi3.png" />
+    <Content Include="Resources\files\Product\_0002_xiaomi-redmi-watch-2-lite-black.png" />
+    <Content Include="Resources\files\wall-clock.png" />
     <Content Include="Resources\Images\bg-auth.jpg" />
     <Content Include="Resources\Images\dh.jpg" />
     <Content Include="Resources\Images\gallery.jpg" />
@@ -1297,6 +1379,77 @@
     <Content Include="Resources\Images\no_img.jpg" />
     <Content Include="Resources\Images\slider-1.jpg" />
     <Content Include="Resources\Images\slider-2.jpg" />
+    <Content Include="Resources\_thumbs\Files\Gallery\830-300-830x300-12.png" />
+    <Content Include="Resources\_thumbs\Files\Gallery\830-300-830x300-13.png" />
+    <Content Include="Resources\_thumbs\Files\Gallery\830-300-830x300-14.png" />
+    <Content Include="Resources\_thumbs\Files\logo.PNG" />
+    <Content Include="Resources\_thumbs\Files\Product\1061147496_donghonu1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\1089513738_donghonu11.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\1289690546_dmdweb2.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\130545885_donghothoitrang6.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\155860708_donghonu115.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\1633326303_donghonhapkhau32.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\282332138_kinh-mat-thoi-trang-2996%281%29.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\282332138_kinh-mat-thoi-trang-2996.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\555911225_kinhmatthoitrang21.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\5643108_donghonu20.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\721734088_kinh thoi trang 31%281%29.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\721734088_kinh thoi trang 31.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\838553811_kinh-mat-thoi-trang-29.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\aries1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\aries2.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\aries3.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\AriesGold.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\Atlatic.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\atlatic3.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\atlatic4.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\Brunosohne.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\Burberry1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\Coach.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\dayat1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\daybru1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\DayDa\1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\DayDa\2.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\DayDa\3.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\DayDa\4.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\DayDa\5.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\daydd1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\DDThumb.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\DiamondD.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\epos1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\epos2.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\gallery.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\hop1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\hop2.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\Huawei-Logo.png" />
+    <Content Include="Resources\_thumbs\Files\Product\Jacques.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\kinhbb1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\kinhcoach1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\kinhdd1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\kinhdd2.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\kinhprada1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\kinhrb1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\menu-1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\menu-2.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\menu-3.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\menu-4.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\PA.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\philip1jpg.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\philip2.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\philip3.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\Prada.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\rayban.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\SP1\974268866_donghophienbangioihan2.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\SP2\1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\SP2\2.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\SP2\3.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\SP2\4.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\SP2\5.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\SP2\6.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\SP2\7.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\SP3\1.jpg" />
+    <Content Include="Resources\_thumbs\Files\Product\xiaomi.png" />
+    <Content Include="Resources\_thumbs\Files\wall-clock.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1315,8 +1468,8 @@
     <Folder Include="Areas\Administrator\Data\" />
     <Folder Include="Areas\Administrator\Plugins\ckfinder\bin\" />
     <Folder Include="Areas\Administrator\Views\Base\" />
+    <Folder Include="Assets\" />
     <Folder Include="Models\" />
-    <Folder Include="Resources\files\" />
     <Folder Include="Resources\Template\" />
   </ItemGroup>
   <ItemGroup>
@@ -1390,6 +1543,8 @@
     <Content Include="Views\Home\OrderSuccess.cshtml" />
     <Content Include="Views\Home\Article.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Partial\_pProductRelated.cshtml" />
+    <Content Include="Resources\files\Product\he-thong-ma-nganh-kinh-te-viet-nam.pdf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web.Core\Web.Core.csproj">

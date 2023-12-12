@@ -1,5 +1,6 @@
 ﻿@using Web.Core.Dto;
 @using Web.Watch.Service;
+@using Web.Core.Util;
 @{
     WebsiteDto website = UtilService.GetWebsite();
     ViewBag.Title = website.MetaTitle;
@@ -8,25 +9,136 @@
     List<ProductDto> sellings = (List<ProductDto>)ViewData["sellings"];
     List<MenuDto> menus = (List<MenuDto>)ViewData["menus"];
 }
-
-
-<div class="box-slider mt-1">
-    <div class="container-fluid">
-        <div class="box-slider-detail slick-dot-style slider-arrow-style">
-            @foreach (var item in galleries)
+<!-- Start Banner -->
+<div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+    <ol class="carousel-indicators">
+        @{
+            for (int i = 0; i < galleries.Count; i++)
             {
-                <img src="@item.Image" />
+                if (i == 0)
+                {
+                    <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
+                }
+                else
+                {
+                    <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="@i"></li>
+                }
             }
+        }
+    </ol>
+    <div class="carousel-inner">
+        @{
+            int tmp = 0;
+            foreach (var item in galleries)
+            {
+                if (tmp == 1)
+                {
+                    <div class="carousel-item active">
+                        <div class="container-fluid" style="display: flex; align-items: center; justify-content: center;">
+                            <img class="img-fluid" src="@item.Image" style="max-width: 100%; max-height: 100%" alt="">
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="carousel-item">
+                        <div class="container-fluid" style="display: flex; align-items: center; justify-content: center;">
+                            <img class="img-fluid" src="@item.Image" style="max-width: 100%; max-height: 100%" alt="">
+                        </div>
+                    </div>
+                }
+                ++tmp;
+            }
+        }
+
+    </div>
+    <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+    <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+        <i class="fas fa-chevron-right"></i>
+    </a>
+</div>
+<!-- End Banner -->
+<!-- Top selling -->
+<section class="bg-light">
+    <div class="container py-5">
+        <div class="row text-center py-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Top 3 sản phẩm bán chạy</h1>
+                <p>
+                    Top sản phẩm được khách hàng tin tưởng lựa chọn nhất tháng @DateTime.Now.Month/@DateTime.Now.Year.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            @{
+                for (int i = 0; i < 3; i++)
+                {
+                    <div class="col-12 col-md-4 mb-4">
+                        <div class="card h-100">
+                            <a href="/san-pham/@sellings[i].Alias">
+                                <img src="@sellings[i].Image" class="card-img-top" alt="...">
+                            </a>
+                            <div class="card-body">
+                                <a href="/san-pham/@sellings[i].Alias" class="h2 text-decoration-none text-dark">@sellings[i].Name</a>
+
+                                @if (string.IsNullOrEmpty(sellings[i].MetaDescription))
+                                {
+                                    <p class="card-text">Nếu chưa có Description thì có 2 con gà chạy bộ </p>
+                                }
+                                else
+                                {
+                                    <p class="card-text">@sellings[i].MetaDescription [MD] </p>
+                                }
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <span style=" color: #d40b0b; font-size: 20px; font-weight: 600;">@(DataHelper.ToCurrency(sellings[i].DiscountPrice))đ</span>
+                                <span style="color: #ababab; font-size:15px; float: right; text-decoration: line-through">@(DataHelper.ToCurrency(sellings[i].Price))đ</span>
+                            </div>
+                            </div>     
+                        </div>
+                    </div>
+                }
+            }
+
         </div>
     </div>
-</div>
+</section>
+<!-- End Top selling -->
+<!-- Brand area -->
+<section class="container py-5">
+    <div class="row text-center pt-3">
+        <div class="col-lg-6 m-auto">
+            <h1 class="h1">Khu vực thương hiệu</h1>
+            <p>
+                Đưa khách hàng đến gần hơn với với thế giới của các thương hiệu toàn cầu
+            </p>
+        </div>
+    </div>
 
+    @for (int i = 0; i < menus.Count; i += 4)
+    {
+        <div class="row">
+            @for (int j = 0; j < 4 && j < menus.Count - i; j++)
+            {
+                <div class="col text-center align-self-center">
+                    <a href="/@menus[i + j].Alias"><img class="brand-image" src=@menus[i + j].Image height="80"></a>
+
+                    <!--
+                        <h5 class="text-center mt-3 mb-3" href="/menus[i + j].Alias">menus[i + j].Name</h5>
+                        <p class="text-center"><a class="btn btn-success" href="/menus[i + j].Alias">Detail</a></p>-->
+                </div>
+            }
+        </div>
+    }
+</section>
+<!-- End Brand area -->
 <div class="brand-area">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 mb-3">
                 <div class="text-center mt-4">
-                    <h4 class="title-border-left-right">SẢN PHẨM BÁN CHẠY</h4>
+                    <h4 class="title-border-left-right">SẢN PHẨM NỔI BẬT</h4>
                 </div>
             </div>
             <div class="col-12">
@@ -47,33 +159,6 @@
     </div>
 </div>
 
-<div>
-    @foreach (var menu in menus)
-    {
-        <div class="container-fluid mt-5">
-            <div class="mt-2 mb-2">
-                <h5 class="title-border-right">@menu.Name</h5>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-4 d-sm-none d-none d-md-block ">
-                    <div>
-                        <a href="/@menu.Alias">
-                            <img src="@menu.Image" alt="@menu.Name" class="img-thumbnail">
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-9 col-md-8">
-                    <div class="product-slider-v2 owl-carousel owl-arrow-style">
-                        @foreach (var product in menu.Products)
-                        {
-                            @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div>
 
 
 
