@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Web.Core.Model
 {
     [Table("Customer")]
     public class Customer
     {
-        [Key]
+
         public string Code { get; set; }
         public string FullName { get; set; }
+        [Key]
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
