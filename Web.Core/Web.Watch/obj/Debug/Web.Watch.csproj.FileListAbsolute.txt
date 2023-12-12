@@ -269,12 +269,4 @@ C:\Users\Thuan\source\repos\T-TWatch\Web.Core\Web.Watch\bin\System.Web.WebPages.
 C:\Users\Thuan\source\repos\T-TWatch\Web.Core\Web.Watch\bin\System.Web.WebPages.Razor.xml
 C:\Users\Thuan\source\repos\T-TWatch\Web.Core\Web.Watch\bin\Newtonsoft.Json.xml
 C:\Users\Thuan\source\repos\T-TWatch\Web.Core\Web.Watch\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-<<<<<<< HEAD
 C:\Users\Thuan\source\repos\T-TWatch\Web.Core\Web.Watch\obj\Debug\Web.Watch.csproj.CopyComplete
-=======
-C:\Users\Thuan\source\repos\T-TWatch\Web.Core\Web.Watch\obj\Debug\Web.Watch.csproj.AssemblyReference.cache
-C:\Users\Thuan\source\repos\T-TWatch\Web.Core\Web.Watch\obj\Debug\Web.Watch.csproj.CoreCompileInputs.cache
-C:\Users\Thuan\source\repos\T-TWatch\Web.Core\Web.Watch\obj\Debug\Web.Watch.csproj.CopyComplete
-C:\Users\Thuan\source\repos\T-TWatch\Web.Core\Web.Watch\obj\Debug\Web.Watch.dll
-C:\Users\Thuan\source\repos\T-TWatch\Web.Core\Web.Watch\obj\Debug\Web.Watch.pdb
->>>>>>> master
