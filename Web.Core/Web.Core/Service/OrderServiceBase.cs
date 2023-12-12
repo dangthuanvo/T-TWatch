@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Web.Core.Dto;
 using Web.Core.Model;
-
 namespace Web.Core.Service
 {
     public abstract class OrderServiceBase : IServiceBase<OrderDto, int>
@@ -93,22 +90,42 @@ namespace Web.Core.Service
         {
             using (var context = new MyContext())
             {
-                DateTime dateNow = DateTime.Now;
-                Order order = new Order()
+                Order order = new Order();
+                var customersWithSamePhoneNumber = context.Customers
+                    .Where(c => c.PhoneNumber == entity.Customer.PhoneNumber)
+                    .ToList();
+                if (customersWithSamePhoneNumber.Any())
                 {
-                    OrderDate = dateNow,
-                    Customer = new Customer()
+                    DateTime dateNow = DateTime.Now;
+                    order = new Order()
                     {
-                        Code = Guid.NewGuid().ToString("N"),
-                        Address = entity.Customer.Address,
-                        Email = entity.Customer.Email,
-                        FullName = entity.Customer.FullName,
-                        PhoneNumber = entity.Customer.PhoneNumber
-                    },
-                    Note = entity.Note,
-                    Status = 10,
-                    Created = dateNow,
-                };
+                        OrderDate = dateNow,
+                        Customer = customersWithSamePhoneNumber[0],
+                        Note = entity.Note,
+                        Status = 10,
+                        Created = dateNow,
+                    };
+                }
+                else
+                {
+                    DateTime dateNow = DateTime.Now;
+                    order = new Order()
+                    {
+                        OrderDate = dateNow,
+                        Customer = new Customer()
+                        {
+                            Code = Guid.NewGuid().ToString("N"),
+                            Address = entity.Customer.Address,
+                            Email = entity.Customer.Email,
+                            FullName = entity.Customer.FullName,
+                            PhoneNumber = entity.Customer.PhoneNumber
+                        },
+                        Note = entity.Note,
+                        Status = 10,
+                        Created = dateNow,
+                    };
+                }
+
 
                 List<OrderDetail> orderDetails = new List<OrderDetail>();
                 entity.OrderDetails.ForEach(x =>
