@@ -118,15 +118,15 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 150px">Họ và tên <span class="text-red">(*)</span></td>
-                                    <td>
-                                        <input type="text" placeholder="Nhập họ và tên" name="Customer.FullName" value="" class="form-control form-control-sm" required />
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td>Số điện thoại <span class="text-red">(*)</span></td>
                                     <td>
                                         <input type="text" placeholder="Nhập số điện thoại" name="Customer.PhoneNumber" value="" class="form-control form-control-sm" required />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 150px">Họ và tên <span class="text-red">(*)</span></td>
+                                    <td>
+                                        <input type="text" placeholder="Nhập họ và tên" name="Customer.FullName" value="" class="form-control form-control-sm" required />
                                     </td>
                                 </tr>
                                 <tr>
@@ -136,9 +136,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Email</td>
+                                    <td>Email <span class="text-red">(*)</span></td>
                                     <td>
-                                        <input type="text" name="Customer.Email" value="" class="form-control form-control-sm" />
+                                        <input type="text" placeholder="Nhập email" name="Customer.Email" value="" class="form-control form-control-sm" required />
                                     </td>
                                 </tr>
                                 <tr>
@@ -150,9 +150,7 @@
                                 <tr>
                                     <td colspan="2" class="text-center">
                                         <button type="submit" class="btn btn-warning">Đặt hàng</button>
-                                    </td>
-                                    <td colspan="2" class="text-center">
-                                        <button type="submit" class="btn btn-warning">Tìm thông tin</button>
+                                        <button type="button" class="btn btn-warning" id="queryDatabaseButton">Tìm thông tin</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -163,3 +161,26 @@
         }
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $("#queryDatabaseButton").click(function () {
+            var phoneNumber = $("input[name='Customer.PhoneNumber']").val();
+
+            $.ajax({
+                url: "@Url.Action("QueryUserByPhoneNumber", "Home")", // Replace with your actual controller and action
+                method: "POST",
+                data: { phoneNumber: phoneNumber },
+                success: function (data) {
+                    // Assuming the response from the server is a JSON object with user data
+                    // You may need to adjust the property names based on your actual data structure
+                    $("input[name='Customer.FullName']").val(data.FullName);
+                    $("input[name='Customer.Address']").val(data.Address);
+                    $("input[name='Customer.Email']").val(data.Email);
+                },  
+                error: function () {
+                    alert("Error querying the database.");
+                }
+            });
+        });
+    });
+</script>

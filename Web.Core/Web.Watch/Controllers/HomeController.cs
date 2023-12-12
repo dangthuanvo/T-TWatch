@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Web.Core.Dto;
@@ -14,6 +15,7 @@ namespace Web.Watch.Controllers
         GalleryService galleryService;
         OrderService orderService;
         ArticleService articleService;
+        CustomerService customerService;
 
         public HomeController()
         {
@@ -23,6 +25,7 @@ namespace Web.Watch.Controllers
             this.galleryService = new GalleryService();
             this.orderService = new OrderService();
             this.articleService = new ArticleService();
+            this.customerService = new CustomerService();
         }
 
         public ActionResult Index()
@@ -173,6 +176,23 @@ namespace Web.Watch.Controllers
             ViewBag.orderBy = orderBy;
             List<ProductDto> products = this.productService.Search(q, orderBy);
             return View(products);
+        }
+        [HttpPost]
+        public ActionResult QueryUserByPhoneNumber(string phonenumber)
+        {
+
+            List<CustomerDto> customers = this.customerService.GetAll();
+            var customer = customers.FirstOrDefault(c => string.Equals(c.PhoneNumber, phonenumber, StringComparison.OrdinalIgnoreCase));
+
+            if (customer != null)
+            {
+                return Json(customer);
+            }
+            else
+            {
+                // Return a 404 status code if the customer is not found
+                return null;
+            }
         }
 
 
