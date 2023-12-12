@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 using Web.Core.Dto;
 using Web.Watch.Service;
 
@@ -17,6 +15,7 @@ namespace Web.Watch.Controllers
         GalleryService galleryService;
         OrderService orderService;
         ArticleService articleService;
+        CustomerService customerService;
 
         public HomeController()
         {
@@ -26,6 +25,7 @@ namespace Web.Watch.Controllers
             this.galleryService = new GalleryService();
             this.orderService = new OrderService();
             this.articleService = new ArticleService();
+            this.customerService = new CustomerService();
         }
 
         public ActionResult Index()
@@ -41,19 +41,19 @@ namespace Web.Watch.Controllers
         public ActionResult Category(string alias, string orderBy = "")
         {
             ViewBag.orderBy = orderBy;
-			MenuDto menu = new MenuDto();
-			List<ProductDto> products = null;
-			if (alias == "all-1")
-			{
+            MenuDto menu = new MenuDto();
+            List<ProductDto> products = null;
+            if (alias == "all-1")
+            {
                 menu.Alias = "all-1";
-				products = productService.GetAllOrder(orderBy);
-			}
-			else
-			{
-				menu = menuService.GetByAlias(alias);
-				products = productService.GetByMenu(menu.Id, orderBy);
-			}
-			menu.Products = products;
+                products = productService.GetAllOrder(orderBy);
+            }
+            else
+            {
+                menu = menuService.GetByAlias(alias);
+                products = productService.GetByMenu(menu.Id, orderBy);
+            }
+            menu.Products = products;
             ViewBag.MetaTitle = menu.Name;
             ViewBag.MetaDescription = menu.MetaDescription;
             ViewBag.MetaRobots = menu.MetaRobots;
@@ -67,7 +67,7 @@ namespace Web.Watch.Controllers
         public ActionResult ProductDetail(string alias)
         {
             ProductDto product = this.productService.GetByAlias(alias);
-                List<ProductDto> products = this.productService.GetByMenu(product.MenuId.Value);
+            List<ProductDto> products = this.productService.GetByMenu(product.MenuId.Value);
             ViewData["products"] = products;
 
             ViewBag.MetaTitle = product.Name;
@@ -136,7 +136,7 @@ namespace Web.Watch.Controllers
             if (cart == null)
             {
                 cart = new List<OrderDetailDto>();
-            } 
+            }
             return View(cart);
         }
 
@@ -165,7 +165,7 @@ namespace Web.Watch.Controllers
         public ActionResult Article(string alias)
         {
             this.SetSEO_Main();
-            ViewData["articles"] = this.articleService.GetAll(); 
+            ViewData["articles"] = this.articleService.GetAll();
             return View(this.articleService.GetByAlias(alias));
         }
 
@@ -176,6 +176,23 @@ namespace Web.Watch.Controllers
             ViewBag.orderBy = orderBy;
             List<ProductDto> products = this.productService.Search(q, orderBy);
             return View(products);
+        }
+        [HttpPost]
+        public ActionResult QueryUserByPhoneNumber(string phonenumber)
+        {
+
+            List<CustomerDto> customers = this.customerService.GetAll();
+            var customer = customers.FirstOrDefault(c => string.Equals(c.PhoneNumber, phonenumber, StringComparison.OrdinalIgnoreCase));
+
+            if (customer != null)
+            {
+                return Json(customer);
+            }
+            else
+            {
+                // Return a 404 status code if the customer is not found
+                return null;
+            }
         }
 
 
