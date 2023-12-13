@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Web.Core.Model
 {
@@ -29,6 +26,7 @@ namespace Web.Core.Model
         public string MetaDescription { get; set; }
         public string MetaRobots { get; set; }
         public string MetaRevisitAfter { get; set; }
+        public int Quantity { get; set; }
         public string MetaContentLanguage { get; set; }
         public string MetaContentType { get; set; }
         public string UserDef1 { get; set; }
