@@ -16,7 +16,7 @@ namespace Web.Watch.Controllers
         OrderService orderService;
         ArticleService articleService;
         CustomerService customerService;
-
+        ReviewService reviewService;
         public HomeController()
         {
             this.websiteService = new WebsiteService();
@@ -26,6 +26,7 @@ namespace Web.Watch.Controllers
             this.orderService = new OrderService();
             this.articleService = new ArticleService();
             this.customerService = new CustomerService();
+            this.reviewService = new ReviewService();
         }
 
         public ActionResult Index()
@@ -151,6 +152,12 @@ namespace Web.Watch.Controllers
 
             order.OrderDetails = cart;
             this.orderService.Insert(order);
+            foreach (var item in cart)
+            {
+                var product = productService.GetById(item.ProductId);
+                product.Quantity -= (int)item.Qty;
+                productService.Update(product.Id, product);
+            }
             Session["cart"] = null;
             Session["cartCount"] = null;
             return RedirectToAction("OrderSuccess");

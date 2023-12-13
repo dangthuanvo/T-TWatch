@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Web.Core.Model
 {
@@ -14,6 +10,7 @@ namespace Web.Core.Model
         public int ProductId { get; set; }
         public int? Star { get; set; }
         public string Content { get; set; }
+        public string CustomerCode { get; set; }
         public bool Active { get; set; }
         public DateTime Created { get; set; }
         public string CreatedBy { get; set; }
@@ -24,5 +21,6 @@ namespace Web.Core.Model
         public DateTime? UserDef5 { get; set; }
 
         public virtual Product Product { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

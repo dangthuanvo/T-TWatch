@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Web.Core.Dto;
 using Web.Watch.Service;
 
@@ -11,8 +7,10 @@ namespace Web.Watch.Areas.Administrator.Controllers
     public class OrderController : BaseController
     {
         public OrderService orderService { get; set; }
+        public ProductService productService { get; set; }
         public OrderController()
         {
+            this.productService = new ProductService();
             this.orderService = new OrderService();
         }
 
@@ -39,6 +37,15 @@ namespace Web.Watch.Areas.Administrator.Controllers
         {
             if (!this.CheckAuth())
                 return this.RedirectToLogin();
+            if (order.Status == 30)
+            {
+                foreach (var item in order.OrderDetails)
+                {
+                    var product = productService.GetById(item.ProductId);
+                    product.Quantity += (int)item.Qty;
+                    productService.Update(product.Id, product);
+                }
+            }
 
             this.orderService.Update(order.Id, order);
             return RedirectToAction("Index");

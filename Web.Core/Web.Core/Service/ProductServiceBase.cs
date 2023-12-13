@@ -47,6 +47,7 @@ namespace Web.Core.Service
                         Selling = x.Selling,
                         Image = x.Image,
                         Index = x.Index,
+                        Quantity = x.Quantity,
                         MenuId = x.MenuId,
                         Price = x.Price,
                         Name = x.Name,
@@ -100,6 +101,7 @@ namespace Web.Core.Service
                         Image = x.Image,
                         Price = x.Price,
                         Name = x.Name,
+                        Quantity = x.Quantity,
                         MetaContentLanguage = x.MetaContentLanguage,
                         MetaContentType = x.MetaContentType,
                         MetaDescription = x.MetaDescription,
@@ -123,6 +125,7 @@ namespace Web.Core.Service
                         Alias = x.Alias,
                         DiscountPercent = x.DiscountPercent,
                         DiscountPrice = x.DiscountPrice,
+                        Quantity = x.Quantity,
                         Image = x.Image,
                         Price = x.Price,
                         Name = x.Name,
@@ -151,6 +154,7 @@ namespace Web.Core.Service
                         Name = x.Name,
                         ParentMenu = x.ParentMenu,
                         ShowHomePage = x.ShowHomePage,
+
                         ViewType = x.ViewType,
                         MetaContentLanguage = x.MetaContentLanguage,
                         MetaContentType = x.MetaContentType,
@@ -232,6 +236,7 @@ namespace Web.Core.Service
                             DiscountPercent = x.DiscountPercent,
                             DiscountPrice = x.DiscountPrice,
                             Image = x.Image,
+                            Quantity = x.Quantity,
                             Price = x.Price,
                             Name = x.Name
                         })
@@ -278,6 +283,7 @@ namespace Web.Core.Service
                         DiscountPercent = x.DiscountPercent,
                         DiscountPrice = x.DiscountPrice,
                         Image = x.Image,
+                        Quantity = x.Quantity,
                         Price = x.Price,
                         Name = x.Name
                     })
@@ -303,6 +309,7 @@ namespace Web.Core.Service
                         Selling = x.Selling,
                         Image = x.Image,
                         Index = x.Index,
+                        Quantity = x.Quantity,
                         MenuId = x.MenuId,
                         Price = x.Price,
                         Name = x.Name,
@@ -367,6 +374,7 @@ namespace Web.Core.Service
                         MenuId = x.MenuId,
                         Price = x.Price,
                         Name = x.Name,
+                        Quantity = x.Quantity,
                         ShortDescription = x.ShortDescription,
                         Status = x.Status,
                         MetaContentLanguage = x.MetaContentLanguage,
@@ -426,6 +434,7 @@ namespace Web.Core.Service
                     DiscountPercent = entity.DiscountPercent,
                     Selling = entity.Selling,
                     Description = entity.Description,
+                    Quantity = entity.Quantity,
                     Created = DateTime.Now,
                     CategoryId = entity.CategoryId,
                     Alias = "",
@@ -499,6 +508,7 @@ namespace Web.Core.Service
                     product.Status = entity.Status;
                     product.Price = entity.Price;
                     product.DiscountPrice = entity.DiscountPrice;
+                    product.Quantity = entity.Quantity;
                     product.DiscountPercent = entity.DiscountPercent;
                     product.Selling = entity.Selling;
                     product.Tags = entity.Tags;

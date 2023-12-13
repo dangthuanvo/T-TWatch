@@ -26,5 +26,6 @@ namespace Web.Core.Service
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Website> Websites { get; set; }
+        public virtual DbSet<ImportHistory> ImportHistories { get; set; }
     }
 }

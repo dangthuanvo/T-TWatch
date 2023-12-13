@@ -1,0 +1,121 @@
+﻿@using Web.Core.Dto;
+@model  ImportProductDto
+@{
+    string currentAdmin = (string)ViewData["currentAdmin"];
+    ProductDto product = (ProductDto)ViewData["product"];
+    ViewBag.Title = "Nhập sản phẩm";
+}
+
+
+<script>
+$("#menu_product").addClass("menu_active");
+</script>
+
+<script src="~/Areas/Administrator/Plugins/ckfinder/ckfinder.js"></script>
+<script src="~/Areas/Administrator/Plugins/ckeditor/ckeditor.js"></script>
+
+<form id="formSubmit" action="/Administrator/Product/Import" method="post">
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div style="text-align: center;">
+                        <h2>Nhập hàng mới</h2>
+                    </div>
+                    <div style="display: inline-block; text-align: left; width: 100%; margin: 0 auto;">
+
+                        <div style="margin-bottom: 20px;">
+                            <label >Tên sản phẩm:</label>
+                            <input type="text" id="name" name="name" value="@product.Name" style="width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label >Id sản phẩm:</label>
+                            <input type="text" id="alias" name="ImportHistory.ProductID" value="@product.Id" style="width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label >Người tạo đơn nhập:</label>
+                            <input type="text" id="creator" name="ImportHistory.ImportedBy" value="@currentAdmin" style="width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label >Nhà cung cấp:</label>
+                            <select id="supplier" name="supplier" style="width: 100%;">
+                                <option value="SupplierA">Đăng Quang Watch</option>
+                                <option value="SupplierB">Lake Watches</option>
+                                <option value="SupplierC">Watch Sài Gòn</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label >Số lượng:</label>
+                            <input type="number" id="quantity" name="ImportHistory.Quantity" required style="width: 100%;" oninput="updateTotalPrice()">
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label >Giá nhập:</label>
+                            <input type="number" id="price" name="ImportHistory.Price" required style="width: 100%;" oninput="updateTotalPrice()">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label >Ghi chú:</label>
+                            <input type="text" id="note" name="ImportHistory.Note" required style="width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label for="quantity">Tổng giá:</label>
+                            <input type="number" id="total_price" name="total_price" style="width: 100%;">
+                        </div>
+                        <div>
+                            <label >Ngày tạo</label>
+                            <input type="date" id="Date" name="ImportHistory.ImportDate" style="width: 100%;">
+                        </div>
+                        
+                    </div>
+
+
+                    <div class="col-md-12 text-center">
+                        <a href="/Administrator/Product" class="btn btn-default">
+                            Trở lại danh sách
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Xác nhận
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+
+
+<script>
+
+var currentDate = new Date();
+// Set the formatted date as the default value for the input field
+var formattedDate = currentDate.toISOString().split('T')[0];
+document.getElementById("Date").value = formattedDate;
+
+</script>
+
+
+<script>
+        $("#formSubmit").submit(function (event) {
+
+        });
+</script>
+
+
+<script>
+        function updateTotalPrice() {
+            // Get the values of quantity and price
+            var quantity = document.getElementById("quantity").value;
+            var price = document.getElementById("price").value;
+
+            // Calculate the total price (you can adjust the formula based on your calculation)
+            var totalPrice = quantity * price;
+
+            // Set the calculated total price to the "Tổng giá" input
+            document.getElementById("total_price").value = totalPrice;
+        }
+</script>
+
+
+
