@@ -79,7 +79,7 @@
                                                     <td>@(DataHelper.ToCurrency(item.ProductPrice))</td>
                                                     <td>@(DataHelper.ToCurrency(item.ProductDiscountPrice))</td>
                                                     <td>@(item.Qty)</td>
-                                                    <td>@(DataHelper.ToCurrency(item.Qty * item.ProductDiscountPrice))</td>
+                                                    <td>@(DataHelper.ToCurrency(item.ProductDiscountPrice * item.Qty))</td>
                                                 </tr>
                                             }
                                             <tr>
@@ -89,7 +89,7 @@
                                                 <td>
                                                     <h4 style="color:red">
                                                         <strong>
-                                                            @(DataHelper.ToCurrency(Model.OrderDetails.Sum(x => x.ProductDiscountPrice * x.Qty)))
+                                                            @(DataHelper.ToCurrency(Model.TotalAmount))
                                                         </strong>
                                                     </h4>
                                                 </td>
@@ -121,6 +121,10 @@
                                     <tr>
                                         <td>Địa chỉ liên hệ</td>
                                         <td>@Model.Customer.Address</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mã giảm giá đã áp dụng</td>
+                                        <td>@Model.Voucher.VoucherCode</td>
                                     </tr>
                                 </tbody>
                             </table>

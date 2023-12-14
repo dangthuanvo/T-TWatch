@@ -1,12 +1,12 @@
 ﻿@using Web.Core.Dto;
 @using Web.Core.Util;
-@model List<ProductDto>
+@model List<VoucherDto>
 @{
-    ViewBag.Title = "Danh sách sản phẩm";
+    ViewBag.Title = "Danh sách mã giảm giá";
 }
 
 <script>
-    $("#menu_product").addClass("menu_active");
+    $("#menu_voucher").addClass("menu_active");
 </script>
 
 <link href="~/Areas/Administrator/Plugins/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
@@ -41,14 +41,12 @@
                 <table id="table" class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Hình ảnh</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Danh mục</th>
-                            <th>Giá niêm yết</th>
-                            <th>Giá khuyễn mại</th>
-                            <th>Tồn kho</th>
-                            <th>Bán chạy</th>
-                            <th>Trạng thái</th>
+                            <th>Id</th>
+                            <th>Mã giảm giá</th>
+                            <th>Mô tả ngắn</th>
+                            <th>Loại</th>
+                            <th>Số lượng giảm</th>
+                            <th>Còn lại</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -56,35 +54,24 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td class="text-center">
-                                    <img src="@item.Image" class="thumbnail" />
-                                </td>
-                                <td>@item.Name</td>
-                                <td>@(item.Menu?.Name)</td>
-                                <td class="text-right">@(DataHelper.ToCurrency(item.Price))</td>
-                                <td class="text-right">@(DataHelper.ToCurrency(item.DiscountPrice))</td>
-                                <td class="text-right">@item.Quantity</td>
-                                <td class="text-center">@(item.Selling == true?"X":"")</td>
-                                <td class="text-center">
-                                    @if (item.Status == 10)
+                                <td>@(item.Id)</td>
+                                <td>@(item.VoucherCode)</td>
+                                <td>@(item.Description)</td>
+                                <td>
+                                    @if (item.Type == 0)
                                     {
-                                        <label class="label label-primary">Đang bán</label>
+                                        <label class="label label-primary">Giảm trực tiếp</label>
                                     }
-                                    else if (item.Status == 20)
+                                    else if (item.Type == 1)
                                     {
-                                        <label class="label label-warning">Hết hàng</label>
+                                        <label class="label label-warning">Giảm theo phần trăm</label>
                                     }
-                                    else if (item.Status == 30)
-                                    {
-                                        <label class="label label-danger">Ngưng bán</label>
-                                    }
-                                </td>
+                                <td>@(item.DiscountAmount)</td>
+                                <td>@(item.IsActive)</td>
+
                                 <td style="white-space:nowrap">
-                                    <a href="/Administrator/Product/Update?id=@item.Id" class="btn btn-success btn-xs">
+                                    <a href="/Administrator/Voucher/Update?id=@item.Id" class="btn btn-success btn-xs">
                                         <i class="fa fa-edit"></i>
-                                    </a>
-                                    <a href="/Administrator/Product/ImportIndex?id=@item.Id" class="btn btn-success btn-xs">
-                                        <i class="fa fa-cart-plus"></i>
                                     </a>
                                     <button onclick="confirmDelete(@item.Id)" class="btn btn-danger btn-xs">
                                         <i class="fa fa-trash-o"></i>
@@ -102,7 +89,7 @@
 <script>
     function confirmDelete(id) {
         if (confirm("Xác nhận xóa")) {
-            location.href = "/Administrator/Product/Delete?id=" + id;
+            location.href = "/Administrator/Voucher/Delete?id=" + id;
         }
     }
 </script>

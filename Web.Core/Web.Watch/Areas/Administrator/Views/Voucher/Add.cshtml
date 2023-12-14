@@ -1,0 +1,99 @@
+﻿@using Web.Core.Dto;
+@model  VoucherDto
+@{
+    VoucherDto voucher = (VoucherDto)ViewData["voucher"];
+    ViewBag.Title = "Thêm mới Mã giảm giá";
+}
+
+
+<script>
+$("#menu_voucher").addClass("menu_active");
+</script>
+
+
+<form id="formSubmit" action="/Administrator/Voucher/Add" method="post">
+    @Html.AntiForgeryToken()
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div style="text-align: center;">
+                        <h2>Thêm mã giảm giá</h2>
+                    </div>
+                    <div style="display: inline-block; text-align: left; width: 100%; margin: 0 auto;">
+
+                        <div style="margin-bottom: 20px;">
+                            <label >Mã giảm giá:</label>
+                            <input type="text" name="VoucherCode"  style="width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label >Mô tả ngắn:</label>
+                            <input type="text" name="Description"  style="width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label>Loại giảm giá:</label>
+                            <select id="supplier" name="Type" style="width: 100%;">
+                                <option value="0">Giảm trực tiếp</option>
+                                <option value="1">Giảm theo phần trăm</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label>Số lượng giảm:</label>
+                            <input type="number" name="DiscountAmount" style="width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label >Số lượng:</label>
+                            <input type="number" name="IsActive" required style="width: 100%;" >
+                        </div>       
+                    </div>
+
+
+                    <div class="col-md-12 text-center">
+                        <a href="/Administrator/Product" class="btn btn-default">
+                            Trở lại danh sách
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Xác nhận
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+
+
+<script>
+
+var currentDate = new Date();
+// Set the formatted date as the default value for the input field
+var formattedDate = currentDate.toISOString().split('T')[0];
+document.getElementById("Date").value = formattedDate;
+
+</script>
+
+
+<script>
+        $("#formSubmit").submit(function (event) {
+
+        });
+</script>
+
+
+<script>
+        function updateTotalPrice() {
+            // Get the values of quantity and price
+            var quantity = document.getElementById("quantity").value;
+            var price = document.getElementById("price").value;
+
+            // Calculate the total price (you can adjust the formula based on your calculation)
+            var totalPrice = quantity * price;
+
+            // Set the calculated total price to the "Tổng giá" input
+            document.getElementById("total_price").value = totalPrice;
+        }
+</script>
+
+
+

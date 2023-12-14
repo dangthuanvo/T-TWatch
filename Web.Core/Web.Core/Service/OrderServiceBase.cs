@@ -30,6 +30,8 @@ namespace Web.Core.Service
                             PhoneNumber = x.Customer.PhoneNumber,
                         },
                         Note = x.Note,
+                        CustomerCode = x.CustomerCode,
+                        VoucherId = x.VoucherId,
                         OrderDate = x.OrderDate,
                         OrderTime = x.OrderTime,
                         PaymentMethod = x.PaymentMethod,
@@ -44,45 +46,108 @@ namespace Web.Core.Service
         {
             using (var context = new MyContext())
             {
-                return context.Orders
-                    .Where(x => x.Id == key)
-                    .Select(x => new OrderDto()
-                    {
-                        Id = x.Id,
-                        Created = x.Created,
-                        Customer = new CustomerDto()
+                var order = context.Orders.Where((x => x.Id == key)).FirstOrDefault();
+                if (order.VoucherId == null)
+                {
+                    return context.Orders
+                        .Where(x => x.Id == key)
+                        .Select(x => new OrderDto()
                         {
-                            Address = x.Customer.Address,
-                            Email = x.Customer.Email,
-                            FullName = x.Customer.FullName,
-                            PhoneNumber = x.Customer.PhoneNumber,
-                        },
-                        Note = x.Note,
-                        OrderDate = x.OrderDate,
-                        OrderTime = x.OrderTime,
-                        PaymentMethod = x.PaymentMethod,
-                        Status = x.Status,
-                        TotalAmount = x.TotalAmount,
-                        OrderDetails = x.OrderDetails.Select(y => new OrderDetailDto()
+                            Id = x.Id,
+                            Created = x.Created,
+                            Customer = new CustomerDto()
+                            {
+                                Address = x.Customer.Address,
+                                Email = x.Customer.Email,
+                                FullName = x.Customer.FullName,
+                                PhoneNumber = x.Customer.PhoneNumber,
+                            },
+                            Note = x.Note,
+                            OrderDate = x.OrderDate,
+                            OrderTime = x.OrderTime,
+                            CustomerCode = x.CustomerCode,
+                            VoucherId = null,
+                            Voucher = new VoucherDto()
+                            {
+                                VoucherCode = "Không sử dụng mã giảm giá",
+                            },
+                            PaymentMethod = x.PaymentMethod,
+                            Status = x.Status,
+                            TotalAmount = x.TotalAmount,
+                            OrderDetails = x.OrderDetails.Select(y => new OrderDetailDto()
+                            {
+                                ProductDiscountPercent = y.ProductDiscountPercent,
+                                Id = y.Id,
+                                Note = y.Note,
+                                OrderId = y.OrderId,
+                                ProductId = y.ProductId,
+                                ProductDiscountPrice = y.ProductDiscountPrice,
+                                ProductImage = y.ProductImage,
+                                ProductName = y.ProductName,
+                                ProductPrice = y.ProductPrice,
+                                Qty = y.Qty,
+                                UserDef1 = y.UserDef1,
+                                UserDef2 = y.UserDef2,
+                                UserDef3 = y.UserDef3,
+                                UserDef4 = y.UserDef4,
+                                UserDef5 = y.UserDef5
+                            }).ToList()
+                        })
+                        .FirstOrDefault();
+                }
+                else
+                {
+                    return context.Orders
+                        .Where(x => x.Id == key)
+                        .Select(x => new OrderDto()
                         {
-                            ProductDiscountPercent = y.ProductDiscountPercent,
-                            Id = y.Id,
-                            Note = y.Note,
-                            OrderId = y.OrderId,
-                            ProductId = y.ProductId,
-                            ProductDiscountPrice = y.ProductDiscountPrice,
-                            ProductImage = y.ProductImage,
-                            ProductName = y.ProductName,
-                            ProductPrice = y.ProductPrice,
-                            Qty = y.Qty,
-                            UserDef1 = y.UserDef1,
-                            UserDef2 = y.UserDef2,
-                            UserDef3 = y.UserDef3,
-                            UserDef4 = y.UserDef4,
-                            UserDef5 = y.UserDef5
-                        }).ToList()
-                    })
-                    .FirstOrDefault();
+                            Id = x.Id,
+                            Created = x.Created,
+                            Customer = new CustomerDto()
+                            {
+                                Address = x.Customer.Address,
+                                Email = x.Customer.Email,
+                                FullName = x.Customer.FullName,
+                                PhoneNumber = x.Customer.PhoneNumber,
+                            },
+                            Note = x.Note,
+                            OrderDate = x.OrderDate,
+                            OrderTime = x.OrderTime,
+                            CustomerCode = x.CustomerCode,
+                            VoucherId = x.VoucherId,
+                            Voucher = new VoucherDto()
+                            {
+                                Id = x.Voucher.Id,
+                                VoucherCode = x.Voucher.VoucherCode,
+                                Description = x.Voucher.Description,
+                                Type = x.Voucher.Type,
+                                DiscountAmount = x.Voucher.DiscountAmount,
+                                IsActive = x.Voucher.IsActive,
+                            },
+                            PaymentMethod = x.PaymentMethod,
+                            Status = x.Status,
+                            TotalAmount = x.TotalAmount,
+                            OrderDetails = x.OrderDetails.Select(y => new OrderDetailDto()
+                            {
+                                ProductDiscountPercent = y.ProductDiscountPercent,
+                                Id = y.Id,
+                                Note = y.Note,
+                                OrderId = y.OrderId,
+                                ProductId = y.ProductId,
+                                ProductDiscountPrice = y.ProductDiscountPrice,
+                                ProductImage = y.ProductImage,
+                                ProductName = y.ProductName,
+                                ProductPrice = y.ProductPrice,
+                                Qty = y.Qty,
+                                UserDef1 = y.UserDef1,
+                                UserDef2 = y.UserDef2,
+                                UserDef3 = y.UserDef3,
+                                UserDef4 = y.UserDef4,
+                                UserDef5 = y.UserDef5
+                            }).ToList()
+                        })
+                        .FirstOrDefault();
+                }
             }
         }
 
@@ -104,6 +169,9 @@ namespace Web.Core.Service
                         Note = entity.Note,
                         Status = 10,
                         Created = dateNow,
+                        CustomerCode = entity.CustomerCode,
+                        VoucherId = entity.VoucherId,
+
                     };
                 }
                 else
@@ -121,6 +189,7 @@ namespace Web.Core.Service
                             PhoneNumber = entity.Customer.PhoneNumber
                         },
                         Note = entity.Note,
+                        VoucherId = entity.VoucherId,
                         Status = 10,
                         Created = dateNow,
                     };
@@ -146,7 +215,7 @@ namespace Web.Core.Service
                 });
 
                 order.OrderDetails = orderDetails;
-                order.TotalAmount = orderDetails.Sum(x => x.Qty * x.ProductDiscountPrice);
+                order.TotalAmount = entity.TotalAmount;
 
                 context.Orders.Add(order);
 

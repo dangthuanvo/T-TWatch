@@ -27,5 +27,6 @@ namespace Web.Core.Service
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Website> Websites { get; set; }
         public virtual DbSet<ImportHistory> ImportHistories { get; set; }
+        public virtual DbSet<Voucher> Vouchers { get; set; }
     }
 }
