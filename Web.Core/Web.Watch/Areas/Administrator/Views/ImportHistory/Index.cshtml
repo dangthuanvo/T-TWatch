@@ -1,0 +1,63 @@
+﻿@using Web.Core.Dto;
+@model List<ImportHistoryDto>
+    @{
+        ViewBag.Title = "Danh mục sản phẩm";
+    }
+
+    <script>
+        $("#menu_importhistory").addClass("menu_active");
+    </script>
+
+    <link href="~/Areas/Administrator/Plugins/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Areas/Administrator/Plugins/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/Areas/Administrator/Plugins/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+    <script>
+        $(function () {
+            $('#table').DataTable({
+                "order": [],
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
+        })
+    </script>
+
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body">
+                <table id="table" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Mã sản phẩm</th>
+                            <th>Ngày nhập</th>
+                            <th>Người tạo</th>
+                            <th>Số lượng</th>
+                            <th>Giá nhập</th>
+                            <th>Ghi chú</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.ProductID</td>
+                                <td>@item.ImportDate.ToString("yyyy-MM-dd")</td>
+                                <td>@item.ImportedBy</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price</td>
+                                <td>@item.Note</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+

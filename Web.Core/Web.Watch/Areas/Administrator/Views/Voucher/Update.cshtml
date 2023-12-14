@@ -1,0 +1,148 @@
+﻿@using Web.Core.Dto;
+@model VoucherDto
+@{
+    ViewBag.Title = "Thông tin Mã giảm giá";
+}
+
+<script>
+    $("#menu_voucher").addClass("menu_active");
+</script>
+
+<script src="~/Areas/Administrator/Plugins/ckfinder/ckfinder.js"></script>
+<script src="~/Areas/Administrator/Plugins/ckeditor/ckeditor.js"></script>
+
+<form id="formSubmit" action="/Administrator/Voucher/Update" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <h2>Thêm mã giảm giá</h2>
+                </div>
+                <div style="display: inline-block; text-align: left; width: 100%; margin: 0 auto;">
+
+                    <div style="margin-bottom: 20px;">
+                        <label>Mã giảm giá:</label>
+                        <input type="text" name="VoucherCode" value="@Model.VoucherCode" style="width: 100%;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label>Mô tả ngắn:</label>
+                        <input type="text" name="Description" value="@Model.Description" style="width: 100%;">
+                    </div>
+                    @if (Model.Type == 0)
+                    {
+                        <div style="margin-bottom: 20px;">
+                            <label>Loại giảm giá:</label>
+                            <select id="type" name="Type" value="@Model.Type" style="width: 100%;">
+                                <option value="0" selected="selected">Giảm trực tiếp</option>
+                                <option value="1">Giảm theo phần trăm</option>
+                            </select>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="margin-bottom: 20px;">
+                            <label>Loại giảm giá:</label>
+                            <select id="type" name="Type" value="@Model.Type" style="width: 100%;">
+                                <option value="0" >Giảm trực tiếp</option>
+                                <option value="1" selected="selected">Giảm theo phần trăm</option>
+                            </select>
+                        </div>
+                    }
+
+                    <div style="margin-bottom: 20px;">
+                        <label>Số lượng giảm:</label>
+                        <input type="number" name="DiscountAmount" value="@Model.DiscountAmount" style="width: 100%;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label>Số lượng:</label>
+                        <input type="number" name="IsActive" value="@Model.IsActive" required style="width: 100%;">
+                    </div>
+                </div>
+
+                <div class="col-md-12 text-center">
+                    <a href="/Administrator/Voucher" class="btn btn-default">
+                        Trở lại danh sách
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                        Lưu lại
+                    </button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+</form>
+
+
+<script>
+    function deleteProductGallery(id) {
+        if (confirm("Xác nhận xóa")) {
+            $(`#${id}`).remove();
+        }
+    }
+
+
+    $(document).ready(function () {
+        $('#button-upload').click(function () {
+            var finder = new CKFinder();
+            finder.basePath = '../files';
+            finder.selectActionFunction = setFileField;
+            finder.popup();
+        });
+        function setFileField(fileUrl) {
+            $('#inpImage').val(fileUrl);
+            $("#img").attr("src", fileUrl)
+        }
+
+        $('#button-upload-more').click(function () {
+            var finder = new CKFinder();
+            finder.basePath = '../files';
+            finder.selectActionFunction = setFileFieldMore;
+            finder.popup();
+        });
+
+        function setFileFieldMore(fileUrl) {
+            let key = new Date().getTime();
+            $("#box-product-gallery").append(`
+                <div id="product_gallery_${key}" class="col-md-6 text-center">
+                    <input id="product_gallery_${key}" type="hidden" class="impHiddenImage" value="${fileUrl}" />
+                    <img id="img" src="${fileUrl}" class="thumbnail" />
+                    <div>
+                        <button onclick="deleteProductGallery('product_gallery_${key}')" type="button" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+            `);
+        }
+
+        CKEDITOR.replace('ShortDescription')
+        CKEDITOR.replace('Description')
+        CKEDITOR.replace('UserDef1')
+    })
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        // On change event for the dropdown
+        $("#type").change(function () {
+            var selectedValue = $(this).val();
+
+            // Get the element where you want to display the description
+            var descriptionElement = $("#discountTypeDescription");
+
+            // Clear the previous content
+            descriptionElement.empty();
+
+            // Check the selected value and display the corresponding description
+            if (selectedValue === "0") {
+                descriptionElement.text("Giảm trực tiếp");
+            } else if (selectedValue === "1") {
+                descriptionElement.text("Giảm theo phần trăm");
+            }
+        });
+    });
+</script>
