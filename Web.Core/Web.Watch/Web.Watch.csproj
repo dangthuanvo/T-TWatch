@@ -136,6 +136,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
+    <Compile Include="Areas\Administrator\Controllers\VoucherController.cs" />
     <Compile Include="Areas\Administrator\Controllers\ImportHistoryController.cs" />
     <Compile Include="Areas\Administrator\Controllers\ArticleController.cs" />
     <Compile Include="Areas\Administrator\Controllers\BaseController.cs" />
@@ -154,6 +155,7 @@
     </Compile>
     <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\VoucherService.cs" />
     <Compile Include="Service\ImportHistoryService.cs" />
     <Compile Include="Service\ReviewService.cs" />
     <Compile Include="Service\CustomerService.cs" />
@@ -1529,6 +1531,9 @@
     <Content Include="Areas\Administrator\Views\Report\GetRevenueReport.cshtml" />
     <Content Include="Areas\Administrator\Views\ImportHistory\Index.cshtml" />
     <Content Include="Areas\Administrator\Views\Product\ImportIndex.cshtml" />
+    <Content Include="Areas\Administrator\Views\Voucher\Index.cshtml" />
+    <Content Include="Areas\Administrator\Views\Voucher\Update.cshtml" />
+    <Content Include="Areas\Administrator\Views\Voucher\Add.cshtml" />
     <None Include="packages.config" />
     <Content Include="Plugins\fonts\fontawesome-webfont3e6e.eot" />
     <Content Include="Plugins\fonts\fontawesome-webfont3e6e.ttf" />

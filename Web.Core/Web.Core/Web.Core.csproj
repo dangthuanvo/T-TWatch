@@ -73,7 +73,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dto\ArticleDto - Copy.cs" />
+    <Compile Include="Dto\OrderDetailVoucher.cs" />
+    <Compile Include="Dto\VoucherDTO.cs" />
+    <Compile Include="Dto\ImportProductDto.cs" />
     <Compile Include="Dto\ImportHistoryDto.cs" />
     <Compile Include="Dto\ArticleDto.cs" />
     <Compile Include="Dto\AttributeDto.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Dto\ReviewDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Dto\WebsiteDto.cs" />
+    <Compile Include="Model\Voucher.cs" />
     <Compile Include="Model\ImportHistory.cs" />
     <Compile Include="Model\Article.cs" />
     <Compile Include="Model\Attribute.cs" />
@@ -112,6 +115,7 @@
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\Website.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\VoucherServiceBase.cs" />
     <Compile Include="Service\ImportHistoryServiceBase.cs" />
     <Compile Include="Service\ArticleServiceBase.cs" />
     <Compile Include="Service\AttributeServiceBase.cs" />
