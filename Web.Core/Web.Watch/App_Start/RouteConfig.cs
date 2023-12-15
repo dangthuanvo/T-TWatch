@@ -14,11 +14,6 @@ namespace Web.Watch
                 url: "tim-kiem",
                 defaults: new { controller = "Home", action = "Search" }
             );
-            routes.MapRoute(
-                name: "BaiViet",
-                url: "bai-viet/{alias}",
-                defaults: new { controller = "Home", action = "Article" }
-            );
 
             routes.MapRoute(
                 name: "ShoppingCart",
