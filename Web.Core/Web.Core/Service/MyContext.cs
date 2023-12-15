@@ -5,7 +5,7 @@ namespace Web.Core.Service
 {
     public class MyContext : DbContext
     {
-        public MyContext() : base("data source=PCOFACJ\\SQLEXPRESS;initial catalog=WatchStore;trusted_connection=true")
+        public MyContext() : base("data source=.\\SQLEXPRESS;initial catalog=WatchStore;trusted_connection=true")
         {
         }
 

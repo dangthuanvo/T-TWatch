@@ -8,9 +8,9 @@
     List<MenuDto> menus = UtilService.GetMenus();
     int pageSize = 9;
 }
+<link rel="stylesheet" href="~/Plugins/css/MultiRange.css">
 <div class="container py-5">
     <div class="row">
-
         <div class="col-lg-3">
             <h1 class="h2 pb-4">Danh mục</h1>
             <ul class="list-unstyled templatemo-accordion">
@@ -42,6 +42,29 @@
                 }
 
             </ul>
+
+            <h1 class="h2 pb-4">Bộ lọc</h1>
+            <ul class="list-unstyled templatemo-accordion">
+                <li class="pb-3">
+                    <span class="collapsed d-flex justify-content-between h3 text-decoration-none" style="font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
+                        Mức giá
+                    </span>
+                    <div class="wrapperRange">
+                        <div class="multi-range-slider">
+                            <input type="range" id="input-left" min="50" max="500" value="100">
+                            <input type="range" id="input-right" min="50" max="500" value="250">
+                            <div class="slider" style="font-size: 62.5%;">
+                                <div class="track"></div>
+                                <div class="range"></div>
+                            </div>
+                        </div>
+                        <div class="price__wrapper">
+                            <span class="price-from">50</span>
+                            <span class="price-to">500</span>
+                        </div>
+                    </div>
+
+</ul>
         </div>
 
         <div class="col-lg-9">
@@ -134,3 +157,4 @@
         
     }
 </script>
+<script src="~/Plugins/js//MultiRange.js"></script>

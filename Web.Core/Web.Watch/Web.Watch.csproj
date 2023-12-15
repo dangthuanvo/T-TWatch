@@ -1294,6 +1294,8 @@
     <Content Include="Plugins\fonts\fontawesome-webfont3e6e.svg" />
     <Content Include="Plugins\fonts\Linearicons-Free54e9.svg" />
     <Content Include="Plugins\js\bootstrap.min.js" />
+    <Content Include="Plugins\js\mdb.js" />
+    <Content Include="Plugins\js\mdb.min.js" />
     <Content Include="Plugins\js\plugins.js" />
     <Content Include="Plugins\js\popper.min.js" />
     <Content Include="Plugins\js\jquery.min.js" />
