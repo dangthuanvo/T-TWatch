@@ -28,7 +28,7 @@
 </script>
 
 <section class="content-header">
-    <a href="/Administrator/Product/Add" class="btn btn-primary btn-sm">
+    <a href="/Administrator/Voucher/Add" class="btn btn-primary btn-sm">
         <i class="fa fa-plus"></i>
         Thêm mới
     </a>
@@ -46,6 +46,7 @@
                             <th>Danh mục</th>
                             <th>Giá niêm yết</th>
                             <th>Giá khuyễn mại</th>
+                            <th>Tồn kho</th>
                             <th>Bán chạy</th>
                             <th>Trạng thái</th>
                             <th></th>
@@ -62,6 +63,7 @@
                                 <td>@(item.Menu?.Name)</td>
                                 <td class="text-right">@(DataHelper.ToCurrency(item.Price))</td>
                                 <td class="text-right">@(DataHelper.ToCurrency(item.DiscountPrice))</td>
+                                <td class="text-right">@item.Quantity</td>
                                 <td class="text-center">@(item.Selling == true?"X":"")</td>
                                 <td class="text-center">
                                     @if (item.Status == 10)
@@ -80,6 +82,9 @@
                                 <td style="white-space:nowrap">
                                     <a href="/Administrator/Product/Update?id=@item.Id" class="btn btn-success btn-xs">
                                         <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="/Administrator/Product/ImportIndex?id=@item.Id" class="btn btn-success btn-xs">
+                                        <i class="fa fa-cart-plus"></i>
                                     </a>
                                     <button onclick="confirmDelete(@item.Id)" class="btn btn-danger btn-xs">
                                         <i class="fa fa-trash-o"></i>

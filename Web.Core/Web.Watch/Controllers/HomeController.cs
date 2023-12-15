@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Web.Core.Dto;
+using Web.Core.Util;
 using Web.Watch.Service;
 
 namespace Web.Watch.Controllers
@@ -16,7 +17,8 @@ namespace Web.Watch.Controllers
         OrderService orderService;
         ArticleService articleService;
         CustomerService customerService;
-
+        ReviewService reviewService;
+        VoucherService voucherService;
         public HomeController()
         {
             this.websiteService = new WebsiteService();
@@ -26,6 +28,8 @@ namespace Web.Watch.Controllers
             this.orderService = new OrderService();
             this.articleService = new ArticleService();
             this.customerService = new CustomerService();
+            this.reviewService = new ReviewService();
+            this.voucherService = new VoucherService();
         }
 
         public ActionResult Index()
@@ -41,20 +45,6 @@ namespace Web.Watch.Controllers
         public ActionResult Category(string alias, string orderBy = "")
         {
             ViewBag.orderBy = orderBy;
-<<<<<<< HEAD
-			MenuDto menu = new MenuDto();
-			List<ProductDto> products = null;
-			if (alias == "all-1")
-			{
-				products = productService.GetAll();
-			}
-			else
-			{
-				menu = menuService.GetByAlias(alias);
-				products = productService.GetByMenu(menu.Id, orderBy);
-			}
-			menu.Products = products;
-=======
             MenuDto menu = new MenuDto();
             List<ProductDto> products = null;
             if (alias == "all-1")
@@ -68,7 +58,6 @@ namespace Web.Watch.Controllers
                 products = productService.GetByMenu(menu.Id, orderBy);
             }
             menu.Products = products;
->>>>>>> master
             ViewBag.MetaTitle = menu.Name;
             ViewBag.MetaDescription = menu.MetaDescription;
             ViewBag.MetaRobots = menu.MetaRobots;
@@ -124,6 +113,7 @@ namespace Web.Watch.Controllers
             return RedirectToAction("ShoppingCart");
         }
 
+
         [HttpPost]
         public ActionResult UpdateCart(List<OrderDetailDto> products)
         {
@@ -146,14 +136,26 @@ namespace Web.Watch.Controllers
         public ActionResult ShoppingCart()
         {
             this.SetSEO_Main();
+            OrderDetailVoucherDto cartdetail = new OrderDetailVoucherDto();
             List<OrderDetailDto> cart = (List<OrderDetailDto>)Session["cart"];
             if (cart == null)
             {
                 cart = new List<OrderDetailDto>();
             }
-            return View(cart);
+            cartdetail.OrderDetails = cart;
+            cartdetail.Vouchers = voucherService.GetAllAvailable();
+            return View(cartdetail);
         }
-
+        public ActionResult Tracking(string phonenumber)
+        {
+            this.SetSEO_Main();
+            var orders = orderService.GetByPhoneNumber(phonenumber);
+            return View(orders);
+        }
+        public ActionResult ViewTracking(int id)
+        {
+            return View(this.orderService.GetById(id));
+        }
         [HttpPost]
         public ActionResult Order(OrderDto order)
         {
@@ -164,12 +166,66 @@ namespace Web.Watch.Controllers
             }
 
             order.OrderDetails = cart;
+            order.TotalAmount = TotalAfterDiscount(order.VoucherId.ToString(), order.TotalAmount.ToString());
             this.orderService.Insert(order);
+            foreach (var item in cart)
+            {
+                var product = productService.GetById(item.ProductId);
+                product.Quantity -= (int)item.Qty;
+                productService.Update(product.Id, product);
+            }
+            try
+            {
+                VoucherDto voucher = voucherService.GetById((int)order.VoucherId);
+                voucher.IsActive -= 1;
+                voucherService.Update(voucher.Id, voucher);
+            }
+            catch (Exception ex) { }
             Session["cart"] = null;
             Session["cartCount"] = null;
             return RedirectToAction("OrderSuccess");
         }
+        [HttpPost]
+        public ActionResult GetUpdatedTotalAmount(string voucherId, string total)
+        {
 
+            var doubleTotal = double.Parse(total.Replace(".", ""));
+            double res = 0;
+
+            var voucher = voucherService.GetById(int.Parse(voucherId));
+            if (voucher.Type == 0)
+            {
+                res = doubleTotal - (double)voucher.DiscountAmount;
+            }
+            else
+            {
+                var amount = (1 - (double)voucher.DiscountAmount / 100);
+                res = (int)Math.Round(amount * doubleTotal);
+            }
+            return Json(DataHelper.ToCurrency(res));
+        }
+        public double TotalAfterDiscount(string voucherId, string total)
+        {
+            VoucherDto voucher = new VoucherDto();
+
+            var doubleTotal = double.Parse(total.Replace(".", ""));
+            double res = 0;
+            try
+            {
+                voucher = voucherService.GetById(int.Parse(voucherId));
+            }
+            catch (Exception ex) { return double.Parse(total); };
+            if (voucher.Type == 0)
+            {
+                res = doubleTotal - (double)voucher.DiscountAmount;
+            }
+            else
+            {
+                var amount = (1 - (double)voucher.DiscountAmount / 100);
+                res = (int)Math.Round(amount * doubleTotal);
+            }
+            return res;
+        }
         public ActionResult OrderSuccess()
         {
             this.SetSEO_Main();

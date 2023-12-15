@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Web.Core.Dto;
 using Web.Watch.Service;
@@ -30,12 +27,14 @@ namespace Web.Watch.Areas.Administrator.Controllers
             {
                 UserDto u = this.userService.CheckLogin(user);
                 Session["user_admin"] = u;
+                MvcApplication.currentAdmin = u.UserName;
             }
             catch (Exception ex)
             {
                 Session["error"] = ex.Message;
                 return View();
             }
+
             return RedirectToAction("Index", "Dashboard");
         }
 

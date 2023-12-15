@@ -8,8 +8,6 @@
 
     <link rel="stylesheet" href="~/Plugins/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/Plugins/css/templatemo.css">
-    <link rel="stylesheet" href="~/Plugins/css/custom.css">
-    <link rel="stylesheet" href="~/Plugins/css/PopupChat.css">
 
     <!-- Load fonts style after rendering the layout styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
@@ -39,9 +37,9 @@
     <!-- Close Top Nav -->
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-light shadow">
-        <div class="container d-flex justify-content-between align-items-center"
-             style="padding-bottom: 0rem; padding-top: 0rem">
-            <a class="navbar-brand text-success logo align-self-center" href="/">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand text-success logo h1 align-self-center" href="/">
                 <img width="250" src="@Model.Logo" />
             </a>
 
@@ -59,10 +57,13 @@
                             <a class="nav-link" href="#">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/all-1">Shop</a>
+                            <a class="nav-link" href="/danh-muc/all-1">Shop</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/theo-doi-don-hang">Tracking</a>
                         </li>
                     </ul>
                 </div>
@@ -99,18 +100,14 @@
             </form>
         </div>
     </div>
-
-    <!--Start Popup Chat-->
-    <div class="fabs">
-        <a id="prime" class="fabc"><i class="prime zmdi zmdi-comment-outline"></i></a>
-    </div>
     <!-- Start Script -->
     <script src="~/Plugins/js/jquery-1.11.0.min.js"></script>
     <script src="~/Plugins/js/jquery-migrate-1.2.1.min.js"></script>
     <script src="~/Plugins/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Plugins/js/bootstrap.min.js"></script>
     <script src="~/Plugins/js/templatemo.js"></script>
-    <script src="~/Plugins/js/custom.js"></script>
-    <script src="~/Plugins/js/PopupChat.js"></script>
+    <script src="~/Plugins/js/mdb.js"></script>
+    <script src="~/Plugins/js/mdb.min.js"></script>
     <!-- End Script -->
 </body>
 

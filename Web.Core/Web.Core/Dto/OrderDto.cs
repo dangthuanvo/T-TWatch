@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Web.Core.Dto
 {
@@ -11,6 +8,7 @@ namespace Web.Core.Dto
         public int Id { get; set; }
         public string CustomerCode { get; set; }
         public DateTime OrderDate { get; set; }
+        public int? VoucherId { get; set; }
         public string OrderTime { get; set; }
         public double? TotalAmount { get; set; }
         public int Status { get; set; }
@@ -19,6 +17,7 @@ namespace Web.Core.Dto
         public DateTime Created { get; set; }
 
         public CustomerDto Customer { get; set; }
+        public VoucherDto Voucher { get; set; }
         public List<OrderDetailDto> OrderDetails { get; set; }
     }
 }

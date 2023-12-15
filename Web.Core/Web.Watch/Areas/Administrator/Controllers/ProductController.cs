@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Web.Core.Dto;
 using Web.Watch.Service;
@@ -13,9 +11,11 @@ namespace Web.Watch.Areas.Administrator.Controllers
         ProductService productService;
         MenuService menuService;
         AttributeService attributeService;
+        ImportHistoryService importHistoryService;
 
         public ProductController()
         {
+            this.importHistoryService = new ImportHistoryService();
             this.productService = new ProductService();
             this.menuService = new MenuService();
             this.attributeService = new AttributeService();
@@ -51,7 +51,7 @@ namespace Web.Watch.Areas.Administrator.Controllers
         {
             if (!this.CheckAuth())
                 return this.RedirectToLogin();
-
+            product.Quantity = 0;
             this.productService.Insert(product);
             return RedirectToAction("Index");
         }
@@ -70,6 +70,7 @@ namespace Web.Watch.Areas.Administrator.Controllers
             }).ToList();
 
             ProductDto product = this.productService.GetById(id);
+            var temp = product.Quantity;
 
             if (product.ProductAttributes != null)
             {
@@ -81,6 +82,7 @@ namespace Web.Watch.Areas.Administrator.Controllers
                         x.ValueString = attrExist.ValueString;
                     }
                 });
+                product.Quantity = temp;
             }
 
             ViewData["attributes"] = attributes;
@@ -93,7 +95,7 @@ namespace Web.Watch.Areas.Administrator.Controllers
         {
             if (!this.CheckAuth())
                 return this.RedirectToLogin();
-
+            product.Quantity = productService.GetById(product.Id).Quantity;
             this.productService.Update(product.Id, product);
             return RedirectToAction("Index");
         }
@@ -104,6 +106,33 @@ namespace Web.Watch.Areas.Administrator.Controllers
                 return this.RedirectToLogin();
 
             this.productService.DeleteById(id);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ImportIndex(int id)
+        {
+            if (!this.CheckAuth())
+                return this.RedirectToLogin();
+            ProductDto product = this.productService.GetById(id);
+            ViewData["currentAdmin"] = MvcApplication.currentAdmin;
+            ViewData["product"] = product;
+            ImportProductDto importProduct = new ImportProductDto()
+            {
+                Product = product,
+            };
+            return View(importProduct);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Import(ImportProductDto importProduct)
+        {
+            if (!this.CheckAuth())
+                return this.RedirectToLogin();
+
+            this.importHistoryService.Insert(importProduct.ImportHistory);
+            ProductDto product = productService.GetById(importProduct.ImportHistory.ProductID);
+            product.Quantity += importProduct.ImportHistory.Quantity;
+            productService.Update(product.Id, product);
             return RedirectToAction("Index");
         }
     }

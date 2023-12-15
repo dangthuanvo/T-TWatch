@@ -6,9 +6,11 @@
     ViewBag.Title = Model.Name;
     //List<MenuDto> menuall = (List<MenuDto>)ViewData["menuall"];
     List<MenuDto> menus = UtilService.GetMenus();
-}<div class="container py-5">
+    int pageSize = 9;
+}
+<link rel="stylesheet" href="~/Plugins/css/MultiRange.css">
+<div class="container py-5">
     <div class="row">
-
         <div class="col-lg-3">
             <h1 class="h2 pb-4">Danh mục</h1>
             <ul class="list-unstyled templatemo-accordion">
@@ -18,20 +20,20 @@
                     <li class="pb-3">
                         @if (menu.SubMenus == null || menu.SubMenus.Count == 0)
                         {
-                            <span class="collapsed d-flex justify-content-between h3 text-decoration-none" onclick="window.location.href='@menu.Alias'" style="font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
+                            <span class="collapsed d-flex justify-content-between h3 text-decoration-none" onclick="window.location.href='/danh-muc/@menu.Alias'" style="font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
                                 @menu.Name
                             </span>
                         }
                         else
                         {
-                            <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="/@menu.Alias">
+                            <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="/danh-muc/@menu.Alias">
                                 @menu.Name
                                 <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                             </a>
                             <ul class="collapse show list-unstyled pl-3">
                                 @foreach (var item in menu.SubMenus)
                                 {
-                                    <li><a class="text-decoration-none" href="/@item.Alias">@item.Name</a></li>
+                                    <li><a class="text-decoration-none" href="/danh-muc/@item.Alias">@item.Name</a></li>
                                 }
                             </ul>
                         }
@@ -40,13 +42,36 @@
                 }
 
             </ul>
+
+            <h1 class="h2 pb-4">Bộ lọc</h1>
+            <ul class="list-unstyled templatemo-accordion">
+                <li class="pb-3">
+                    <span class="collapsed d-flex justify-content-between h3 text-decoration-none" style="font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
+                        Mức giá
+                    </span>
+                    <div class="wrapperRange">
+                        <div class="multi-range-slider">
+                            <input type="range" id="input-left" min="50" max="500" value="100">
+                            <input type="range" id="input-right" min="50" max="500" value="250">
+                            <div class="slider" style="font-size: 62.5%;">
+                                <div class="track"></div>
+                                <div class="range"></div>
+                            </div>
+                        </div>
+                        <div class="price__wrapper">
+                            <span class="price-from">50</span>
+                            <span class="price-to">500</span>
+                        </div>
+                    </div>
+
+</ul>
         </div>
 
         <div class="col-lg-9">
             <div class="row">
                 <div class="col-md-6 pb-4">
                     <div class="d-flex">
-                        <form id="formSearch" action="/@Model.Alias" method="get">
+                        <form id="formSearch" action="/danh-muc/@Model.Alias" method="get">
                             <div class="group-control-horizontal">
                                 <span class="text-nowrap mr-2">Sắp xếp theo: </span>
                                 <select onchange="$('#formSearch').submit()" name="orderBy" class="form-control">
@@ -61,28 +86,75 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                @foreach (var product in Model.Products)
-                {
-                    <div class="col-md-4">
-                        @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
-                    </div>   
+            <div class="row" id="listProducts">
+                @{
+                    int numProduct = 0;
+
+                    foreach (var product in Model.Products)
+                    {
+                        if (++numProduct <= pageSize)
+                        {
+                            <div class="col-md-4" id="product @numProduct" >
+                                @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-4" id="product @numProduct" style="display: none">
+                                @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                            </div>
+                        }
+
+                    }
                 }
             </div>
             <div div="row">
                 <ul class="pagination pagination-lg justify-content-end">
-                    <li class="page-item disabled">
-                        <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#" tabindex="-1">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" href="#">3</a>
-                    </li>
+                    @{
+                        int count = Convert.ToInt32(Math.Ceiling((double)Model.Products.Count / 9));
+                        for (int i = 1; i <= count; i++)
+                        {
+                                        <li class="page-item">
+                                            @if (i == 1)
+                                            {
+                                            <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" id="page-link @i" onclick="showProducts(@i, @pageSize, @count)">1</a>
+                                            }
+                                            else
+                                            {
+                                            <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" id="page-link @i" onclick="showProducts(@i, @pageSize, @count)">@i</a>
+                                            }
+                                        </li>
+                        }
+                    }
+
                 </ul>
             </div>
         </div>
-
     </div>
 </div>
+<script>
+    function showProducts(pageIndex, pageSize, totalPageLink) {
+        var numberChild = document.getElementById('listProducts').childElementCount;
+        var startIndex = (pageIndex - 1) * pageSize + 1;
+        var endIndex = (startIndex + pageSize - 1) < numberChild ? (startIndex + pageSize - 1) : numberChild;
+        for (let i = 1; i <= numberChild; i++) {
+            if (i >= startIndex && i <= endIndex) {
+                document.getElementById('product ' + i).style.display = 'inline';
+            }
+            else {
+                document.getElementById('product ' + i).style.display = 'none';
+            }
+        }
+        for (let i = 1; i <= totalPageLink; i++) {
+            var element = document.getElementById('page-link ' + i);
+            element.classList.remove('active')
+            element.classList.add('text-dark');
+        }
+        var element = document.getElementById('page-link ' + pageIndex);
+        element.classList.add('active')
+        element.classList.remove('text-dark');
+        window.scrollTo(0, 0);
+        
+    }
+</script>
+<script src="~/Plugins/js//MultiRange.js"></script>

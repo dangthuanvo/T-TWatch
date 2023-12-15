@@ -1,6 +1,6 @@
 ﻿@using Web.Core.Dto;
 @using Web.Core.Util;
-@model List<OrderDetailDto>
+@model OrderDetailVoucherDto
 @{
     ViewBag.Title = "Giỏ hàng";
 }
@@ -26,7 +26,7 @@
 
 <div class="container-cart">
     <div class="row">
-        @if (Model == null || Model.Count == 0)
+        @if (Model.OrderDetails == null || Model.OrderDetails.Count == 0)
         {
             <div class="col-md-12 text-center">
                 <div style="margin-bottom:20px">
@@ -56,9 +56,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for (int i = 0; i < Model.Count; i++)
+                                @for (int i = 0; i < Model.OrderDetails.Count; i++)
                                 {
-                                    var item = Model[i];
+                                    var item = Model.OrderDetails[i];
 
                                     <tr>
                                         <td class="text-center">
@@ -88,10 +88,11 @@
                                 }
                                 <tr>
                                     <td class="text-right" colspan="4">
-                                        <h5>Tổng tiền</h5>
+                                        <h5 id="totallabel">Tổng tiền</h5>
                                     </td>
                                     <td>
-                                        <h5 style="color:red">@(DataHelper.ToCurrency(Model.Sum(x => x.ProductDiscountPrice * x.Qty)))</h5>
+                                        <h5 id="totalshow" style="color:red">@(DataHelper.ToCurrency(Model.OrderDetails.Sum(x => x.ProductDiscountPrice * x.Qty)))</h5>
+                                        <h5 hidden ="hidden" id="total" style="color:red">@(DataHelper.ToCurrency(Model.OrderDetails.Sum(x => x.ProductDiscountPrice * x.Qty)))</h5>
                                     </td>
                                 </tr>
                             </tbody>
@@ -108,7 +109,8 @@
                 <div>
                     <h4 class="text-center">Thông tin liên hệ</h4>
                 </div>
-                <form action="/home/Order" method="post">
+                <form action="/Home/Order" method="post">
+                    <input type="hidden" name="TotalAmount" value="@(Model.OrderDetails.Sum(x => x.ProductDiscountPrice * x.Qty))" />
                     <div class="table-responsive">
                         <table class="table table-non-border">
                             <tbody>
@@ -142,11 +144,27 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>Mã giảm giá <span class="text-red">(*)</span></td>
+
+                                    <td>
+                                        <select name="VoucherID" class="form-control form-control-sm" id="voucherDropdown">
+                                            <option value="" disabled selected>Select a voucher</option>
+                                            @foreach (var voucher in Model.Vouchers)
+                                            {
+                                                <option value="@voucher.Id">@voucher.VoucherCode</option>
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr>
                                     <td>Ghi chú</td>
                                     <td>
                                         <textarea rows="2" name="Note" class="form-control"></textarea>
                                     </td>
+
                                 </tr>
+
                                 <tr>
                                     <td colspan="2" class="text-center">
                                         <button type="submit" class="btn btn-warning">Đặt hàng</button>
@@ -176,9 +194,36 @@
                     $("input[name='Customer.FullName']").val(data.FullName);
                     $("input[name='Customer.Address']").val(data.Address);
                     $("input[name='Customer.Email']").val(data.Email);
-                },  
+                },
                 error: function () {
                     alert("Error querying the database.");
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // On change event for the dropdown
+        $("#voucherDropdown").change(function () {
+            // Get the selected value
+            var selectedVoucherId = $(this).val();
+            var total = $("#total").text()
+
+            // Make an AJAX call to your server to get the updated total amount
+            $.ajax({
+                url: "@Url.Action("GetUpdatedTotalAmount", "Home")", // Replace with your actual controller and action
+                method: "POST",
+                data: { voucherId: selectedVoucherId, total: total },
+                success: function (data) {
+                    // Update the totalAmount element with the new value
+                    $("#totalshow").text(data);
+                    $("#totalreturn").val(data);
+                    $("#totallabel").text("Tổng tiền(đã áp dụng mã giảm giá)");
+                },
+                error: function (error) {
+                    console.log(error);
                 }
             });
         });

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Web.Core.Dto
@@ -15,6 +12,8 @@ namespace Web.Core.Dto
         public string Name { get; set; }
         public string Alias { get; set; }
         public string Image { get; set; }
+        public int Quantity { get; set; }
+
         public int? Index { get; set; }
         public int? Status { get; set; }
         public double? Price { get; set; }
@@ -26,7 +25,7 @@ namespace Web.Core.Dto
         public string ShortDescription { get; set; }
         [AllowHtml]
         public string Description { get; set; }
-        public DateTime Created { get; set; } 
+        public DateTime Created { get; set; }
         public string MetaDescription { get; set; }
         public string MetaRobots { get; set; }
         public string MetaRevisitAfter { get; set; }

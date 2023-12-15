@@ -5,7 +5,7 @@ namespace Web.Core.Service
 {
     public class MyContext : DbContext
     {
-        public MyContext() : base("data source=PCOFACJ\\SQLEXPRESS;initial catalog=WatchStore;trusted_connection=true")
+        public MyContext() : base("data source=.\\SQLEXPRESS;initial catalog=WatchStore;trusted_connection=true")
         {
         }
 
@@ -26,5 +26,7 @@ namespace Web.Core.Service
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Website> Websites { get; set; }
+        public virtual DbSet<ImportHistory> ImportHistories { get; set; }
+        public virtual DbSet<Voucher> Vouchers { get; set; }
     }
 }

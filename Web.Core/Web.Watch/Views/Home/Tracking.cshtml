@@ -1,0 +1,94 @@
+﻿@using Web.Core.Dto;
+@using Web.Core.Util;
+@model List<OrderDto>
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+}
+
+
+<link href="~/Areas/Administrator/Plugins/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<script src="~/Areas/Administrator/Plugins/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="~/Areas/Administrator/Plugins/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+    $(function () {
+        $('#table').DataTable({
+            "order": [],
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false,
+            'columns': [
+                { 'data': 'Id', 'type': 'number' }, // 'Mã đơn hàng' column
+                { 'data': 'OrderDate', 'searchable': false }, // 'Ngày đặt hàng' column
+                { 'data': 'Customer.FullName', 'searchable': false }, // 'Tên khách hàng' column
+                { 'data': 'Customer.PhoneNumber', 'searchable': false }, // 'Số điện thoại' column
+                { 'data': 'Customer.Address', 'searchable': false }, // 'Địa chỉ liên hệ' column
+                { 'data': 'TotalAmount', 'type': 'number', 'searchable': false }, // 'Tổng tiền' column
+                { 'data': 'Status', 'searchable': false }, // 'Trạng thái' column
+                null // Empty column for your action buttons
+            ]
+        })
+    })
+</script>
+<form id="formSubmit" action="/Home/Tracking" method="post">
+    <label for="phoneNumber">Nhập số điện thoại của bạn để tìm đơn hàng:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" required>
+    <button type="submit">Tìm kiếm</button>
+</form>
+<section class="content">
+    <div class="box box-primary">
+        <div class="box-body ">
+            <div>
+                <table id="table" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn hàng</th>
+                            <th>Ngày đặt hàng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ liên hệ</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@(item.Id)</td>
+                                <td class="text-nowrap">@(item.OrderDate.ToString("HH:mm dd-MM-yyyy"))</td>
+                                <td>@(item.Customer.FullName)</td>
+                                <td>@(item.Customer.PhoneNumber)</td>
+                                <td>@(item.Customer.Address)</td>
+                                <td class="text-right">@(DataHelper.ToCurrency(item.TotalAmount))</td>
+                                <td class="text-center">
+                                    @if (item.Status == 10)
+                                    {
+                                        <label class="label label-warning">Chưa thanh toán</label>
+                                    }
+                                    else if (item.Status == 20)
+                                    {
+                                        <label class="label label-primary">Đã thanh toán</label>
+                                    }
+                                    else if (item.Status == 30)
+                                    {
+                                        <label class="label label-danger">Đã hủy</label>
+                                    }
+                                </td>
+                                <td>
+                                    <a href="/Home/ViewTracking?id=@item.Id" class="btn btn-success btn-xs">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section> 

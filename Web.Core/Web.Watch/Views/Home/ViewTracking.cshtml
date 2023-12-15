@@ -5,9 +5,6 @@
     ViewBag.Title = "Thông tin đơn hàng";
 }
 
-<script>
-    $("#menu_order").addClass("menu_active");
-</script>
 
 <form id="formSubmit" action="/Administrator/Order/Update" method="post">
     @Html.AntiForgeryToken()
@@ -33,13 +30,13 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Ngày đặt hàng</label>
-                                    <input type="text" value="@Model.OrderDate.ToString("HH:mm dd-MM-yyyy")" disabled class="form-control input-sm" />
+                                    <input type="text" disabled value="@Model.OrderDate.ToString("HH:mm dd-MM-yyyy")" disabled class="form-control input-sm" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Trạng thái đơn hàng</label>
-                                    <select name="Status" class="form-control input-sm">
+                                    <select name="Status" disabled class="form-control input-sm">
                                         <option value="10" @(Model.Status == 10 ? "selected" : "")>Chưa thanh toán</option>
                                         <option value="20" @(Model.Status == 20 ? "selected" : "")>Đã thanh toán</option>
                                         <option value="30" @(Model.Status == 30 ? "selected" : "")>Đã hủy</option>
@@ -49,7 +46,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Ghi chú</label>
-                                    <textarea class="form-control ">@Model.Note</textarea>
+                                    <textarea disabled class="form-control ">@Model.Note</textarea>
                                 </div>
                             </div>
                         </div>
@@ -129,15 +126,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                    <div class="col-md-12 text-center">
-                        <a href="/Administrator/Order" class="btn btn-default">
-                            Trở lại danh sách
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-save"></i>
-                            Cập nhật
-                        </button>
                     </div>
                 </div>
             </div>

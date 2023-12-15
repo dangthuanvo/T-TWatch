@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Web.Core.Model
 {
@@ -14,6 +11,7 @@ namespace Web.Core.Model
         public string CustomerCode { get; set; }
         public DateTime OrderDate { get; set; }
         public string OrderTime { get; set; }
+        public int? VoucherId { get; set; }
         public double? TotalAmount { get; set; }
         public int Status { get; set; }
         public string PaymentMethod { get; set; }
@@ -21,6 +19,7 @@ namespace Web.Core.Model
         public DateTime Created { get; set; }
 
         public virtual Customer Customer { get; set; }
+        public virtual Voucher Voucher { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

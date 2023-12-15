@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Web.Core.Dto
 {
@@ -10,6 +6,7 @@ namespace Web.Core.Dto
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
+        public string CustomerCode { get; set; }
         public int? Star { get; set; }
         public string Content { get; set; }
         public bool Active { get; set; }
@@ -22,5 +19,7 @@ namespace Web.Core.Dto
         public DateTime? UserDef5 { get; set; }
 
         public ProductDto Product { get; set; }
+        public CustomerDto Customer { get; set; }
+
     }
 }
