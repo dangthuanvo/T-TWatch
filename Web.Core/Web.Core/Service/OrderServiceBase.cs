@@ -238,5 +238,38 @@ namespace Web.Core.Service
                 context.SaveChanges();
             }
         }
+        public virtual List<OrderDto> GetByPhoneNumber(string phonenumber)
+        {
+            using (var context = new MyContext())
+            {
+                List<OrderDto> orders = context.Orders
+                    .Join(
+                        context.Customers,
+                        order => order.CustomerCode,
+                        customer => customer.Code,
+                        (order, customer) => new { Order = order, Customer = customer }
+                    )
+                    .Where(x => x.Customer.PhoneNumber == phonenumber)
+                    .Select(x => new OrderDto
+                    {
+                        // Map your OrderDto properties here based on the Order and Customer entities
+                        Id = x.Order.Id,
+                        OrderDate = x.Order.OrderDate,
+                        TotalAmount = x.Order.TotalAmount,
+                        Customer = new CustomerDto()
+                        {
+                            FullName = x.Customer.FullName,
+                            PhoneNumber = x.Customer.PhoneNumber,
+                            Address = x.Customer.Address,
+
+
+                        },
+                        Status = x.Order.Status,
+                    })
+                    .ToList();
+
+                return orders;
+            }
+        }
     }
 }

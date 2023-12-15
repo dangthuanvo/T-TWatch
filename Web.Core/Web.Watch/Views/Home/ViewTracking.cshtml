@@ -1,0 +1,134 @@
+﻿@using Web.Core.Dto;
+@using Web.Core.Util;
+@model OrderDto
+@{
+    ViewBag.Title = "Thông tin đơn hàng";
+}
+
+
+<form id="formSubmit" action="/Administrator/Order/Update" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="Id" value="@Model.Id" />
+    @for (int i = 0; i < Model.OrderDetails.Count; i++)
+    {
+        <input type="hidden" name="OrderDetails[@i].ProductId" value="@Model.OrderDetails[i].ProductId" />
+        <input type="hidden" name="OrderDetails[@i].Qty" value="@Model.OrderDetails[i].Qty" />
+        <!-- Add more input fields for other properties -->
+    }
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Mã đơn hàng</label>
+                                    <input type="text" value="@Model.Id" disabled class="form-control input-sm" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Ngày đặt hàng</label>
+                                    <input type="text" disabled value="@Model.OrderDate.ToString("HH:mm dd-MM-yyyy")" disabled class="form-control input-sm" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Trạng thái đơn hàng</label>
+                                    <select name="Status" disabled class="form-control input-sm">
+                                        <option value="10" @(Model.Status == 10 ? "selected" : "")>Chưa thanh toán</option>
+                                        <option value="20" @(Model.Status == 20 ? "selected" : "")>Đã thanh toán</option>
+                                        <option value="30" @(Model.Status == 30 ? "selected" : "")>Đã hủy</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Ghi chú</label>
+                                    <textarea disabled class="form-control ">@Model.Note</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4><b>Chi tiết đơn hàng</b></h4>
+                                <div>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Hình ảnh</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Giá niêm yết</th>
+                                                <th>Giá khuyến mãi</th>
+                                                <th>Số lượng</th>
+                                                <th>Tổng tiền thanh toán</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.OrderDetails)
+                                            {
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <img src="@item.ProductImage" class="thumbnail" style="width:50px" />
+                                                    </td>
+                                                    <td>@(item.ProductName)</td>
+                                                    <td>@(DataHelper.ToCurrency(item.ProductPrice))</td>
+                                                    <td>@(DataHelper.ToCurrency(item.ProductDiscountPrice))</td>
+                                                    <td>@(item.Qty)</td>
+                                                    <td>@(DataHelper.ToCurrency(item.ProductDiscountPrice * item.Qty))</td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td class="text-right" colspan="5">
+                                                    <h4>Tổng tiền</h4>
+                                                </td>
+                                                <td>
+                                                    <h4 style="color:red">
+                                                        <strong>
+                                                            @(DataHelper.ToCurrency(Model.TotalAmount))
+                                                        </strong>
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h4><b>Thông tin khách hàng</b></h4>
+                        <div>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>Tên khách hàng</td>
+                                        <td>@Model.Customer.FullName</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Số điện thoại</td>
+                                        <td>@Model.Customer.PhoneNumber</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td>@Model.Customer.Email</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Địa chỉ liên hệ</td>
+                                        <td>@Model.Customer.Address</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mã giảm giá đã áp dụng</td>
+                                        <td>@Model.Voucher.VoucherCode</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
