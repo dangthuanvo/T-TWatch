@@ -20,20 +20,20 @@
                     <li class="pb-3">
                         @if (menu.SubMenus == null || menu.SubMenus.Count == 0)
                         {
-                            <span class="collapsed d-flex justify-content-between h3 text-decoration-none" onclick="window.location.href='@menu.Alias'" style="font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
+                            <span class="collapsed d-flex justify-content-between h3 text-decoration-none" onclick="window.location.href='/danh-muc/@menu.Alias'" style="font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
                                 @menu.Name
                             </span>
                         }
                         else
                         {
-                            <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="/@menu.Alias">
+                            <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="/danh-muc/@menu.Alias">
                                 @menu.Name
                                 <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                             </a>
                             <ul class="collapse show list-unstyled pl-3">
                                 @foreach (var item in menu.SubMenus)
                                 {
-                                    <li><a class="text-decoration-none" href="/@item.Alias">@item.Name</a></li>
+                                    <li><a class="text-decoration-none" href="/danh-muc/@item.Alias">@item.Name</a></li>
                                 }
                             </ul>
                         }
@@ -48,7 +48,7 @@
             <div class="row">
                 <div class="col-md-6 pb-4">
                     <div class="d-flex">
-                        <form id="formSearch" action="/@Model.Alias" method="get">
+                        <form id="formSearch" action="/danh-muc/@Model.Alias" method="get">
                             <div class="group-control-horizontal">
                                 <span class="text-nowrap mr-2">Sắp xếp theo: </span>
                                 <select onchange="$('#formSearch').submit()" name="orderBy" class="form-control">

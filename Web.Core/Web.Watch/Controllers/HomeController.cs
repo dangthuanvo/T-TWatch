@@ -146,7 +146,16 @@ namespace Web.Watch.Controllers
             cartdetail.Vouchers = voucherService.GetAllAvailable();
             return View(cartdetail);
         }
-
+        public ActionResult Tracking(string phonenumber)
+        {
+            this.SetSEO_Main();
+            var orders = orderService.GetByPhoneNumber(phonenumber);
+            return View(orders);
+        }
+        public ActionResult ViewTracking(int id)
+        {
+            return View(this.orderService.GetById(id));
+        }
         [HttpPost]
         public ActionResult Order(OrderDto order)
         {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace Web.Watch
@@ -18,11 +14,6 @@ namespace Web.Watch
                 url: "tim-kiem",
                 defaults: new { controller = "Home", action = "Search" }
             );
-            routes.MapRoute(
-                name: "BaiViet",
-                url: "bai-viet/{alias}",
-                defaults: new { controller = "Home", action = "Article" }
-            );
 
             routes.MapRoute(
                 name: "ShoppingCart",
@@ -37,8 +28,8 @@ namespace Web.Watch
             );
 
             routes.MapRoute(
-                name: "Menu",
-                url: "{alias}",
+                name: "Category",
+                url: "danh-muc/{alias}",
                 defaults: new { controller = "Home", action = "Category" }
             );
 
@@ -46,6 +37,11 @@ namespace Web.Watch
                 name: "Product",
                 url: "san-pham/{alias}",
                 defaults: new { controller = "Home", action = "ProductDetail" }
+            );
+            routes.MapRoute(
+                name: "Tracking",
+                url: "theo-doi-don-hang",
+                defaults: new { controller = "Home", action = "Tracking" }
             );
 
             routes.MapRoute(
