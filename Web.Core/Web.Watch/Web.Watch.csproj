@@ -136,6 +136,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
+    <Compile Include="Areas\Administrator\Controllers\VoucherController.cs" />
+    <Compile Include="Areas\Administrator\Controllers\ImportHistoryController.cs" />
     <Compile Include="Areas\Administrator\Controllers\ArticleController.cs" />
     <Compile Include="Areas\Administrator\Controllers\BaseController.cs" />
     <Compile Include="Areas\Administrator\Controllers\DashboardController.cs" />
@@ -153,6 +155,9 @@
     </Compile>
     <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\VoucherService.cs" />
+    <Compile Include="Service\ImportHistoryService.cs" />
+    <Compile Include="Service\ReviewService.cs" />
     <Compile Include="Service\CustomerService.cs" />
     <Compile Include="Service\ArticleService.cs" />
     <Compile Include="Service\AttributeService.cs" />
@@ -1284,7 +1289,6 @@
     <Content Include="Plugins\css\font-awesome.min.css" />
     <Content Include="Plugins\css\owl.video.play.html" />
     <Content Include="Plugins\css\plugins.css" />
-    <Content Include="Plugins\css\PopupChat.css" />
     <Content Include="Plugins\css\responsive.css" />
     <Content Include="Plugins\css\style-watch.css" />
     <Content Include="Plugins\fonts\fontawesome-webfont3e6e.svg" />
@@ -1294,7 +1298,6 @@
     <Content Include="Plugins\js\popper.min.js" />
     <Content Include="Plugins\js\jquery.min.js" />
     <Content Include="Plugins\js\modernizr-3.5.0.min.js" />
-    <Content Include="Plugins\js\PopupChat.js" />
     <Content Include="Plugins\js\watch.js" />
     <Content Include="Resources\files\Gallery\Banner0.jpg" />
     <Content Include="Resources\files\Gallery\Banner1.jpg" />
@@ -1526,6 +1529,11 @@
     <Content Include="Areas\Administrator\Views\Login\Index.cshtml" />
     <Content Include="Areas\Administrator\Views\Report\Index.cshtml" />
     <Content Include="Areas\Administrator\Views\Report\GetRevenueReport.cshtml" />
+    <Content Include="Areas\Administrator\Views\ImportHistory\Index.cshtml" />
+    <Content Include="Areas\Administrator\Views\Product\ImportIndex.cshtml" />
+    <Content Include="Areas\Administrator\Views\Voucher\Index.cshtml" />
+    <Content Include="Areas\Administrator\Views\Voucher\Update.cshtml" />
+    <Content Include="Areas\Administrator\Views\Voucher\Add.cshtml" />
     <None Include="packages.config" />
     <Content Include="Plugins\fonts\fontawesome-webfont3e6e.eot" />
     <Content Include="Plugins\fonts\fontawesome-webfont3e6e.ttf" />
@@ -1548,6 +1556,9 @@
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Partial\_pProductRelated.cshtml" />
     <Content Include="Resources\files\Product\he-thong-ma-nganh-kinh-te-viet-nam.pdf" />
+    <Content Include="Views\Home\Tracking.cshtml" />
+    <Content Include="Views\Home\ViewTracking.cshtml" />
+    <Content Include="Views\Partial\_pReview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web.Core\Web.Core.csproj">
