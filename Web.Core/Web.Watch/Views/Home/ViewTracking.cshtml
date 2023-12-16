@@ -37,9 +37,10 @@
                                 <div class="form-group">
                                     <label>Trạng thái đơn hàng</label>
                                     <select name="Status" disabled class="form-control input-sm">
-                                        <option value="10" @(Model.Status == 10 ? "selected" : "")>Chưa thanh toán</option>
+                                        <option value="10" @(Model.Status == 10 ? "selected" : "")>Đã tiếp nhận</option>
                                         <option value="20" @(Model.Status == 20 ? "selected" : "")>Đã thanh toán</option>
                                         <option value="30" @(Model.Status == 30 ? "selected" : "")>Đã hủy</option>
+                                        <option value="40" @(Model.Status == 40 ? "selected" : "")>Đã giao cho đơn vị vận chuyển</option>
                                     </select>
                                 </div>
                             </div>
