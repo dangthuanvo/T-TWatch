@@ -9,6 +9,7 @@
         Image = product.Image
     });
     ViewBag.Title = product.Name;
+    int pageReviewSize = 3;
 }
 <!-- Modal Notify Add to card -->
 <div class="modal fade" id="NotifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -164,6 +165,11 @@
                                             Chế độ bảo hành
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="nav_review" data-toggle="pill" href="#tab_review">
+                                            Đánh giá sản phẩm
+                                        </a>
+                                    </li>
                                 </ul>
                                 <div class="tab-content mt-3">
                                     <div class="tab-pane fade show active" id="tab_description">
@@ -171,6 +177,45 @@
                                     </div>
                                     <div class="tab-pane fade" id="tab_guide">
                                         @Html.Raw(product.UserDef1)
+                                    </div>
+                                    <div class="tab-pane fade" id="tab_review">
+                                       
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-12 justify-content-center" id="reviewArea">
+                                                    @{
+                                                        int countReview = 0;
+                                                        // <!--Change to foreach-->
+                                                        for (int i = 1; i <= 10; i++)
+                                                        {
+                                                            if (++countReview <= pageReviewSize)
+                                                            {
+                                                                <div id="review @i" style="display: inline">
+                                                                    @Html.Partial("~/Views/Partial/_pReview.cshtml")
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div id="review @i" style="display: none;">
+                                                                    @Html.Partial("~/Views/Partial/_pReview.cshtml")
+                                                                </div>
+                                                            }
+
+
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-12 d-flex justify-content-center">
+                                                    <button type="button" class="btn btn-outline-warning" id="buttonShowReview" onclick="ShowMoreReviews(@pageReviewSize)">Xem thêm</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -199,6 +244,31 @@
 <!-- End Related products -->
 
 <script>
+    //Get more reviews
+    function ShowMoreReviews(pageReviewSize) {
+        var totalReview = document.getElementById('reviewArea').childElementCount;
+        var currentShow = 0;
+        for (let i = 1; i <= totalReview; i++) {
+            if (document.getElementById('review ' + i).style.display === 'none') {
+                currentShow = i;
+                break;
+            }
+        }
+        if (currentShow <= totalReview) {
+            for (let i = 0; i < pageReviewSize; i++) {
+                let index = i + currentShow;
+                if (index <= totalReview) {
+                    document.getElementById('review ' + index).style.display = 'inline';
+                }
+            }
+        }
+        if (currentShow >= totalReview)
+        {
+            document.getElementById('buttonShowReview').style.display = 'none';
+        }
+    }
+</script>
+<script>
     document.getElementById("btnbuynow").onclick = function () {
         window.location.href = "/mua-hang/@product.Id";
     };
@@ -223,7 +293,6 @@
                 window.location.href = "/san-pham/@product.Alias";
             }, 1000);
     }
-
 </script>
 
 <!-- Start Slider Script -->

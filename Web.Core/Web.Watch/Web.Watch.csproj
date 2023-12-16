@@ -1558,6 +1558,7 @@
     <Content Include="Resources\files\Product\he-thong-ma-nganh-kinh-te-viet-nam.pdf" />
     <Content Include="Views\Home\Tracking.cshtml" />
     <Content Include="Views\Home\ViewTracking.cshtml" />
+    <Content Include="Views\Partial\_pReview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web.Core\Web.Core.csproj">
