@@ -115,6 +115,7 @@
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\Website.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\SendMailServiceBase.cs" />
     <Compile Include="Service\VoucherServiceBase.cs" />
     <Compile Include="Service\ImportHistoryServiceBase.cs" />
     <Compile Include="Service\ArticleServiceBase.cs" />
@@ -134,7 +135,10 @@
     <Compile Include="Service\WebsiteServiceBase.cs" />
     <Compile Include="Util\DataHelper.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Service\EmailTemplate\ProductTemplate.html" />
+    <Content Include="Service\EmailTemplate\SendMailTemplate.html" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

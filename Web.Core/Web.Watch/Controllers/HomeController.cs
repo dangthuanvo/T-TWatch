@@ -183,6 +183,8 @@ namespace Web.Watch.Controllers
             catch (Exception ex) { }
             Session["cart"] = null;
             Session["cartCount"] = null;
+
+
             return RedirectToAction("OrderSuccess");
         }
         [HttpPost]

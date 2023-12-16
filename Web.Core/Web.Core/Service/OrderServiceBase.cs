@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Web.Core.Dto;
 using Web.Core.Model;
+
 namespace Web.Core.Service
 {
     public abstract class OrderServiceBase : IServiceBase<OrderDto, int>
     {
+        SendEmailServiceBase sendEmailServiceBase = new SendEmailServiceBase();
         public virtual void DeleteById(int key, string userSession = null)
         {
             throw new NotImplementedException();
@@ -221,6 +223,8 @@ namespace Web.Core.Service
 
                 context.SaveChanges();
 
+                sendEmailServiceBase.SendEmail(order.Customer, orderDetails, order);
+
                 return entity;
             }
         }
@@ -231,11 +235,21 @@ namespace Web.Core.Service
             {
                 Order order = context.Orders
                    .FirstOrDefault(x => x.Id == key);
-
+                var orderdetail = context.OrderDetails.Where(x => x.OrderId == order.Id).ToList();
+                var customer = context.Customers.Where(x => x.Code == order.CustomerCode).FirstOrDefault();
+                bool flag = false;
+                if (order.Status != entity.Status)
+                {
+                    flag = true;
+                }
                 order.Status = entity.Status;
                 order.Note = entity.Note;
 
                 context.SaveChanges();
+                if (flag == true)
+                {
+                    sendEmailServiceBase.SendEmail(customer, orderdetail, order);
+                }
             }
         }
         public virtual List<OrderDto> GetByPhoneNumber(string phonenumber)
