@@ -118,7 +118,7 @@ namespace Web.Core.Service
             using (var context = new MyContext())
             {
                 return context.Products
-                    .Where(x => x.Selling == true && x.Status == 10)
+                    .Where(x => x.Selling == true && x.Status == 10 && x.Quantity > 0)
                     .Select(x => new ProductDto()
                     {
                         Id = x.Id,
