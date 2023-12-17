@@ -5,7 +5,7 @@ namespace Web.Core.Service
 {
     public class MyContext : DbContext
     {
-        public MyContext() : base("Data Source=SQL5112.site4now.net;Initial Catalog=db_aa2fad_ttwatch;User Id=db_aa2fad_ttwatch_admin;Password=Phutuc@11052002")
+        public MyContext() : base("data source=.\\SQLEXPRESS;initial catalog=WatchStore;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
         {
         }
 
