@@ -63,12 +63,12 @@
 
                                                     </div>
 
-                                                }
+                                                                }
                                             </div>
                                         </div>
-                                    }
-                                    else
-                                    {
+                                                                }
+                                                                else
+                                                                {
                                         <div class="carousel-item">
                                             <div class="row">
                                                 @for (int j = 0; j < 3 && (i + j) < product.ProductImages.Count; j++)
@@ -79,12 +79,12 @@
                                                         </a>
                                                     </div>
 
-                                                }
+                                                                }
                                             </div>
                                         </div>
-                                    }
+                                                                    }
 
-                                }
+                                                                }
                             }
 
                         </div>
@@ -204,7 +204,7 @@
                                                     @{
                                                         int countReview = 0;
                                                         // <!--Change to foreach-->
-                                                        foreach(var review in reviews)
+                                                        foreach (var review in reviews)
                                                         {
                                                             if (++countReview <= pageReviewSize)
                                                             {
@@ -221,6 +221,7 @@
 
                                                             }
                                                         }
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
