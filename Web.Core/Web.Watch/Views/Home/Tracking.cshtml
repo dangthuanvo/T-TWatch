@@ -3,6 +3,8 @@
 @model List<OrderDto>
 @{
     ViewBag.Title = "Danh sách đơn hàng";
+    int pagesize = 5;
+    string phone = ViewBag.phoneTracking;
 }
 
 
@@ -27,15 +29,16 @@
                                 <span style="font-size: 15px; font-weight: 300; ">Nhập số điện thoại của bạn...</span>
                             </div>
                             <div class="input-group mb-3" style=" text-align: center">
-                                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="phoneNumber" name="phoneNumber">
+                                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="phoneNumber" name="phoneNumber" value=@phone>
                             </div>
                             <div class="col-lg-3"></div>
                         <button type="submit" id="submitsdt" style="display: none;"></button>
                     </div>
                 </div>
             </form>
-                    
-            <div class="container">
+                    </div>
+    </div>
+            <div style="padding-left: 30px; padding-right: 30px;">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
                         <div class="app-card app-card-orders-table shadow-sm mb-5">
@@ -44,26 +47,29 @@
                                     <table class="table app-table-hover mb-0 text-left">
                                         <thead>
                                             <tr>
-                                                <th class="cell">Mã đơn hàng</th>
-                                                <th class="cell">Ngày đặt hàng</th>
-                                                <th class="cell">Tên khách hàng</th>
-                                                <th class="cell">Số điện thoại</th>
-                                                <th class="cell">Địa chỉ</th>
-                                                <th class="cell">Tổng tiền</th>
-                                                <th class="cell  text-center">Trạng thái</th>
+                                                <th class="cell" style="max-width: 110px">Mã đơn hàng</th>
+                                                <th class="cell" style="max-width: 150px">Ngày đặt hàng</th>
+                                                <th class="cell" style="max-width: 200px">Tên khách hàng</th>
+                                                <th class="cell" style="max-width: 150px">Số điện thoại</th>
+                                                <th class="cell" style="max-width: 300px">Địa chỉ</th>
+                                                <th class="cell" style="max-width: 90px">Tổng tiền</th>
+                                                <th class="cell text-center">Trạng thái</th>
                                                 <th class="cell">Thao tác</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="listArea">
+
                                             @{
                                                 if (Model != null)
                                                 {
+
                                                     int count = 0;
                                                     foreach (var item in Model)
                                                     {
-                                                        if (++count % 2 == 0)
+                                                        ++count;
+                                                        if (count <= pagesize)
                                                         {
-                                                            <tr>
+                                                            <tr id="trCount @count" style="display: table-row">
                                                                 <td class="cell">@(item.Id)</td>
                                                                 <td class="cell">@(item.OrderDate.ToString("HH:mm dd-MM-yyyy"))</td>
                                                                 <td class="cell">@(item.Customer.FullName)</td>
@@ -94,23 +100,15 @@
                                                                         <i class="fa fa-eye"></i>
                                                                     </a>
                                                                     <div class="modal fade" id="changeInfovobModal-" tabindex="-1" role="dialog" aria-labelledby="changeInfoVobModal-" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-
-
-
-
-                                                                        </div>
+                                                                        <div class="modal-dialog" role="document"></div>
                                                                     </div>
 
                                                                 </td>
-
-
-
                                                             </tr>
                                                         }
                                                         else
                                                         {
-                                                            <tr style="background: lightgray">
+                                                            <tr id="trCount @count" style="display: none">
                                                                 <td class="cell">@(item.Id)</td>
                                                                 <td class="cell">@(item.OrderDate.ToString("HH:mm dd-MM-yyyy"))</td>
                                                                 <td class="cell">@(item.Customer.FullName)</td>
@@ -141,28 +139,25 @@
                                                                         <i class="fa fa-eye"></i>
                                                                     </a>
                                                                     <div class="modal fade" id="changeInfovobModal-" tabindex="-1" role="dialog" aria-labelledby="changeInfoVobModal-" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-
-
-
-
-                                                                        </div>
+                                                                        <div class="modal-dialog" role="document"></div>
                                                                     </div>
 
                                                                 </td>
-
-
-
                                                             </tr>
                                                         }
-
                                                     }
-
                                                 }
                                             }
-                                        </tbody>
 
+                                        </tbody>
                                     </table>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12 d-flex justify-content-center">
+                                                <button type="button" class="btn btn-outline-warning" id="buttonShowReview" onclick="ShowMoreReviews(@pagesize)">Xem thêm</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div><!--//table-responsive-->
 
                             </div><!--//app-card-body-->
@@ -171,9 +166,7 @@
                     </div><!--//tab-pane-->
                 </div><!--//tab-content-->
             </div>
-        </div>
-</div>
-
+ 
 
 <script src="~/Plugins/js/datatable.js"></script>
 <script>
@@ -191,4 +184,32 @@
     function searchPhoneNumber(phoneNumber) {
         document.getElementById("submitsdt").click();
     }
+
+
+    //Get more reviews
+    function ShowMoreReviews(pageSize) {
+        var totalReview = document.getElementById('listArea').childElementCount;
+        console.log(totalReview);
+        var currentShow = totalReview;
+        for (let i = 1; i <= totalReview; i++) {
+            if (document.getElementById('trCount ' + i).style.display === 'none') {
+                currentShow = i;
+                break;
+            }
+        }
+        if (currentShow <= totalReview) {
+            for (let i = 0; i < pageSize; i++) {
+                let index = i + currentShow;
+                if (index <= totalReview) {
+                    document.getElementById('trCount ' + index).style.display = 'table-row';
+                }
+            }
+        }
+        if (currentShow >= totalReview) {
+            document.getElementById('buttonShowReview').style.display = 'none';
+        }
+    }
+
+
+
 </script>
