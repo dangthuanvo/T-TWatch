@@ -12,8 +12,7 @@ namespace Web.Core.Dto
         public string Name { get; set; }
         public string Alias { get; set; }
         public string Image { get; set; }
-        public int Quantity { get; set; }
-
+        public int? Quantity { get; set; }
         public int? Index { get; set; }
         public int? Status { get; set; }
         public double? Price { get; set; }
