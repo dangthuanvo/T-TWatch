@@ -26,7 +26,7 @@ namespace Web.Core.Model
         public string MetaDescription { get; set; }
         public string MetaRobots { get; set; }
         public string MetaRevisitAfter { get; set; }
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
         public string MetaContentLanguage { get; set; }
         public string MetaContentType { get; set; }
         public string UserDef1 { get; set; }

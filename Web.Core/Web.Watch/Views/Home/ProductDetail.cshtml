@@ -182,28 +182,31 @@
                                        
                                         <div class="container">
                                             <div class="row">
+                                                <div class="col-12 justify-content-center" id="writeReviewArea">
+                                                    @Html.Partial("~/Views/Partial/_pWriteReview.cshtml")
+                                                </div>
                                                 <div class="col-12 justify-content-center" id="reviewArea">
                                                     @{
                                                         int countReview = 0;
-                                                        // <!--Change to foreach-->
-                                                        for (int i = 1; i <= 10; i++)
-                                                        {
-                                                            if (++countReview <= pageReviewSize)
+                                                            // <!--Change to foreach-->
+                                                            for (int i = 1; i <= 10; i++)
                                                             {
-                                                                <div id="review @i" style="display: inline">
-                                                                    @Html.Partial("~/Views/Partial/_pReview.cshtml")
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div id="review @i" style="display: none;">
-                                                                    @Html.Partial("~/Views/Partial/_pReview.cshtml")
-                                                                </div>
-                                                            }
+                                                                if (++countReview <= pageReviewSize)
+                                                                {
+                                                                    <div id="review @i" style="display: inline">
+                                                                        @Html.Partial("~/Views/Partial/_pReview.cshtml")
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div id="review @i" style="display: none;">
+                                                                        @Html.Partial("~/Views/Partial/_pReview.cshtml")
+                                                                    </div>
+                                                                }
 
 
+                                                            }
                                                         }
-                                                    }
                                                 </div>
                                             </div>
                                         </div>
