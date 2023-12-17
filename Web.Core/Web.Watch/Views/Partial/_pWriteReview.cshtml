@@ -1,0 +1,94 @@
+﻿<div class="p-2 pb-3">
+    <div class="product-wap card rounded-0">
+
+        <div class="container">
+            <div style="padding-top: 10px;">
+                <span style="font-size: 20px; font-weight: 500;">Hãy để lại đánh giá của bạn!</span>
+            </div>
+
+            <div class="row" style="padding-top: 10px;">
+                <div class="col-lg-6">
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Số điện thoại:</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <span style="font-size: 20px;">tên sau khi check</span>
+                </div>
+            </div>
+            <div class="row d-flex" style="padding-bottom: 10px;">
+                <div></div>
+                <span style="font-size: 15px; padding-left: 20px;">Ngày mua: 11/5/2021</span>
+                <div class="row" style="padding-left: 20px">
+                    <div class="col-3">
+                        <span>Chất lượng sản phẩm:</span>
+                    </div>
+                    <div class="col-2">
+                        <ul class="list-unstyled mb-1 p" style="padding-left: 20px;">
+                            <li>
+                                <i class="text-warning fa fa-star" id="star1" onclick="setstar(1)"></i>
+                                <i class="text-warning fa fa-star" id="star2" onclick="setstar(2)"></i>
+                                <i class="text-warning fa fa-star" id="star3" onclick="setstar(3)"></i>
+                                <i class="text-warning fa fa-star" id="star4" onclick="setstar(4)"></i>
+                                <i class="text-warning fa fa-star" id="star5" onclick="setstar(5)"></i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-7">
+                        <span  id="QualText">Tuyệt vời</span>
+                    </div>
+                </div>
+                
+                <span style="padding-left: 20px;">Bình luận:</span><br>
+                <div class="input-group" style="padding-left: 20px;">
+                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function setstar(count) {
+        for (let i = 1; i <= 5; i++)
+        {
+            let elem = document.getElementById('star' + i);
+            elem.classList.remove("text-warning");
+            elem.classList.remove("text-muted");
+            if (i <= count) {
+
+                elem.classList.add("text-warning");
+            }
+            else {
+                elem.classList.add("text-muted");
+            }
+        }
+  
+        if (count == 1) {
+            document.getElementById('QualText').textContent = "Tệ";
+        }
+        else if (count == 2) {
+            document.getElementById('QualText').textContent = "Không hài lòng";
+        }
+        else if (count == 3) {
+            document.getElementById('QualText').textContent = "Bình thường";
+        }
+        else if (count == 4) {
+            document.getElementById('QualText').textContent = "Hài lòng";
+        }
+        else if (count == 5) {
+            document.getElementById('QualText').textContent = "Tuyệt vời";
+        }
+        else {
+            document.getElementById('QualText').textContent = "";
+        }
+
+    }
+
+</script>

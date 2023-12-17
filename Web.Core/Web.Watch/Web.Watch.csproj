@@ -1318,7 +1318,6 @@
     <Content Include="Global.asax" />
     <Content Include="Plugins\css\bootstrap.min.css" />
     <Content Include="Plugins\css\font-awesome.min.css" />
-    <Content Include="Plugins\css\owl.video.play.html" />
     <Content Include="Plugins\css\plugins.css" />
     <Content Include="Plugins\css\responsive.css" />
     <Content Include="Plugins\css\style-watch.css" />
@@ -1409,13 +1408,6 @@
     <Content Include="Resources\files\Product\xiaomi3.png" />
     <Content Include="Resources\files\Product\_0002_xiaomi-redmi-watch-2-lite-black.png" />
     <Content Include="Resources\files\wall-clock.png" />
-    <Content Include="Resources\Images\bg-auth.jpg" />
-    <Content Include="Resources\Images\dh.jpg" />
-    <Content Include="Resources\Images\gallery.jpg" />
-    <Content Include="Resources\Images\logo.PNG" />
-    <Content Include="Resources\Images\no_img.jpg" />
-    <Content Include="Resources\Images\slider-1.jpg" />
-    <Content Include="Resources\Images\slider-2.jpg" />
     <Content Include="Resources\_thumbs\Files\Gallery\830-300-830x300-12.png" />
     <Content Include="Resources\_thumbs\Files\Gallery\830-300-830x300-13.png" />
     <Content Include="Resources\_thumbs\Files\Gallery\830-300-830x300-14.png" />
@@ -1507,6 +1499,7 @@
     <Folder Include="Areas\Administrator\Views\Base\" />
     <Folder Include="Assets\" />
     <Folder Include="Models\" />
+    <Folder Include="Resources\Images\" />
     <Folder Include="Resources\Template\" />
   </ItemGroup>
   <ItemGroup>
@@ -1590,6 +1583,10 @@
     <Content Include="Views\Home\Tracking.cshtml" />
     <Content Include="Views\Home\ViewTracking.cshtml" />
     <Content Include="Views\Partial\_pReview.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\phutuctrantruong-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\phutuctrantruong-001-site1 - Web Deploy.pubxml" />
+    <Content Include="Views\Partial\_pWriteReview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web.Core\Web.Core.csproj">

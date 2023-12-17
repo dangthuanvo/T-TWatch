@@ -197,6 +197,9 @@
                                             </div>
 
                                             <div class="row">
+                                                <div class="col-12 justify-content-center" id="writeReviewArea">
+                                                    @Html.Partial("~/Views/Partial/_pWriteReview.cshtml")
+                                                </div>
                                                 <div class="col-12 justify-content-center" id="reviewArea">
                                                     @{
                                                         int countReview = 0;
@@ -214,9 +217,10 @@
                                                                 <div id="review @review.Id" style="display: none;">
                                                                     @Html.Partial("~/Views/Partial/_pReview.cshtml", review)
                                                                 </div>
+
+
                                                             }
                                                         }
-                                                    }
                                                 </div>
                                             </div>
                                         </div>
