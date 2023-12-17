@@ -195,16 +195,48 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-12 text-center">
-                        <a href="/Administrator/Product" class="btn btn-default">
-                            Trở lại danh sách
-                        </a>
-                        <button type="submit" class="btn btn-primary">
+                    <div>Danh sách các bình luận dành cho sản phẩm này</div>
+                    <form id="formSubmit" action="/Administrator/Product/Update" method="post">
+                        <table id="table" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Người bình luận</th>
+                                    <th>Nội dụng bình luận</th>
+                                    <th>Số sao đánh giá</th>
+                                    <th>Ngày bình luận</th>
+                                    <th>Cho phép hiển thị</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Reviews)
+                                {
+                                    <tr data-review-id="@item.Id">
+                                        <td>@item.CustomerName</td>
+                                        <td>@item.Content</td>
+                                        <td>@item.Star</td>
+                                        <td>@item.Created</td>
+                                        <td>
+                                            <div>
+                                                <input type="checkbox" class="active-checkbox" @(item.Active == 1 ? "checked" : "") />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <button id="updateCommentBtn" type="button">
                             <i class="fa fa-save"></i>
-                            Lưu lại
+                            Cập nhật danh sách bình luận
                         </button>
-                    </div>
+                        <div class="col-md-12 text-center">
+                            <a href="/Administrator/Product" class="btn btn-default">
+                                Trở lại danh sách
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Lưu lại
+                            </button>
+                        </div>
                 </div>
             </div>
         </div>
@@ -264,5 +296,45 @@
         CKEDITOR.replace('UserDef1')
     })
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#updateCommentBtn").click(function () {
+            // Create an array to store the modified data
+            var updatedData = [];
+
+            // Loop through each row
+            $("tr[data-review-id]").each(function () {
+                var row = $(this);
+                var reviewId = row.data("review-id");
+                var activeCheckbox = row.find(".active-checkbox");
+                var isActive = activeCheckbox.prop("checked");
+
+                // Add the data to the array
+                updatedData.push({
+                    Id: reviewId,
+                    Active: isActive ? 1 : 0
+                    // Add other properties as needed
+                });
+            });
+
+            // Send the data to the server using AJAX
+            $.ajax({
+                type: "POST",
+                url: "/Administrator/Product/UpdateComment", // Replace with the actual URL
+                contentType: "application/json",
+                data: JSON.stringify(updatedData),
+                success: function (result) {
+                    // Handle the success result if needed
+                    console.log(result);
+                },
+                error: function (error) {
+                    // Handle the error if needed
+                    console.error(error);
+                }
+            });
+        });
+    });
 </script>
 
