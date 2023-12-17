@@ -12,9 +12,11 @@ namespace Web.Watch.Areas.Administrator.Controllers
         MenuService menuService;
         AttributeService attributeService;
         ImportHistoryService importHistoryService;
+        ReviewService reviewService;
 
         public ProductController()
         {
+            this.reviewService = new ReviewService();
             this.importHistoryService = new ImportHistoryService();
             this.productService = new ProductService();
             this.menuService = new MenuService();
@@ -98,6 +100,19 @@ namespace Web.Watch.Areas.Administrator.Controllers
             product.Quantity = productService.GetById(product.Id).Quantity;
             this.productService.Update(product.Id, product);
             return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public ActionResult UpdateComment(List<ReviewActiveDto> reviewactive)
+        {
+            if (!this.CheckAuth())
+                return this.RedirectToLogin();
+            foreach (var review in reviewactive)
+            {
+                var reviewDto = reviewService.GetById((int)review.Id);
+                reviewDto.Active = (int)review.Active;
+                reviewService.Update(reviewDto.Id, reviewDto);
+            }
+            return Json(true);
         }
 
         public ActionResult Delete(int id)

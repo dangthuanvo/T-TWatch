@@ -71,6 +71,7 @@ namespace Web.Watch.Controllers
         public ActionResult ProductDetail(string alias)
         {
             ProductDto product = this.productService.GetByAlias(alias);
+            List<ReviewDto> reviews = reviewService.GetByProductID(product.Id);
             List<ProductDto> products = this.productService.GetByMenu(product.MenuId.Value);
             ViewData["products"] = products;
 
@@ -80,7 +81,12 @@ namespace Web.Watch.Controllers
             ViewBag.MetaRevisitAfter = product.MetaRevisitAfter;
             ViewBag.MetaContentLanguage = product.MetaContentLanguage;
             ViewBag.MetaContentType = product.MetaContentType;
-            return View(product);
+            ProductReviewDto productreviews = new ProductReviewDto()
+            {
+                Product = product,
+                Reviews = reviews
+            };
+            return View(productreviews);
         }
 
         public ActionResult Buy(int id)
@@ -145,6 +151,32 @@ namespace Web.Watch.Controllers
             cartdetail.OrderDetails = cart;
             cartdetail.Vouchers = voucherService.GetAllAvailable();
             return View(cartdetail);
+        }
+        public ActionResult Comment(string phonenumber, int productid)
+        {
+            this.SetSEO_Main();
+            bool ok = orderService.VerifyAbilityToComment(phonenumber, productid);
+            return Json(ok);
+        }
+        public ActionResult SubmitComment(string productid, string phonenumber, string comment, string star)
+        {
+            var product = productService.GetById(int.Parse(productid));
+            var customer = customerService.GetByPhoneNumber(phonenumber);
+            product.RateAmount += 1;
+            product.Rate = Math.Round((product.Rate * (product.RateAmount - 1.0) + double.Parse(star)) / product.RateAmount, 1);
+            ReviewDto review = new ReviewDto()
+            {
+                ProductId = int.Parse(productid),
+                Star = int.Parse(star),
+                Content = comment,
+                Active = 1,
+                CustomerName = customer.FullName,
+                Created = DateTime.Now,
+                CustomerCode = customer.Code,
+            };
+            reviewService.Insert(review);
+            productService.Update(product.Id, product);
+            return Json(true);
         }
         public ActionResult Tracking(string phonenumber)
         {

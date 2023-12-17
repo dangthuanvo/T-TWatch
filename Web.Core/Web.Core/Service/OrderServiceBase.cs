@@ -43,7 +43,26 @@ namespace Web.Core.Service
                     .ToList();
             }
         }
-
+        public virtual bool VerifyAbilityToComment(string phonenumber, int productid)
+        {
+            using (var context = new MyContext())
+            {
+                var query = from order in context.Orders
+                            join orderDetail in context.OrderDetails on order.Id equals orderDetail.OrderId
+                            join customer in context.Customers on order.CustomerCode equals customer.Code
+                            where customer.PhoneNumber == phonenumber
+                               && orderDetail.ProductId == productid
+                               && order.Status == 20
+                            select new
+                            {
+                                OrderId = order.Id,
+                                orderDetail.ProductId,
+                                orderDetail.ProductName,
+                                order.Status
+                            };
+                return query.Any();
+            }
+        }
         public virtual OrderDto GetById(int key)
         {
             using (var context = new MyContext())

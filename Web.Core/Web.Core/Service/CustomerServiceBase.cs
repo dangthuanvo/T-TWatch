@@ -29,7 +29,37 @@ namespace Web.Core.Service
 
         public virtual CustomerDto GetById(string key)
         {
-            throw new NotImplementedException();
+            using (var context = new MyContext())
+            {
+                return context.Customers
+                    .Where(x => x.Code == key)
+                    .Select(x => new CustomerDto()
+                    {
+                        Code = x.Code,
+                        PhoneNumber = x.PhoneNumber,
+                        FullName = x.FullName,
+                        Address = x.Address,
+                        Email = x.Email,
+                    })
+                    .FirstOrDefault();
+            }
+        }
+        public virtual CustomerDto GetByPhoneNumber(string key)
+        {
+            using (var context = new MyContext())
+            {
+                return context.Customers
+                    .Where(x => x.PhoneNumber == key)
+                    .Select(x => new CustomerDto()
+                    {
+                        Code = x.Code,
+                        PhoneNumber = x.PhoneNumber,
+                        FullName = x.FullName,
+                        Address = x.Address,
+                        Email = x.Email,
+                    })
+                    .FirstOrDefault();
+            }
         }
 
         public virtual CustomerDto Insert(CustomerDto entity)

@@ -117,6 +117,23 @@ namespace Web.Core.Service
         {
             using (var context = new MyContext())
             {
+                var query = context.Products
+                        .Where(x => x.Selling == true && x.Status == 10 && x.Quantity > 0)
+                        .Select(x => new ProductDto()
+                        {
+                            Id = x.Id,
+                            Alias = x.Alias,
+                            DiscountPercent = x.DiscountPercent,
+                            DiscountPrice = x.DiscountPrice,
+                            Quantity = x.Quantity,
+                            Image = x.Image,
+                            Price = x.Price,
+                            Name = x.Name,
+                            MetaDescription = x.MetaDescription,
+                        })
+                        .ToString(); // Log the generated SQL query
+                Console.WriteLine("SQL Query: " + query);
+
                 return context.Products
                     .Where(x => x.Selling == true && x.Status == 10 && x.Quantity > 0)
                     .Select(x => new ProductDto()
@@ -295,7 +312,7 @@ namespace Web.Core.Service
         {
             using (var context = new MyContext())
             {
-                return context.Products
+                var product = context.Products
                     .Where(x => x.Id == key)
                     .Select(x => new ProductDto()
                     {
@@ -308,6 +325,8 @@ namespace Web.Core.Service
                         DiscountPrice = x.DiscountPrice,
                         Selling = x.Selling,
                         Image = x.Image,
+                        Rate = x.Rate,
+                        RateAmount = x.RateAmount,
                         Index = x.Index,
                         Quantity = x.Quantity,
                         MenuId = x.MenuId,
@@ -348,8 +367,19 @@ namespace Web.Core.Service
                             Image = y.Image,
                             Index = y.Index
                         }).ToList(),
+                        Reviews = x.Reviews.Select(y => new ReviewDto()
+                        {
+                            Id = y.Id,
+                            Star = y.Star,
+                            Content = y.Content,
+                            Active = y.Active,
+                            Created = y.Created,
+                            CustomerCode = y.CustomerCode,
+                            CustomerName = y.CustomerName,
+                        }).ToList(),
                     })
                     .FirstOrDefault();
+                return product;
             }
         }
 
@@ -374,6 +404,8 @@ namespace Web.Core.Service
                         MenuId = x.MenuId,
                         Price = x.Price,
                         Name = x.Name,
+                        Rate = x.Rate,
+                        RateAmount = x.RateAmount,
                         Quantity = x.Quantity,
                         ShortDescription = x.ShortDescription,
                         Status = x.Status,
@@ -413,6 +445,16 @@ namespace Web.Core.Service
                         {
                             Image = y.Image,
                             Index = y.Index
+                        }).ToList(),
+                        Reviews = x.Reviews.Select(y => new ReviewDto()
+                        {
+                            Id = y.Id,
+                            Star = y.Star,
+                            Content = y.Content,
+                            Active = y.Active,
+                            Created = y.Created,
+                            CustomerCode = y.CustomerCode,
+                            CustomerName = y.CustomerName,
                         }).ToList(),
                     })
                     .FirstOrDefault();
@@ -507,6 +549,8 @@ namespace Web.Core.Service
                     product.Index = entity.Index;
                     product.Status = entity.Status;
                     product.Price = entity.Price;
+                    product.Rate = entity.Rate;
+                    product.RateAmount = entity.RateAmount;
                     product.DiscountPrice = entity.DiscountPrice;
                     product.Quantity = entity.Quantity;
                     product.DiscountPercent = entity.DiscountPercent;

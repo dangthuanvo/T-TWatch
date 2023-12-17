@@ -16,6 +16,8 @@ namespace Web.Core.Model
         public int? Index { get; set; }
         public int? Status { get; set; }
         public double? Price { get; set; }
+        public double Rate { get; set; }
+        public int RateAmount { get; set; }
         public double? DiscountPrice { get; set; }
         public double? DiscountPercent { get; set; }
         public bool? Selling { get; set; }
