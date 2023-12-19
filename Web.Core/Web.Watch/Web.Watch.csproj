@@ -188,6 +188,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\PaymentInfomation.cs" />
+    <Compile Include="Models\Payments\VnPayLibrary.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Content Include="Plugins\js\datatable.js" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -5,6 +5,7 @@ namespace Web.Core.Dto
 {
     public class OrderDto
     {
+        
         public int Id { get; set; }
         public string CustomerCode { get; set; }
         public DateTime OrderDate { get; set; }

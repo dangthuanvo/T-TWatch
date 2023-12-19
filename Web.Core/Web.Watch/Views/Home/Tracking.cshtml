@@ -3,6 +3,8 @@
 @model List<OrderDto>
 @{
     ViewBag.Title = "Danh sách đơn hàng";
+    int pagesize = 5;
+    string phone = ViewBag.phoneTracking;
 }
 
 
@@ -113,8 +115,127 @@
                                                                 <div class="modal fade" id="changeInfovobModal-" tabindex="-1" role="dialog" aria-labelledby="changeInfoVobModal-" aria-hidden="true">
                                                                     <div class="modal-dialog" role="document">
 
+            
+            <form id="formSubmit" style="text-align: center;" action="/Home/Tracking" method="post">
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-lg-3"> </div>
+                    <div class="col-lg-6" style="padding-left: 20px;">
+                        
+                            <div style="text-align: center; padding-top: 10px;">
+                                <span style="font-size: 15px; font-weight: 300; ">Nhập số điện thoại của bạn...</span>
+                            </div>
+                            <div class="input-group mb-3" style=" text-align: center">
+                                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="phoneNumber" name="phoneNumber" value=@phone>
+                            </div>
+                            <div class="col-lg-3"></div>
+                        <button type="submit" id="submitsdt" style="display: none;"></button>
+                    </div>
+                </div>
+            </form>
+                    </div>
+    </div>
+            <div style="padding-left: 30px; padding-right: 30px;">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
+                        <div class="app-card app-card-orders-table shadow-sm mb-5">
+                            <div class="app-card-body">
+                                <div class="table-responsive">
+                                    <table class="table app-table-hover mb-0 text-left">
+                                        <thead>
+                                            <tr>
+                                                <th class="cell" style="max-width: 110px">Mã đơn hàng</th>
+                                                <th class="cell" style="max-width: 150px">Ngày đặt hàng</th>
+                                                <th class="cell" style="max-width: 200px">Tên khách hàng</th>
+                                                <th class="cell" style="max-width: 150px">Số điện thoại</th>
+                                                <th class="cell" style="max-width: 300px">Địa chỉ</th>
+                                                <th class="cell" style="max-width: 90px">Tổng tiền</th>
+                                                <th class="cell text-center">Trạng thái</th>
+                                                <th class="cell">Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="listArea">
 
+                                            @{
+                                                if (Model != null)
+                                                {
 
+                                                    int count = 0;
+                                                    foreach (var item in Model)
+                                                    {
+                                                        ++count;
+                                                        if (count <= pagesize)
+                                                        {
+                                                            <tr id="trCount @count" style="display: table-row">
+                                                                <td class="cell">@(item.Id)</td>
+                                                                <td class="cell">@(item.OrderDate.ToString("HH:mm dd-MM-yyyy"))</td>
+                                                                <td class="cell">@(item.Customer.FullName)</td>
+                                                                <td class="cell">@(item.Customer.PhoneNumber)</td>
+                                                                <td class="cell">@(item.Customer.Address)</td>
+                                                                <td class="cell">@(DataHelper.ToCurrency(item.TotalAmount))</td>
+                                                                <td class="cell text-center">
+                                                                    @if (item.Status == 10)
+                                                                    {
+                                                                        <button type="button" class="btn btn-outline-warning" style="color: darkorange;" disabled>Đã tiếp nhận</button>
+                                                                    }
+                                                                    else if (item.Status == 20)
+                                                                    {
+                                                                        <button type="button" class="btn btn-outline-primary" style="color:blue;" disabled>Đã thanh toán</button>
+                                                                    }
+                                                                    else if (item.Status == 30)
+                                                                    {
+                                                                        <button type="button" class="btn btn-outline-danger" style="color:firebrick;" disabled>Đã hủy</button>
+                                                                    }
+                                                                    else if (item.Status == 40)
+                                                                    {
+                                                                        <button type="button" class="btn btn-outline-info" style="color: dodgerblue" disabled>Đã giao cho đơn vị vận chuyển</button>
+                                                                    }
+                                                                </td>
+
+                                                                <td>
+                                                                    <a href="/Home/ViewTracking?id=@item.Id" class="btn btn-success btn-xs">
+                                                                        <i class="fa fa-eye"></i>
+                                                                    </a>
+                                                                    <div class="modal fade" id="changeInfovobModal-" tabindex="-1" role="dialog" aria-labelledby="changeInfoVobModal-" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document"></div>
+                                                                    </div>
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr id="trCount @count" style="display: none">
+                                                                <td class="cell">@(item.Id)</td>
+                                                                <td class="cell">@(item.OrderDate.ToString("HH:mm dd-MM-yyyy"))</td>
+                                                                <td class="cell">@(item.Customer.FullName)</td>
+                                                                <td class="cell">@(item.Customer.PhoneNumber)</td>
+                                                                <td class="cell">@(item.Customer.Address)</td>
+                                                                <td class="cell">@(DataHelper.ToCurrency(item.TotalAmount))</td>
+                                                                <td class="cell text-center">
+                                                                    @if (item.Status == 10)
+                                                                    {
+                                                                        <button type="button" class="btn btn-outline-warning" style="color: darkorange;" disabled>Đã tiếp nhận</button>
+                                                                    }
+                                                                    else if (item.Status == 20)
+                                                                    {
+                                                                        <button type="button" class="btn btn-outline-primary" style="color:blue;" disabled>Đã thanh toán</button>
+                                                                    }
+                                                                    else if (item.Status == 30)
+                                                                    {
+                                                                        <button type="button" class="btn btn-outline-danger" style="color:firebrick;" disabled>Đã hủy</button>
+                                                                    }
+                                                                    else if (item.Status == 40)
+                                                                    {
+                                                                        <button type="button" class="btn btn-outline-info" style="color: dodgerblue" disabled>Đã giao cho đơn vị vận chuyển</button>
+                                                                    }
+                                                                </td>
+
+                                                                <td>
+                                                                    <a href="/Home/ViewTracking?id=@item.Id" class="btn btn-success btn-xs">
+                                                                        <i class="fa fa-eye"></i>
+                                                                    </a>
+                                                                    <div class="modal fade" id="changeInfovobModal-" tabindex="-1" role="dialog" aria-labelledby="changeInfoVobModal-" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document"></div>
 
                                                                     </div>
                                                                 </div>
@@ -163,27 +284,35 @@
 
 
 
+
                                                                     </div>
                                                                 </div>
 
                                                             </td>
-
-
-
                                                         </tr>
-                                                    }
 
+                                                    }
                                                 }
 
                                             }
+
                                         }
                                     </tbody>
 
                                 </table>
                             </div><!--//table-responsive-->
 
-                        </div><!--//app-card-body-->
-                    </div><!--//app-card-->
+
+                                        </tbody>
+                                    </table>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12 d-flex justify-content-center">
+                                                <button type="button" class="btn btn-outline-warning" id="buttonShowReview" onclick="ShowMoreReviews(@pagesize)">Xem thêm</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--//table-responsive--
 
                 </div><!--//tab-pane-->
             </div><!--//tab-content-->
@@ -204,10 +333,35 @@
     //    }
     //});
 
+    function searchPhoneNumber(phoneNumber) {
+        document.getElementById("submitsdt").click();
+    }
 
-    //function searchPhoneNumber(phoneNumber) {
-    //    document.getElementById("submitsdt").click();
-    //}
+
+    //Get more reviews
+    function ShowMoreReviews(pageSize) {
+        var totalReview = document.getElementById('listArea').childElementCount;
+        console.log(totalReview);
+        var currentShow = totalReview;
+        for (let i = 1; i <= totalReview; i++) {
+            if (document.getElementById('trCount ' + i).style.display === 'none') {
+                currentShow = i;
+                break;
+            }
+        }
+        if (currentShow <= totalReview) {
+            for (let i = 0; i < pageSize; i++) {
+                let index = i + currentShow;
+                if (index <= totalReview) {
+                    document.getElementById('trCount ' + index).style.display = 'table-row';
+                }
+            }
+        }
+        if (currentShow >= totalReview) {
+            document.getElementById('buttonShowReview').style.display = 'none';
+        }
+    }
+
 </script>
 <!-- Make sure to include jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
