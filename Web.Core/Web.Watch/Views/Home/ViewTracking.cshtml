@@ -41,6 +41,7 @@
                                         <option value="20" @(Model.Status == 20 ? "selected" : "")>Đã thanh toán</option>
                                         <option value="30" @(Model.Status == 30 ? "selected" : "")>Đã hủy</option>
                                         <option value="40" @(Model.Status == 40 ? "selected" : "")>Đã giao cho đơn vị vận chuyển</option>
+                                        <option value="40" @(Model.Status == 50 ? "selected" : "")>Đã hoàn thành</option>
                                     </select>
                                 </div>
                             </div>
@@ -119,6 +120,10 @@
                                     <tr>
                                         <td>Địa chỉ liên hệ</td>
                                         <td>@Model.Customer.Address</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hình thức thanh toán</td>
+                                        <td>@Model.PaymentMethod</td>
                                     </tr>
                                     <tr>
                                         <td>Mã giảm giá đã áp dụng</td>

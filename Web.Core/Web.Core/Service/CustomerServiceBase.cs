@@ -44,12 +44,12 @@ namespace Web.Core.Service
                     .FirstOrDefault();
             }
         }
-        public virtual CustomerDto GetByPhoneNumber(string key)
+        public virtual CustomerDto GetByEmail(string key)
         {
             using (var context = new MyContext())
             {
                 return context.Customers
-                    .Where(x => x.PhoneNumber == key)
+                    .Where(x => x.Email == key)
                     .Select(x => new CustomerDto()
                     {
                         Code = x.Code,
