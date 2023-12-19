@@ -11,8 +11,47 @@ namespace Web.Core.Service
         SendEmailServiceBase sendEmailServiceBase = new SendEmailServiceBase();
         public virtual void DeleteById(int key, string userSession = null)
         {
-            throw new NotImplementedException();
+            using (var context = new MyContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    Order order = context.Orders.FirstOrDefault(x => x.Id == key);
+
+                    if (order != null)
+                    {
+                        // Update voucher
+                        if (order.VoucherId.HasValue)
+                        {
+                            Voucher voucher = context.Vouchers.FirstOrDefault(v => v.Id == order.VoucherId.Value);
+                            if (voucher != null)
+                            {
+                                voucher.IsActive += 1;
+                            }
+                        }
+                        var orderdetails = context.OrderDetails.Where(v => v.OrderId == order.Id).ToList();
+                        // Update product quantities
+                        foreach (var orderDetail in orderdetails)
+                        {
+                            Product product = context.Products.FirstOrDefault(p => p.Id == orderDetail.ProductId);
+                            if (product != null)
+                            {
+                                product.Quantity += orderDetail.Qty;
+                            }
+                        }
+
+                        // Remove order details
+                        context.OrderDetails.RemoveRange(order.OrderDetails);
+
+                        // Remove order
+                        context.Orders.Remove(order);
+
+                        context.SaveChanges();
+                        transaction.Commit();
+                    }
+                }
+            }
         }
+
 
         public virtual List<OrderDto> GetAll()
         {
@@ -189,6 +228,7 @@ namespace Web.Core.Service
                         Customer = customersWithSamePhoneNumber[0],
                         Note = entity.Note,
                         Status = 10,
+                        SecretCode = entity.SecretCode,
                         Created = dateNow,
                         CustomerCode = entity.CustomerCode,
                         VoucherId = entity.VoucherId,
@@ -308,6 +348,27 @@ namespace Web.Core.Service
                     .ToList();
 
                 return orders;
+            }
+        }
+        public virtual OrderDto GetBySecretCode(long secretCode)
+        {
+            // Implement your data retrieval logic here, interacting with the database or other data source
+            // This is just a placeholder, you should replace it with your actual data retrieval code
+
+            // Example: Using Entity Framework to query orders by secret code
+            using (var dbContext = new MyContext()) // Replace YourDbContext with your actual DbContext
+            {
+                var order = dbContext.Orders
+                    .Where(o => o.SecretCode == secretCode)
+                    .Select(o => new OrderDto
+                    {
+                        Id = o.Id,
+                        CustomerCode = o.CustomerCode,
+                        // Map other properties as needed
+                    })
+                    .FirstOrDefault();
+
+                return order;
             }
         }
         public virtual void SendOTP(string email, string OTP)

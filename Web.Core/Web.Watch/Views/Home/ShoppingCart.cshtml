@@ -157,19 +157,6 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Phương thức thanh toán <span class="text-red">(*)</span></td>
-
-                                    <td>
-                                        <select id="selectPayment" class="form-select" aria-label="Default select example" onchange="getMethodPayment()">
-                                            <option value="1" selected>Thanh toán khi nhận hàng</option>
-                                            <option value="2">Thanh toán qua kênh VNPay</option>
-                                            <option value="3">Thay toán qua Paypal</option>
-                                        </select>
-                                    </td>
-                                        <input style="display: none;" type="text" name="PaymentMethod" value="1" class="form-control form-control-sm" id="paymentBinding" required />
-
-                                </tr>
-                                <tr>
                                     <td>Ghi chú</td>
                                     <td>
                                         <textarea rows="2" name="Note" class="form-control"></textarea>
@@ -182,6 +169,7 @@
                                     <td>
                                         <select name="PaymentMethod" class="form-control form-control-sm" id="paymentMethod">
                                             <option value="Paypal" selected>Thanh toán bằng Paypal</option>
+                                            <option value="VnPay" selected>Thanh toán bằng VnPay</option>
                                             <option value="COD" selected>Thanh toán khi nhận hàng</option>
                                         </select>
                                     </td>
