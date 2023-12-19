@@ -1,11 +1,12 @@
-﻿using System.Data.Entity;
+using System.Data.Entity;
 using Web.Core.Model;
 
 namespace Web.Core.Service
 {
     public class MyContext : DbContext
     {
-        public MyContext() : base("data source=PCOFACJ\\SQLEXPRESS;initial catalog=WatchStore;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
+
+        public MyContext() : base("data source=.\\SQLEXPRESS;initial catalog=WatchStore;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
         {
         }
 

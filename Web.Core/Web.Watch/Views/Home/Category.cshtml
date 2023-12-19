@@ -14,7 +14,10 @@
         <div class="col-lg-3">
             <h1 class="h2 pb-4">Danh mục</h1>
             <ul class="list-unstyled templatemo-accordion">
-
+                <span class="collapsed d-flex justify-content-between h3 text-decoration-none" onclick="window.location.href='/danh-muc/all-1'" style=" padding-bottom: 16px; font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
+                    Tất cả
+                </span>
+                
                 @foreach (var menu in menus)
                 {
                     <li class="pb-3">
@@ -71,13 +74,13 @@
                     {
                         if (++numProduct <= pageSize)
                         {
-                            <div class="col-md-4" id="product @numProduct" >
+                            <div class="col-md-4" id="product @numProduct" style="height: 500px; width: 260px;" >
                                 @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
                             </div>
                         }
                         else
                         {
-                            <div class="col-md-4" id="product @numProduct" style="display: none">
+                            <div class="col-md-4" id="product @numProduct"  style="display: none; height: 500px; width: 260px;">
                                 @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
                             </div>
                         }
