@@ -12,183 +12,283 @@
 <link rel="stylesheet" href="~/Plugins/css/DataTable.css" />
 <div class="p-2 pb-3">
     <div class="product-wap card rounded-0">
-      
-            <div style="padding-top: 10px; text-align: center">
-                <span style="font-size: 25px; font-weight: 500; ">Tìm kiếm thông tin đơn hàng</span>
-            </div>
 
-            
-            <form id="formSubmit" style="text-align: center;" action="/Home/Tracking" method="post">
-                <div class="row" style="padding-top: 10px;">
-                    <div class="col-lg-3"> </div>
-                    <div class="col-lg-6" style="padding-left: 20px;">
-                        
-                            <div style="text-align: center; padding-top: 10px;">
-                                <span style="font-size: 15px; font-weight: 300; ">Nhập số điện thoại của bạn...</span>
-                            </div>
-                            <div class="input-group mb-3" style=" text-align: center">
-                                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="phoneNumber" name="phoneNumber">
-                            </div>
-                            <div class="col-lg-3"></div>
-                        <button type="submit" id="submitsdt" style="display: none;"></button>
-                    </div>
+        <div style="padding-top: 10px; text-align: center">
+            <span style="font-size: 25px; font-weight: 500; ">Tìm kiếm thông tin đơn hàng</span>
+        </div>
+
+
+        <div class="row" style="padding-top: 10px;">
+            <div class="col-lg-3"> </div>
+            <div class="col-lg-6" style="padding-left: 20px;">
+
+                <div style="text-align: center; padding-top: 10px;">
+                    <span style="font-size: 15px; font-weight: 300; ">Nhập email của bạn...</span>
                 </div>
-            </form>
-                    
-            <div class="container">
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
-                        <div class="app-card app-card-orders-table shadow-sm mb-5">
-                            <div class="app-card-body">
-                                <div class="table-responsive">
-                                    <table class="table app-table-hover mb-0 text-left">
-                                        <thead>
-                                            <tr>
-                                                <th class="cell">Mã đơn hàng</th>
-                                                <th class="cell">Ngày đặt hàng</th>
-                                                <th class="cell">Tên khách hàng</th>
-                                                <th class="cell">Số điện thoại</th>
-                                                <th class="cell">Địa chỉ</th>
-                                                <th class="cell">Tổng tiền</th>
-                                                <th class="cell  text-center">Trạng thái</th>
-                                                <th class="cell">Thao tác</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @{
-                                                if (Model != null)
+                <div class="input-group mb-3" style=" text-align: center">
+                    <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="Email" name="Email">
+                </div>
+                <div class="col-lg-3"></div>
+                <button type="submit" id="submitemail" class="btn btn-success">Gửi mã OTP</button>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 10px;">
+            <div class="col-lg-3"> </div>
+            <div class="col-lg-6" style="padding-left: 20px;">
+
+                <div style="text-align: center; padding-top: 10px;">
+                    <span style="font-size: 15px; font-weight: 300; ">Nhập OTP vừa được gửi đến email của bạn...</span>
+                </div>
+                <div class="input-group mb-3" style=" text-align: center">
+                    <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="EnterOTP" name="EnterOTP">
+                </div>
+                <div class="col-lg-3"></div>
+                <button type="submit" id="submitOTP" class="btn btn-success">Xác nhận</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
+                    <div class="app-card app-card-orders-table shadow-sm mb-5">
+                        <div class="app-card-body">
+                            <div class="table-responsive">
+                                <table class="table app-table-hover mb-0 text-left">
+                                    <thead>
+                                        <tr>
+                                            <th class="cell">Mã đơn hàng</th>
+                                            <th class="cell">Ngày đặt hàng</th>
+                                            <th class="cell">Tên khách hàng</th>
+                                            <th class="cell">Số điện thoại</th>
+                                            <th class="cell">Địa chỉ</th>
+                                            <th class="cell">Tổng tiền</th>
+                                            <th class="cell  text-center">Trạng thái</th>
+                                            <th class="cell">Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            if (Model != null)
+                                            {
+                                                int count = 0;
+                                                foreach (var item in Model)
                                                 {
-                                                    int count = 0;
-                                                    foreach (var item in Model)
+                                                    if (++count % 2 == 0)
                                                     {
-                                                        if (++count % 2 == 0)
-                                                        {
-                                                            <tr>
-                                                                <td class="cell">@(item.Id)</td>
-                                                                <td class="cell">@(item.OrderDate.ToString("HH:mm dd-MM-yyyy"))</td>
-                                                                <td class="cell">@(item.Customer.FullName)</td>
-                                                                <td class="cell">@(item.Customer.PhoneNumber)</td>
-                                                                <td class="cell">@(item.Customer.Address)</td>
-                                                                <td class="cell">@(DataHelper.ToCurrency(item.TotalAmount))</td>
-                                                                <td class="cell text-center">
-                                                                    @if (item.Status == 10)
-                                                                    {
-                                                                        <button type="button" class="btn btn-outline-warning" style="color: darkorange;" disabled>Đã tiếp nhận</button>
-                                                                    }
-                                                                    else if (item.Status == 20)
-                                                                    {
-                                                                        <button type="button" class="btn btn-outline-primary" style="color:blue;" disabled>Đã thanh toán</button>
-                                                                    }
-                                                                    else if (item.Status == 30)
-                                                                    {
-                                                                        <button type="button" class="btn btn-outline-danger" style="color:firebrick;" disabled>Đã hủy</button>
-                                                                    }
-                                                                    else if (item.Status == 40)
-                                                                    {
-                                                                        <button type="button" class="btn btn-outline-info" style="color: dodgerblue" disabled>Đã giao cho đơn vị vận chuyển</button>
-                                                                    }
-                                                                </td>
+                                                        <tr>
+                                                            <td class="cell">@(item.Id)</td>
+                                                            <td class="cell">@(item.OrderDate.ToString("HH:mm dd-MM-yyyy"))</td>
+                                                            <td class="cell">@(item.Customer.FullName)</td>
+                                                            <td class="cell">@(item.Customer.PhoneNumber)</td>
+                                                            <td class="cell">@(item.Customer.Address)</td>
+                                                            <td class="cell">@(DataHelper.ToCurrency(item.TotalAmount))</td>
+                                                            <td class="cell text-center">
+                                                                @if (item.Status == 10)
+                                                                {
+                                                                    <button type="button" class="btn btn-outline-warning" style="color: darkorange;" disabled>Đã tiếp nhận</button>
+                                                                }
+                                                                else if (item.Status == 20)
+                                                                {
+                                                                    <button type="button" class="btn btn-outline-primary" style="color:blue;" disabled>Đã thanh toán</button>
+                                                                }
+                                                                else if (item.Status == 30)
+                                                                {
+                                                                    <button type="button" class="btn btn-outline-danger" style="color:firebrick;" disabled>Đã hủy</button>
+                                                                }
+                                                                else if (item.Status == 40)
+                                                                {
+                                                                    <button type="button" class="btn btn-outline-info" style="color: dodgerblue" disabled>Đã giao cho đơn vị vận chuyển</button>
+                                                                }
+                                                                else if (item.Status == 50)
+                                                                {
+                                                                    <button type="button" class="btn btn-outline-info" style="color: dodgerblue" disabled>Đã hoàn thành</button>
+                                                                }
+                                                            </td>
 
-                                                                <td>
-                                                                    <a href="/Home/ViewTracking?id=@item.Id" class="btn btn-success btn-xs">
-                                                                        <i class="fa fa-eye"></i>
-                                                                    </a>
-                                                                    <div class="modal fade" id="changeInfovobModal-" tabindex="-1" role="dialog" aria-labelledby="changeInfoVobModal-" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
+                                                            <td>
+                                                                <a href="/Home/ViewTracking?id=@item.Id" class="btn btn-success btn-xs">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </a>
+                                                                <div class="modal fade" id="changeInfovobModal-" tabindex="-1" role="dialog" aria-labelledby="changeInfoVobModal-" aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
 
 
 
 
-                                                                        </div>
                                                                     </div>
+                                                                </div>
 
-                                                                </td>
-
-
-
-                                                            </tr>
-                                                        }
-                                                        else
-                                                        {
-                                                            <tr style="background: lightgray">
-                                                                <td class="cell">@(item.Id)</td>
-                                                                <td class="cell">@(item.OrderDate.ToString("HH:mm dd-MM-yyyy"))</td>
-                                                                <td class="cell">@(item.Customer.FullName)</td>
-                                                                <td class="cell">@(item.Customer.PhoneNumber)</td>
-                                                                <td class="cell">@(item.Customer.Address)</td>
-                                                                <td class="cell">@(DataHelper.ToCurrency(item.TotalAmount))</td>
-                                                                <td class="cell text-center">
-                                                                    @if (item.Status == 10)
-                                                                    {
-                                                                        <button type="button" class="btn btn-outline-warning" style="color: darkorange;" disabled>Đã tiếp nhận</button>
-                                                                    }
-                                                                    else if (item.Status == 20)
-                                                                    {
-                                                                        <button type="button" class="btn btn-outline-primary" style="color:blue;" disabled>Đã thanh toán</button>
-                                                                    }
-                                                                    else if (item.Status == 30)
-                                                                    {
-                                                                        <button type="button" class="btn btn-outline-danger" style="color:firebrick;" disabled>Đã hủy</button>
-                                                                    }
-                                                                    else if (item.Status == 40)
-                                                                    {
-                                                                        <button type="button" class="btn btn-outline-info" style="color: dodgerblue" disabled>Đã giao cho đơn vị vận chuyển</button>
-                                                                    }
-                                                                </td>
-
-                                                                <td>
-                                                                    <a href="/Home/ViewTracking?id=@item.Id" class="btn btn-success btn-xs">
-                                                                        <i class="fa fa-eye"></i>
-                                                                    </a>
-                                                                    <div class="modal fade" id="changeInfovobModal-" tabindex="-1" role="dialog" aria-labelledby="changeInfoVobModal-" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
+                                                            </td>
 
 
 
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr style="background: lightgray">
+                                                            <td class="cell">@(item.Id)</td>
+                                                            <td class="cell">@(item.OrderDate.ToString("HH:mm dd-MM-yyyy"))</td>
+                                                            <td class="cell">@(item.Customer.FullName)</td>
+                                                            <td class="cell">@(item.Customer.PhoneNumber)</td>
+                                                            <td class="cell">@(item.Customer.Address)</td>
+                                                            <td class="cell">@(DataHelper.ToCurrency(item.TotalAmount))</td>
+                                                            <td class="cell text-center">
+                                                                @if (item.Status == 10)
+                                                                {
+                                                                    <button type="button" class="btn btn-outline-warning" style="color: darkorange;" disabled>Đã tiếp nhận</button>
+                                                                }
+                                                                else if (item.Status == 20)
+                                                                {
+                                                                    <button type="button" class="btn btn-outline-primary" style="color:blue;" disabled>Đã thanh toán</button>
+                                                                }
+                                                                else if (item.Status == 30)
+                                                                {
+                                                                    <button type="button" class="btn btn-outline-danger" style="color:firebrick;" disabled>Đã hủy</button>
+                                                                }
+                                                                else if (item.Status == 40)
+                                                                {
+                                                                    <button type="button" class="btn btn-outline-info" style="color: dodgerblue" disabled>Đã giao cho đơn vị vận chuyển</button>
+                                                                }
+                                                            </td>
 
-                                                                        </div>
+                                                            <td>
+                                                                <a href="/Home/ViewTracking?id=@item.Id" class="btn btn-success btn-xs">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </a>
+                                                                <div class="modal fade" id="changeInfovobModal-" tabindex="-1" role="dialog" aria-labelledby="changeInfoVobModal-" aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+
+
+
+
                                                                     </div>
+                                                                </div>
 
-                                                                </td>
+                                                            </td>
 
 
 
-                                                            </tr>
-                                                        }
-
+                                                        </tr>
                                                     }
 
                                                 }
+
                                             }
-                                        </tbody>
+                                        }
+                                    </tbody>
 
-                                    </table>
-                                </div><!--//table-responsive-->
+                                </table>
+                            </div><!--//table-responsive-->
 
-                            </div><!--//app-card-body-->
-                        </div><!--//app-card-->
+                        </div><!--//app-card-body-->
+                    </div><!--//app-card-->
 
-                    </div><!--//tab-pane-->
-                </div><!--//tab-content-->
-            </div>
+                </div><!--//tab-pane-->
+            </div><!--//tab-content-->
         </div>
+    </div>
 </div>
 
 
 <script src="~/Plugins/js/datatable.js"></script>
 <script>
-    var sdt = document.getElementById("phoneNumber");
+    //var sdt = document.getElementById("phoneNumber");
 
 
-    sdt.addEventListener("input", function (e) {
-        console.log(sdt);
-        if (sdt.value.length == 10) {
-            searchPhoneNumber(sdt.value);
-        }
-    });
+    //sdt.addEventListener("input", function (e) {
+    //    console.log(sdt);
+    //    if (sdt.value.length == 10) {
+    //        searchPhoneNumber(sdt.value);
+    //    }
+    //});
 
 
-    function searchPhoneNumber(phoneNumber) {
-        document.getElementById("submitsdt").click();
-    }
+    //function searchPhoneNumber(phoneNumber) {
+    //    document.getElementById("submitsdt").click();
+    //}
 </script>
+<!-- Make sure to include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // When the "Gửi mã OTP" button is clicked
+        $("#submitemail").on("click", function () {
+            // Get the value of the email input
+            var email = $("#Email").val();
+
+            // Validate the email (you may want to add more robust email validation)
+            if (email.trim() === "") {
+                alert("Please enter a valid email address.");
+                return;
+            }
+
+            // Assuming you want to perform an AJAX request to a server endpoint to send the OTP
+            // Replace the URL with the actual endpoint URL
+            var endpointUrl = "/Home/TrackingSendEmail";
+
+            // Example AJAX request using jQuery
+            $.ajax({
+                type: "POST",
+                url: endpointUrl,
+                data: { email: email },
+                success: function (response) {
+                    // Handle the success response
+                    alert("OTP sent successfully!");
+                },
+                error: function (error) {
+                    // Handle the error response
+                    alert("Error sending OTP. Please try again later.");
+                    console.error("Error:", error);
+                }
+            });
+        });
+    });
+</script>
+<!-- Make sure to include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // When the "Xác nhận" button is clicked
+        $("#submitOTP").on("click", function () {
+            // Get the value of the OTP input
+            var EnterOTP = $("#EnterOTP").val();
+
+            // Validate the OTP (you may want to add more robust validation)
+            if (EnterOTP.trim() === "") {
+                alert("Please enter the OTP.");
+                return;
+            }
+
+            // Assuming you want to perform an AJAX request to a server endpoint to verify the OTP
+            // Replace the URL with the actual endpoint URL
+            var endpointUrl = "/Home/TrackingConfirmedEmail";
+
+            // Example AJAX request using jQuery
+            $.ajax({
+                type: "POST",
+                url: endpointUrl,
+                data: { EnterOTP: EnterOTP },
+                success: function (response) {
+                    // Handle the success response
+                    if (response === false) {
+                        alert("OTP wrong, try again!");
+                    } else {
+                        var email = $("#Email").val();
+                        window.location.href = '/Home/Tracking?email=' + encodeURIComponent(email);
+                    }
+                },
+                error: function (error) {
+                    // Handle the error response
+                    alert("Error verifying OTP. Please try again.");
+                    console.error("Error:", error);
+                }
+            });
+        });
+    });
+</script>
+
+

@@ -40,6 +40,7 @@
                             <th>Số điện thoại</th>
                             <th>Địa chỉ liên hệ</th>
                             <th>Tổng tiền</th>
+                            <th>Hình thức thanh toán</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -54,6 +55,7 @@
                                 <td>@(item.Customer.PhoneNumber)</td>
                                 <td>@(item.Customer.Address)</td>
                                 <td class="text-right">@(DataHelper.ToCurrency(item.TotalAmount))</td>
+                                <td>@(item.PaymentMethod)</td>
                                 <td class="text-center">
                                     @if (item.Status == 10)
                                     {
@@ -70,6 +72,10 @@
                                     else if (item.Status == 40)
                                     {
                                         <label class="label label-info">Đã giao cho đơn vị vận chuyển</label>
+                                    }
+                                    else if (item.Status == 50)
+                                    {
+                                        <label class="label label-info">Đã hoàn thành</label>
                                     }
                                 </td>
                                 <td>

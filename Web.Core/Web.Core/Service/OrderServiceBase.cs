@@ -43,16 +43,16 @@ namespace Web.Core.Service
                     .ToList();
             }
         }
-        public virtual bool VerifyAbilityToComment(string phonenumber, int productid)
+        public virtual bool VerifyAbilityToComment(string email, int productid)
         {
             using (var context = new MyContext())
             {
                 var query = from order in context.Orders
                             join orderDetail in context.OrderDetails on order.Id equals orderDetail.OrderId
                             join customer in context.Customers on order.CustomerCode equals customer.Code
-                            where customer.PhoneNumber == phonenumber
+                            where customer.Email == email
                                && orderDetail.ProductId == productid
-                               && order.Status == 20
+                               && order.Status == 50
                             select new
                             {
                                 OrderId = order.Id,
@@ -192,7 +192,7 @@ namespace Web.Core.Service
                         Created = dateNow,
                         CustomerCode = entity.CustomerCode,
                         VoucherId = entity.VoucherId,
-
+                        PaymentMethod = entity.PaymentMethod,
                     };
                 }
                 else
@@ -208,11 +208,13 @@ namespace Web.Core.Service
                             Email = entity.Customer.Email,
                             FullName = entity.Customer.FullName,
                             PhoneNumber = entity.Customer.PhoneNumber
+
                         },
                         Note = entity.Note,
                         VoucherId = entity.VoucherId,
                         Status = 10,
                         Created = dateNow,
+                        PaymentMethod = entity.PaymentMethod,
                     };
                 }
 
@@ -271,7 +273,7 @@ namespace Web.Core.Service
                 }
             }
         }
-        public virtual List<OrderDto> GetByPhoneNumber(string phonenumber)
+        public virtual List<OrderDto> GetByEmail(string email)
         {
             using (var context = new MyContext())
             {
@@ -282,7 +284,7 @@ namespace Web.Core.Service
                         customer => customer.Code,
                         (order, customer) => new { Order = order, Customer = customer }
                     )
-                    .Where(x => x.Customer.PhoneNumber == phonenumber)
+                    .Where(x => x.Customer.Email == email)
                     .Select(x => new OrderDto
                     {
                         // Map your OrderDto properties here based on the Order and Customer entities
@@ -303,6 +305,11 @@ namespace Web.Core.Service
 
                 return orders;
             }
+        }
+        public virtual void SendOTP(string email, string OTP)
+        {
+            sendEmailServiceBase.SendOTP(email, OTP);
+            return;
         }
     }
 }

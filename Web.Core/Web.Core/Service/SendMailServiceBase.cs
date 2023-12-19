@@ -33,27 +33,27 @@ namespace Web.Core.Service
                     catch { }
 
                 }
-                if (order.Status == 10)
+                if (order.Status == 10 || order.Status == 20)
                 {
                     status = "Your order has been received";
                 }
                 else
                 {
-                    if (order.Status == 40)
+                    if (order.Status == 30)
                     {
-                        status = "Your order has been delivered to the shipping unit";
+                        status = "Your order has been cancelled";
                     }
                     else
                     {
-                        if (order.Status == 20)
+                        if (order.Status == 40)
                         {
-                            status = "Your order has been completed";
+                            status = "Your order has been delivered to the shipping unit";
                         }
                         else
                         {
-                            if (order.Status == 30)
+                            if (order.Status == 50)
                             {
-                                status = "Your order has been cancelled";
+                                status = "Your order has been completed";
                             }
                         }
                     }
@@ -88,31 +88,65 @@ namespace Web.Core.Service
                     var message = new MailMessage();
                     message.From = new MailAddress(smtpUsername);
                     message.To.Add(customer.Email);
-                    if (order.Status == 10)
+                    if (order.Status == 10 || order.Status == 20)
                     {
                         message.Subject = "Xác nhận đơn hàng";
                     }
                     else
                     {
-                        if (order.Status == 40)
+                        if (order.Status == 30)
                         {
-                            message.Subject = "Bàn giao cho đơn vị vận chuyển";
+                            message.Subject = "Đơn hàng đã bị huỷ";
                         }
                         else
                         {
-                            if (order.Status == 20)
+                            if (order.Status == 40)
                             {
-                                message.Subject = "Đơn hàng hoàn thành";
+                                message.Subject = "Đã bàn giao cho đơn vị vận chuyển";
                             }
                             else
                             {
-                                if (order.Status == 30)
+                                if (order.Status == 50)
                                 {
-                                    message.Subject = "Đơn hàng đã bị huỷ";
+                                    message.Subject = "Đơn hàng đã hoàn thành";
                                 }
                             }
                         }
                     }
+                    message.Body = body;
+                    message.IsBodyHtml = true;
+                    client.Send(message);
+                }
+
+                return;
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void SendOTP(string email, string OTP)
+        {
+            try
+            {
+                string smtpServer = "smtp.gmail.com";
+                int smtpPort = 587;
+                string smtpUsername = "dangthuanvo1611@gmail.com";
+                string smtpPassword = "pwuebwfhtmnujdwt";
+                string body = System.IO.File.ReadAllText(AppContext.BaseDirectory.Replace(@"\Web.Watch", "") + "\\Web.Core\\" + "Service\\EmailTemplate\\SendOTPTemplate.html");
+                string company_name = "T&TWatch";
+                string company_address = "dangthuanvo1611@gmail.com";
+                body = body.Replace("{{otp}}", OTP).Replace("{{company_name}}", company_name).Replace("{{company_address}}", company_address);
+
+                using (var client = new SmtpClient(smtpServer, smtpPort))
+                {
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+                    client.EnableSsl = true;
+                    var message = new MailMessage();
+                    message.From = new MailAddress(smtpUsername);
+                    message.To.Add(email);
+                    message.Subject = "Gửi mã OTP";
                     message.Body = body;
                     message.IsBodyHtml = true;
                     client.Send(message);

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using PayPal.Api;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Web.Core.Dto;
 using Web.Core.Util;
 using Web.Watch.Service;
+using static Web.Watch.Models.PaypalConfiguaration;
 
 namespace Web.Watch.Controllers
 {
@@ -30,6 +32,7 @@ namespace Web.Watch.Controllers
             this.customerService = new CustomerService();
             this.reviewService = new ReviewService();
             this.voucherService = new VoucherService();
+
         }
 
         public ActionResult Index()
@@ -152,16 +155,16 @@ namespace Web.Watch.Controllers
             cartdetail.Vouchers = voucherService.GetAllAvailable();
             return View(cartdetail);
         }
-        public ActionResult Comment(string phonenumber, int productid)
+        public ActionResult Comment(string email, int productid)
         {
             this.SetSEO_Main();
-            bool ok = orderService.VerifyAbilityToComment(phonenumber, productid);
+            bool ok = orderService.VerifyAbilityToComment(email, productid);
             return Json(ok);
         }
-        public ActionResult SubmitComment(string productid, string phonenumber, string comment, string star)
+        public ActionResult SubmitComment(string productid, string email, string comment, string star)
         {
             var product = productService.GetById(int.Parse(productid));
-            var customer = customerService.GetByPhoneNumber(phonenumber);
+            var customer = customerService.GetByEmail(email);
             product.RateAmount += 1;
             product.Rate = Math.Round((product.Rate * (product.RateAmount - 1.0) + double.Parse(star)) / product.RateAmount, 1);
             ReviewDto review = new ReviewDto()
@@ -178,11 +181,32 @@ namespace Web.Watch.Controllers
             productService.Update(product.Id, product);
             return Json(true);
         }
-        public ActionResult Tracking(string phonenumber)
+
+        public ActionResult TrackingSendEmail(string email)
         {
             this.SetSEO_Main();
-            var orders = orderService.GetByPhoneNumber(phonenumber);
-            ViewBag.phoneTracking = phonenumber;
+            Random random = new Random();
+
+            // Sinh số ngẫu nhiên từ 100,000 đến 999,999
+            MvcApplication.OTP = random.Next(100000, 1000000).ToString();
+            orderService.SendOTP(email, MvcApplication.OTP);
+            return Json(true);
+        }
+        public ActionResult TrackingConfirmedEmail(string EnterOTP)
+        {
+            this.SetSEO_Main();
+            // Sinh số ngẫu nhiên từ 100,000 đến 999,999
+            if (EnterOTP == MvcApplication.OTP)
+                return Json(true);
+            return Json(false);
+        }
+        public ActionResult Tracking(string email)
+        {
+            this.SetSEO_Main();
+            var orders = orderService.GetByEmail(email);
+            ViewBag.emailTracking = email;
+            orders.Reverse();
+            Random random = new Random();
             return View(orders);
         }
         public ActionResult ViewTracking(int id)
@@ -197,7 +221,6 @@ namespace Web.Watch.Controllers
             {
                 return RedirectToAction("ShoppingCart");
             }
-
             order.OrderDetails = cart;
             order.TotalAmount = TotalAfterDiscount(order.VoucherId.ToString(), order.TotalAmount.ToString());
             this.orderService.Insert(order);
@@ -216,9 +239,25 @@ namespace Web.Watch.Controllers
             catch (Exception ex) { }
             Session["cart"] = null;
             Session["cartCount"] = null;
-
-
-            return RedirectToAction("OrderSuccess");
+            if (order.PaymentMethod == "Paypal")
+            {
+                return RedirectToAction("PaymentWithPaypal", order);
+            }
+            else
+            {
+                if (order.PaymentMethod == "VnPay")
+                {
+                    return RedirectToAction("PaymentWithVnpay");
+                }
+                else
+                {
+                    if (order.PaymentMethod == "COD")
+                    {
+                        return RedirectToAction("OrderSuccess");
+                    }
+                }
+            }
+            return View();
         }
         [HttpPost]
         public ActionResult GetUpdatedTotalAmount(string voucherId, string total)
@@ -283,11 +322,11 @@ namespace Web.Watch.Controllers
             return View(products);
         }
         [HttpPost]
-        public ActionResult QueryUserByPhoneNumber(string phonenumber)
+        public ActionResult QueryUserByEmail(string email)
         {
 
             List<CustomerDto> customers = this.customerService.GetAll();
-            var customer = customers.FirstOrDefault(c => string.Equals(c.PhoneNumber, phonenumber, StringComparison.OrdinalIgnoreCase));
+            var customer = customers.FirstOrDefault(c => string.Equals(c.Email, email, StringComparison.OrdinalIgnoreCase));
 
             if (customer != null)
             {
@@ -298,6 +337,140 @@ namespace Web.Watch.Controllers
                 // Return a 404 status code if the customer is not found
                 return null;
             }
+        }
+        public ActionResult PaymentWithPaypal(OrderDto order, string Cancel = null)
+        {
+            //getting the apiContext  
+            APIContext apiContext = PaypalConfiguration.GetAPIContext();
+            try
+            {
+                //A resource representing a Payer that funds a payment Payment Method as paypal  
+                //Payer Id will be returned when payment proceeds or click to pay  
+                string payerId = Request.Params["PayerID"];
+                if (string.IsNullOrEmpty(payerId))
+                {
+                    //this section will be executed first because PayerID doesn't exist  
+                    //it is returned by the create function call of the payment class  
+                    // Creating a payment  
+                    // baseURL is the url on which paypal sendsback the data.  
+                    string baseURI = Request.Url.Scheme + "://" + Request.Url.Authority + "/Home/PaymentWithPayPal?";
+                    //here we are generating guid for storing the paymentID received in session  
+                    //which will be used in the payment execution  
+                    var guid = Convert.ToString((new Random()).Next(100000));
+                    //CreatePayment function gives us the payment approval url  
+                    //on which payer is redirected for paypal account payment  
+                    var createdPayment = this.CreatePayment(order, apiContext, baseURI + "guid=" + guid);
+                    //get links returned from paypal in response to Create function call  
+                    var links = createdPayment.links.GetEnumerator();
+                    string paypalRedirectUrl = null;
+                    while (links.MoveNext())
+                    {
+                        Links lnk = links.Current;
+                        if (lnk.rel.ToLower().Trim().Equals("approval_url"))
+                        {
+                            //saving the payapalredirect URL to which user will be redirected for payment  
+                            paypalRedirectUrl = lnk.href;
+                        }
+                    }
+                    // saving the paymentID in the key guid  
+                    Session.Add(guid, createdPayment.id);
+                    return Redirect(paypalRedirectUrl);
+                }
+                else
+                {
+                    // This function exectues after receving all parameters for the payment  
+                    var guid = Request.Params["guid"];
+                    var executedPayment = ExecutePayment(apiContext, payerId, Session[guid] as string);
+                    //If executed payment failed then we will show payment failure message to user  
+                    if (executedPayment.state.ToLower() != "approved")
+                    {
+                        return View("OrderFailure");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return View("OrderFailure");
+            }
+            //on successful payment, show success page to user.  
+            return View("OrderSuccess");
+        }
+        private PayPal.Api.Payment payment;
+        private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)
+        {
+            var paymentExecution = new PaymentExecution()
+            {
+                payer_id = payerId
+            };
+            this.payment = new Payment()
+            {
+                id = paymentId
+            };
+            return this.payment.Execute(apiContext, paymentExecution);
+        }
+        private Payment CreatePayment(OrderDto order, APIContext apiContext, string redirectUrl)
+        {
+            //create itemlist and add item objects to it  
+            var itemList = new ItemList()
+            {
+                items = new List<Item>()
+            };
+            //Adding Item Details like name, currency, price etc  
+            foreach (var item in order.OrderDetails)
+            {
+                itemList.items.Add(new Item()
+                {
+                    name = item.ProductName,
+                    currency = "USD",
+                    price = (item.ProductDiscountPrice / 24368).ToString(),
+                    quantity = item.Qty.ToString(),
+                    sku = "sku"
+                });
+            }
+
+            var payer = new Payer()
+            {
+                payment_method = "paypal"
+            };
+            // Configure Redirect Urls here with RedirectUrls object  
+            var redirUrls = new RedirectUrls()
+            {
+                cancel_url = redirectUrl + "&Cancel=true",
+                return_url = redirectUrl
+            };
+            // Adding Tax, shipping and Subtotal details  
+            var details = new Details()
+            {
+                tax = "0",
+                shipping = "0",
+                subtotal = Math.Round((double)order.TotalAmount / 24000, 2).ToString(),
+            };
+            //Final amount with details  
+            var amount = new Amount()
+            {
+                currency = "USD",
+                total = Math.Round((double)order.TotalAmount / 24000, 2).ToString(), // Total must be equal to sum of tax, shipping and subtotal.  
+                details = details
+            };
+            var transactionList = new List<Transaction>();
+            // Adding description about the transaction  
+            var paypalOrderId = DateTime.Now.Ticks;
+            transactionList.Add(new Transaction()
+            {
+                description = $"Invoice #{paypalOrderId}",
+                invoice_number = paypalOrderId.ToString(), //Generate an Invoice No    
+                amount = amount,
+                item_list = itemList
+            });
+            this.payment = new Payment()
+            {
+                intent = "sale",
+                payer = payer,
+                transactions = transactionList,
+                redirect_urls = redirUrls
+            };
+            // Create a payment using a APIContext  
+            return this.payment.Create(apiContext);
         }
 
 
