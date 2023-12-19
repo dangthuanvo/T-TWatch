@@ -5,7 +5,6 @@ namespace Web.Core.Service
 {
     public class MyContext : DbContext
     {
-
         public MyContext() : base("data source=.\\SQLEXPRESS;initial catalog=WatchStore;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
         {
         }
