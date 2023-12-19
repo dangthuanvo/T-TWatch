@@ -1,7 +1,4 @@
-﻿@using Web.Watch.Models;
-
-@model PaymentInfomation
-
+﻿
 @{
     ViewBag.Title = "OrderSuccess";
 }
@@ -15,7 +12,7 @@
                             <a href="/">Trang chủ</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            Đặt hàng thành công
+                            Thanh toán thất bại vui lòng thử lại 
                         </li>
                     </ul>
                 </nav>
@@ -29,24 +26,11 @@
     <div class="row">
         <div class="col-md-12 text-center">
             <div class="mb-5">
-                @if (Model.TransactionStatus == "00" && Model.ResponseCode == "00")
-                {
-                    <h3 style="color: #0b9e24;">Đặt hàng thành công</h3>
-                }
-                else
-                {
-                    <h3 class="text-danger">Đặt hàng không thành công</h3>
-                }
-
-
+                <h3 style="color: #0b9e24;">Thanh toán thất bại vui lòng thử lại </h3>
                 <hr />
                 <div class="row justify-content-center">
-                    <span>@Model.Amount</span>
-                    <span>@Model.BankCode</span>
-                    <span>@Model.CardType</span>
-                    <span>@Model.TransactionStatus</span>
                     <div class="col-md-6" style="font-size:14px">
-                        Cảm ơn quý khách hàng đã đặt hàng trên hệ thống T&TWatch.
+                        Cảm ơn quý khách hàng đã đặt hàng trên hệ thống DWatch.
                         Chúng tôi sẽ liên hệ tới quý khách hàng trong thời gian sớm nhất.
                         Cảm ơn quý khách!
                     </div>

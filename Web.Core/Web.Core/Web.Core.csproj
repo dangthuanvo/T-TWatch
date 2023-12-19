@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Service\EmailTemplate\ProductTemplate.html" />
+    <Content Include="Service\EmailTemplate\SendOTPTemplate.html" />
     <Content Include="Service\EmailTemplate\SendMailTemplate.html" />
   </ItemGroup>
   <ItemGroup>

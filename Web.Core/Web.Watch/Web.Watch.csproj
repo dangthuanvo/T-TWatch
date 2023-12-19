@@ -78,6 +78,9 @@
     <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.Bson.1.0.2\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
     </Reference>
+    <Reference Include="PayPal, Version=1.9.1.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PayPal.1.9.1\lib\net451\PayPal.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -180,6 +183,7 @@
     <Compile Include="Areas\Administrator\Controllers\ReportController.cs" />
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
     <Compile Include="Areas\Administrator\Controllers\WebsiteController.cs" />
+    <Compile Include="Models\PaypalConfiguaration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1590,7 +1594,7 @@
     <None Include="Properties\PublishProfiles\phutuctrantruong-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\phutuctrantruong-001-site1 - Web Deploy.pubxml" />
     <Content Include="Views\Partial\_pWriteReview.cshtml" />
-    <Content Include="Views\Home\OrderFailed.cshtml" />
+    <Content Include="Views\Home\OrderFailure.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web.Core\Web.Core.csproj">
