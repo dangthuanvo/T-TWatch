@@ -156,7 +156,19 @@
                                         </select>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>Phương thức thanh toán <span class="text-red">(*)</span></td>
 
+                                    <td>
+                                        <select id="selectPayment" class="form-select" aria-label="Default select example" onchange="getMethodPayment()">
+                                            <option value="1" selected>Thanh toán khi nhận hàng</option>
+                                            <option value="2">Thanh toán qua kênh VNPay</option>
+                                            <option value="3">Thay toán qua Paypal</option>
+                                        </select>
+                                    </td>
+                                        <input style="display: none;" type="text" name="PaymentMethod" value="1" class="form-control form-control-sm" id="paymentBinding" required />
+
+                                </tr>
                                 <tr>
                                     <td>Ghi chú</td>
                                     <td>
@@ -179,6 +191,18 @@
         }
     </div>
 </div>
+
+<script>
+    function getMethodPayment() {
+        var selectBox = document.getElementById("selectPayment");
+
+        var selectedValue = selectBox.value;
+
+        console.log("Selected Value: " + selectedValue);
+
+        document.getElementById("paymentBinding").value = selectedValue;
+    }
+</script>
 <script>
     $(document).ready(function () {
         $("#queryDatabaseButton").click(function () {

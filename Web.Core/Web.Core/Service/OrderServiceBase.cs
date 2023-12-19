@@ -238,12 +238,16 @@ namespace Web.Core.Service
                 order.OrderDetails = orderDetails;
                 order.TotalAmount = entity.TotalAmount;
 
+
                 context.Orders.Add(order);
 
                 context.SaveChanges();
 
                 sendEmailServiceBase.SendEmail(order.Customer, orderDetails, order);
 
+                entity.OrderDate = order.OrderDate;
+                entity.Status = order.Status;
+                entity.Created = order.Created;
                 return entity;
             }
         }

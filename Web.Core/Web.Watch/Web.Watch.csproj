@@ -184,6 +184,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\PaymentInfomation.cs" />
+    <Compile Include="Models\Payments\VnPayLibrary.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Content Include="Plugins\js\datatable.js" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1500,7 +1502,6 @@
     <Folder Include="Areas\Administrator\Plugins\ckfinder\bin\" />
     <Folder Include="Areas\Administrator\Views\Base\" />
     <Folder Include="Assets\" />
-    <Folder Include="Models\" />
     <Folder Include="Resources\Images\" />
     <Folder Include="Resources\Template\" />
   </ItemGroup>
@@ -1589,6 +1590,7 @@
     <None Include="Properties\PublishProfiles\phutuctrantruong-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\phutuctrantruong-001-site1 - Web Deploy.pubxml" />
     <Content Include="Views\Partial\_pWriteReview.cshtml" />
+    <Content Include="Views\Home\OrderFailed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web.Core\Web.Core.csproj">

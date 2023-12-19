@@ -1,9 +1,14 @@
-﻿using System;
+﻿using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Security.Policy;
 using System.Web.Mvc;
 using Web.Core.Dto;
 using Web.Core.Util;
+using Web.Watch.Models;
+using Web.Watch.Models.Payments;
 using Web.Watch.Service;
 
 namespace Web.Watch.Controllers
@@ -31,7 +36,6 @@ namespace Web.Watch.Controllers
             this.reviewService = new ReviewService();
             this.voucherService = new VoucherService();
         }
-
         public ActionResult Index()
         {
             this.SetSEO_Main();
@@ -41,7 +45,6 @@ namespace Web.Watch.Controllers
 
             return View();
         }
-
         public ActionResult Category(string alias, string orderBy = "")
         {
             ViewBag.orderBy = orderBy;
@@ -67,7 +70,6 @@ namespace Web.Watch.Controllers
             ViewData["menuall"] = this.menuService.GetAll();
             return View(menu);
         }
-
         public ActionResult ProductDetail(string alias)
         {
             ProductDto product = this.productService.GetByAlias(alias);
@@ -88,7 +90,6 @@ namespace Web.Watch.Controllers
             };
             return View(productreviews);
         }
-
         public ActionResult Buy(int id)
         {
             List<OrderDetailDto> cart = (List<OrderDetailDto>)Session["cart"];
@@ -118,8 +119,6 @@ namespace Web.Watch.Controllers
             Session["cartCount"] = cart.Sum(x => x.Qty ?? 0);
             return RedirectToAction("ShoppingCart");
         }
-
-
         [HttpPost]
         public ActionResult UpdateCart(List<OrderDetailDto> products)
         {
@@ -138,7 +137,6 @@ namespace Web.Watch.Controllers
             Session["cartCount"] = cart.Sum(x => x.Qty ?? 0);
             return RedirectToAction("ShoppingCart");
         }
-
         public ActionResult ShoppingCart()
         {
             this.SetSEO_Main();
@@ -201,13 +199,34 @@ namespace Web.Watch.Controllers
 
             order.OrderDetails = cart;
             order.TotalAmount = TotalAfterDiscount(order.VoucherId.ToString(), order.TotalAmount.ToString());
-            this.orderService.Insert(order);
+            order.OrderDate = DateTime.Now;
+            //Thực hiện thanh toán
+            //3 phương thức:
+            //order.PaymentMethod == 1/2/3
+            //1: COD
+            //2: VNPay
+            //3: Paypal
+            string payId = Guid.NewGuid().ToString();
+            var orderDTO = this.orderService.Insert(order);
             foreach (var item in cart)
             {
                 var product = productService.GetById(item.ProductId);
                 product.Quantity -= (int)item.Qty;
                 productService.Update(product.Id, product);
             }
+            if (order.PaymentMethod == "1")
+            {
+                //next
+            }
+            else if (order.PaymentMethod == "2")
+            {
+                VNPayProcess(order, payId);
+            }
+            else if (order.PaymentMethod == "3")
+            {
+                return RedirectToAction("OrderFailed");
+            }
+
             try
             {
                 VoucherDto voucher = voucherService.GetById((int)order.VoucherId);
@@ -221,6 +240,64 @@ namespace Web.Watch.Controllers
 
             return RedirectToAction("OrderSuccess");
         }
+
+        public string getStringAppSettingVNPayTest()
+        {
+            string vnp_Returnurl = ConfigurationManager.AppSettings["vnp_Returnurl"]; //URL nhan ket qua tra ve 
+            string vnp_Url = ConfigurationManager.AppSettings["vnp_Url"]; //URL thanh toan cua VNPAY 
+            string vnp_TmnCode = ConfigurationManager.AppSettings["vnp_TmnCode"]; //Ma định danh merchant kết nối (Terminal Id)
+            string vnp_HashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"];
+            return vnp_Returnurl + " " + vnp_Url + " " + vnp_TmnCode + " " + vnp_HashSecret;
+        }
+
+        protected void VNPayProcess(OrderDto order, string id)
+        {
+            //Get Config Info
+            string vnp_Returnurl = ConfigurationManager.AppSettings["vnp_Returnurl"]; //URL nhan ket qua tra ve 
+            string vnp_Url = ConfigurationManager.AppSettings["vnp_Url"]; //URL thanh toan cua VNPAY 
+            string vnp_TmnCode = ConfigurationManager.AppSettings["vnp_TmnCode"]; //Ma định danh merchant kết nối (Terminal Id)
+            string vnp_HashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"]; //Secret Key
+
+            //Get payment input
+            //OrderInfo order = new OrderInfo();
+            //order.OrderId = DateTime.Now.Ticks; // Giả lập mã giao dịch hệ thống merchant gửi sang VNPAY
+            //order.Amount = 100000; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
+            //order.Status = "0"; //0: Trạng thái thanh toán "chờ thanh toán" hoặc "Pending" khởi tạo giao dịch chưa có IPN
+            //order.CreatedDate = DateTime.Now;
+            //Save order to db
+
+            //Build URL for VNPAY
+            VnPayLibrary vnpay = new VnPayLibrary();
+
+            vnpay.AddRequestData("vnp_Version", VnPayLibrary.VERSION);
+            vnpay.AddRequestData("vnp_Command", "pay");
+            vnpay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
+            vnpay.AddRequestData("vnp_Amount", (order.TotalAmount * 100).ToString()); 
+            //Số tiền thanh toán. Số tiền không mang các ký tự phân tách thập phân, phần nghìn, ký tự tiền tệ.
+            //Để gửi số tiền thanh toán là 100,000 VND (một trăm nghìn VNĐ) thì merchant cần nhân thêm 100 lần (khử phần thập phân), sau đó gửi sang VNPAY là: 10000000
+
+            vnpay.AddRequestData("vnp_CreateDate", order.OrderDate.ToString("yyyyMMddHHmmss"));
+            vnpay.AddRequestData("vnp_CurrCode", "VND");
+            vnpay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress());
+            vnpay.AddRequestData("vnp_Locale", "vn");
+            vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán đơn hàng:" + order.Id);
+            vnpay.AddRequestData("vnp_OrderType", "other"); //default value: other
+
+            vnpay.AddRequestData("vnp_ReturnUrl", vnp_Returnurl);
+            vnpay.AddRequestData("vnp_TxnRef", id.ToString()); 
+            // Mã tham chiếu của giao dịch tại hệ thống của merchant.
+            //  Mã này là duy nhất dùng để phân biệt các đơn hàng gửi sang VNPAY.
+            // Không được trùng lặp trong ngày
+
+            //Add Params of 2.1.0 Version
+            //Billing
+
+            string paymentUrl = vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
+            //return true;
+            //log.InfoFormat("VNPAY URL: {0}", paymentUrl);
+            Response.Redirect(paymentUrl);
+        }
+
         [HttpPost]
         public ActionResult GetUpdatedTotalAmount(string voucherId, string total)
         {
@@ -262,19 +339,18 @@ namespace Web.Watch.Controllers
             }
             return res;
         }
-        public ActionResult OrderSuccess()
+        public ActionResult OrderSuccess(string vnp_Amount,string vnp_BankCode, string vnp_BankTranNo,string vnp_CardType, string vnp_OrderInfo,string vnp_PayDate, string vnp_ResponseCode, string vnp_TransactionNo, string vnp_TransactionStatus)
         {
+            PaymentInfomation info = new PaymentInfomation(vnp_Amount, vnp_BankCode, vnp_BankTranNo, vnp_CardType, vnp_OrderInfo, vnp_PayDate, vnp_ResponseCode, vnp_TransactionNo, vnp_TransactionStatus);
             this.SetSEO_Main();
-            return View();
+            return View(info);
         }
-
         public ActionResult Article(string alias)
         {
             this.SetSEO_Main();
             ViewData["articles"] = this.articleService.GetAll();
             return View(this.articleService.GetByAlias(alias));
         }
-
         public ActionResult Search(string q = "", string orderBy = "")
         {
             this.SetSEO_Main();
@@ -300,8 +376,6 @@ namespace Web.Watch.Controllers
                 return null;
             }
         }
-
-
         public void SetSEO_Main()
         {
             WebsiteDto website = this.websiteService.GetAll().FirstOrDefault();
