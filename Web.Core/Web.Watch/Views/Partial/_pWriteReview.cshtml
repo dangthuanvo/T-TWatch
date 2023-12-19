@@ -1,55 +1,66 @@
-﻿<div class="p-2 pb-3">
+﻿@using Web.Core.Dto;
+@using Web.Core.Util;
+@model ProductDto
+
+<div class="p-2 pb-3">
     <div class="product-wap card rounded-0">
 
         <div class="container">
-            <div style="padding-top: 10px;">
-                <span style="font-size: 20px; font-weight: 500;">Hãy để lại đánh giá của bạn!</span>
+            <div style="padding-top: 10px; text-align: center">
+                <span style="font-size: 20px; font-weight: 500; ">Hãy để lại đánh giá về sản phẩm này!</span>
             </div>
 
             <div class="row" style="padding-top: 10px;">
-                <div class="col-lg-6">
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-default">Số điện thoại:</span>
+                <div class="col-lg-3"> </div>
+                <div class="col-lg-6" style="padding-left: 20px;">
+                    <div style="text-align: center; padding-top: 10px;">
+                        <span style="font-size: 15px; font-weight: 300; ">Nhập số điện thoại của bạn...</span>
+                    </div>
+                    <div class="input-group mb-3" style=" text-align: center">
+                        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="inputSdt">
+                    </div>
+                    <div class="col-lg-3"></div>
+                </div>
+                <div style="padding-left: 20px; padding-bottom: 10px">
+                    <span style="font-size: 20px;" id="nameBuyer"></span>
+                </div>
+                <div style="display: none;" id="ReviewArea">
+                    <input type="hidden" id="ratingArea" value="5"/>
+                    <div class="row d-flex" style="padding-bottom: 10px; ">
+                        <div></div>
+                        <div class="row" style="padding-left: 20px">
+                            <div class="col-3">
+                                <span>Chất lượng sản phẩm:</span>
+                            </div>
+                            <div class="col-2">
+                                <ul class="list-unstyled mb-1 p" style="padding-left: 20px;">
+                                    <li>
+                                        <i class="text-warning fa fa-star" id="star1" onclick="setstar(1)"></i>
+                                        <i class="text-warning fa fa-star" id="star2" onclick="setstar(2)"></i>
+                                        <i class="text-warning fa fa-star" id="star3" onclick="setstar(3)"></i>
+                                        <i class="text-warning fa fa-star" id="star4" onclick="setstar(4)"></i>
+                                        <i class="text-warning fa fa-star" id="star5" onclick="setstar(5)"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-7">
+                                <span id="QualText">Tuyệt vời</span>
+                            </div>
                         </div>
-                        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <span style="font-size: 20px;">tên sau khi check</span>
-                </div>
-            </div>
-            <div class="row d-flex" style="padding-bottom: 10px;">
-                <div></div>
-                <span style="font-size: 15px; padding-left: 20px;">Ngày mua: 11/5/2021</span>
-                <div class="row" style="padding-left: 20px">
-                    <div class="col-3">
-                        <span>Chất lượng sản phẩm:</span>
-                    </div>
-                    <div class="col-2">
-                        <ul class="list-unstyled mb-1 p" style="padding-left: 20px;">
-                            <li>
-                                <i class="text-warning fa fa-star" id="star1" onclick="setstar(1)"></i>
-                                <i class="text-warning fa fa-star" id="star2" onclick="setstar(2)"></i>
-                                <i class="text-warning fa fa-star" id="star3" onclick="setstar(3)"></i>
-                                <i class="text-warning fa fa-star" id="star4" onclick="setstar(4)"></i>
-                                <i class="text-warning fa fa-star" id="star5" onclick="setstar(5)"></i>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-7">
-                        <span  id="QualText">Tuyệt vời</span>
-                    </div>
-                </div>
-                
-                <span style="padding-left: 20px;">Bình luận:</span><br>
-                <div class="input-group" style="padding-left: 20px;">
-                    <textarea class="form-control" aria-label="With textarea"></textarea>
-                </div>
-            </div>
 
-        </div>
+                        <span style="padding-left: 20px;">Bình luận:</span><br>
+                        <div class="input-group" style="padding-left: 20px;">
+                            <textarea class="form-control" aria-label="With textarea" id="reviewArea"></textarea>
+                        </div>
+                        <div style="padding-top: 10px; text-align: right;">
+                            <button class="btn btn-success btn-lg" type="button" onclick="submitComment()">Gửi bình luận</button>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
     </div>
 
 </div>
@@ -69,7 +80,7 @@
                 elem.classList.add("text-muted");
             }
         }
-  
+
         if (count == 1) {
             document.getElementById('QualText').textContent = "Tệ";
         }
@@ -88,7 +99,89 @@
         else {
             document.getElementById('QualText').textContent = "";
         }
+        document.getElementById("ratingArea").value = count.toString();
 
     }
+
+    function submitComment() {
+        var productId =@Model.Id;
+        var phoneNumber = document.getElementById("inputSdt").value;
+        var comment = document.getElementById("reviewArea").value;
+        var star = document.getElementById("ratingArea").value;
+
+        alert(phoneNumber);
+        alert(comment);
+        alert(star);
+        $.ajax({
+            type: "POST",
+            url: "/Home/submitComment",
+            data: { productId : productId, phoneNumber : phoneNumber, comment : comment, star : star },
+            success: function (response) {
+                if (response === true) {
+                    setTimeout(function ()
+                    {
+                      window.location.href = "/san-pham/@Model.Alias";
+                    }, 10);
+                }
+                else
+                {
+
+                }
+            },
+            error: function () {
+                // Handle AJAX error
+                alert("An error occurred during the AJAX request.");
+            }
+        });
+    }
+
+    //Check data sdt thay đổi
+    var sdt = document.getElementById("inputSdt");
+
+
+    sdt.addEventListener("input", function (e) {
+        if (sdt.value.length == 10) {
+            searchPhoneNumber(sdt.value);
+        }
+        else {
+            document.getElementById("nameBuyer").textContent = "";
+            document.getElementById("ReviewArea").style.display = "none";
+        }
+    });
+
+
+    function searchPhoneNumber(phoneNumber) {
+        var productId =@Model.Id;
+        var flag;
+        $.ajax({
+            type: "POST",
+            url: "/Home/Comment",
+            data: { phoneNumber: phoneNumber, productId: productId },
+            success: function (response) {
+                if (response === true) {
+                    $.ajax({
+                        url: "@Url.Action("QueryUserByPhoneNumber", "Home")", 
+                        method: "POST",
+                        data: { phoneNumber: phoneNumber },
+                        success: function (data) {
+                            document.getElementById("nameBuyer").textContent = "Khách hàng: " + data.FullName;
+                            document.getElementById("ReviewArea").style.display = "inline";
+                        },
+                        error: function () {
+                            alert("Error querying the database.");
+                        }
+                    });
+                } else {
+                    document.getElementById("nameBuyer").textContent = "Không tìm thấy thông tin mua hàng!";
+                    document.getElementById("ReviewArea").style.display = "none";
+                }
+            },
+            error: function () {
+                alert("An error occurred during the AJAX request.");
+            }
+        });
+        return flag;
+    }
+
 
 </script>

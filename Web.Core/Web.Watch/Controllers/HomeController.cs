@@ -182,6 +182,7 @@ namespace Web.Watch.Controllers
         {
             this.SetSEO_Main();
             var orders = orderService.GetByPhoneNumber(phonenumber);
+            ViewBag.phoneTracking = phonenumber;
             return View(orders);
         }
         public ActionResult ViewTracking(int id)

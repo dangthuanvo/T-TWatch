@@ -32,11 +32,25 @@
             </ul>
             <ul class="list-unstyled d-flex justify-content-center mb-1">
                 <li>
-                    <i class="text-warning fa fa-star"></i>
-                    <i class="text-warning fa fa-star"></i>
-                    <i class="text-warning fa fa-star"></i>
-                    <i class="text-muted fa fa-star"></i>
-                    <i class="text-muted fa fa-star"></i>
+                    @{
+                        int stars = (int)product.Rate;
+                        for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= stars)
+                            {
+                                <i class="fa fa-star text-warning"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-star text-secondary"></i>
+                            }
+                            if (i == stars && product.Rate > (double)stars)
+                            {
+                                <i class="fa fa-star-half text-warning"></i>
+                                i++;
+                            }
+                        }
+                    }
                 </li>
             </ul>
             <p class="text-center mb-0">

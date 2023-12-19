@@ -5,7 +5,7 @@
     ProductDto product = Model ?? new ProductDto();
 }
 <div class="col">
-    <div class="card mb-4 product-wap rounded-5">
+    <div class="card mb-4 product-wap rounded-5" style="height: 480px; width: 250px;">
         <div class="card rounded-5">
             <img class="card-img rounded-5 img-fluid" src="@product.Image">
             <div class="card-img-overlay rounded-5 product-overlay d-flex align-items-center justify-content-center">
@@ -25,18 +25,37 @@
                     }
                     else
                     {
-                        <p class="card-text">@product.MetaDescription [MD] </p>
+                        <span class="card-text" style="font-size: 15px;">@product.MetaDescription </span>
                     }
                             </li>
 
             </ul>
             <ul class="list-unstyled d-flex justify-content-center mb-1">
                 <li>
-                    <i class="text-warning fa fa-star"></i>
-                    <i class="text-warning fa fa-star"></i>
-                    <i class="text-warning fa fa-star"></i>
-                    <i class="text-muted fa fa-star"></i>
-                    <i class="text-muted fa fa-star"></i>
+                    @{
+
+                        int stars = (int)product.Rate;
+                        if (true)
+                        {
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= stars)
+                                {
+                                    <i class="fa fa-star text-warning"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-star text-secondary"></i>
+                                }
+                                if (i == stars && product.Rate > (double)stars)
+                                {
+                                    <i class="fa fa-star-half text-warning"></i>
+                                    i++;
+                                }
+                            }
+                        }
+
+                    }
                 </li>
             </ul>
             <p class="text-center mb-0">

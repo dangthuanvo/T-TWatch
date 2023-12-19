@@ -12,8 +12,22 @@
                 <div class="col-11" style=" padding-top: 5px; padding-left: 0%;">
                     <span style="font-size: 20px;">@Model.CustomerName</span><br>
                     <span style="font-size: 15px;">Ngày bình luận: @Model.Created</span>
-                    <p class="py-2" id="Stars">
-                        <!-- Stars will be dynamically generated here -->
+                    <p class="py-2">
+                        @{
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= Model.Star)
+                                {
+                                    <i class="fa fa-star text-warning"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-star text-secondary"></i>
+                                }
+                            }
+
+
+                        }
                     </p>
                     <p class="mb-0">@Model.Content</p>
                 </div>
@@ -22,29 +36,3 @@
 
     </div>
 </div>
-
-<script>
-    // Assuming averageRating is the variable containing the total rating (e.g., 4.8)
-    var averageRating = parseFloat('@Model.Star');
-
-    // Calculate the number of filled stars (assumes a maximum of 5 stars)
-    var filledStars = Math.floor(averageRating);
-
-
-    // Generate the filled stars
-    var starHtml = '';
-    for (var i = 0; i < filledStars; i++) {
-        starHtml += '<i class="fa fa-star text-warning"></i>';
-    }
-
-    // Calculate the number of empty stars
-    var emptyStars = 5 - filledStars;
-
-    // Generate the empty stars
-    for (var j = 0; j < emptyStars; j++) {
-        starHtml += '<i class="fa fa-star text-secondary"></i>';
-    }
-
-    // Update the HTML content with the generated stars
-    document.getElementById('Stars').innerHTML = starHtml;
-</script>
