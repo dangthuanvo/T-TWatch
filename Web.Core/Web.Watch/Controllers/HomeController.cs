@@ -322,11 +322,11 @@ namespace Web.Watch.Controllers
             return View(products);
         }
         [HttpPost]
-        public ActionResult QueryUserByPhoneNumber(string phonenumber)
+        public ActionResult QueryUserByEmail(string email)
         {
 
             List<CustomerDto> customers = this.customerService.GetAll();
-            var customer = customers.FirstOrDefault(c => string.Equals(c.PhoneNumber, phonenumber, StringComparison.OrdinalIgnoreCase));
+            var customer = customers.FirstOrDefault(c => string.Equals(c.Email, email, StringComparison.OrdinalIgnoreCase));
 
             if (customer != null)
             {

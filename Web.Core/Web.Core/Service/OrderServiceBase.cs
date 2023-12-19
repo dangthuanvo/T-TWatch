@@ -52,7 +52,7 @@ namespace Web.Core.Service
                             join customer in context.Customers on order.CustomerCode equals customer.Code
                             where customer.Email == email
                                && orderDetail.ProductId == productid
-                               && order.Status == 20
+                               && order.Status == 50
                             select new
                             {
                                 OrderId = order.Id,
