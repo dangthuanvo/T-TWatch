@@ -27,24 +27,11 @@
                 </div>
                 <div class="input-group mb-3" style=" text-align: center">
                     <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="Email" name="Email">
+                    <button type="submit" id="submitemail" class="btn btn-success">Gửi mã OTP</button>
                 </div>
                 <div class="col-lg-3"></div>
-                <button type="submit" id="submitemail" class="btn btn-success">Gửi mã OTP</button>
-            </div>
-        </div>
+                <span id="messageEmail"></span>
 
-        <div class="row" style="padding-top: 10px;">
-            <div class="col-lg-3"> </div>
-            <div class="col-lg-6" style="padding-left: 20px;">
-
-                <div style="text-align: center; padding-top: 10px;">
-                    <span style="font-size: 15px; font-weight: 300; ">Nhập OTP vừa được gửi đến email của bạn...</span>
-                </div>
-                <div class="input-group mb-3" style=" text-align: center">
-                    <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" id="EnterOTP" name="EnterOTP">
-                </div>
-                <div class="col-lg-3"></div>
-                <button type="submit" id="submitOTP" class="btn btn-success">Xác nhận</button>
             </div>
         </div>
 
@@ -190,6 +177,35 @@
         </div>
     </div>
 </div>
+<!--Modal check OTP-->
+<button type="button" id="btnShowOTPModalTracking" data-toggle="modal" data-target="#OTPModalTracking" hidden></button>
+<div class="modal fade" id="OTPModalTracking" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xác thực OTP</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span>Mã OTP đã được gửi về địa chỉ email của bạn.</span><br />
+                <span>Email: <span id="emailModalTracking"></span> của bạn.</span><br />
+                <span>Nhập mã OTP:</span><br />
+                <span class="text-danger" id="warningModal"></span>
+                <div class="input-group mb-3">
+                    <input type="text" id="EnterOTP" name="EnterOTP" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-success btn-lg" id="submitOTP">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End model -->
 
 
 <script src="~/Plugins/js/datatable.js"></script>
@@ -216,6 +232,7 @@
     $(document).ready(function () {
         // When the "Gửi mã OTP" button is clicked
         $("#submitemail").on("click", function () {
+            document.getElementById("messageEmail").innerHTML = "Xin hãy đợi..."
             // Get the value of the email input
             var email = $("#Email").val();
 
@@ -236,7 +253,8 @@
                 data: { email: email },
                 success: function (response) {
                     // Handle the success response
-                    alert("OTP sent successfully!");
+                    document.getElementById("btnShowOTPModalTracking").click();
+                    document.getElementById("emailModalTracking").innerHTML = email;
                 },
                 error: function (error) {
                     // Handle the error response
@@ -259,7 +277,7 @@
 
             // Validate the OTP (you may want to add more robust validation)
             if (EnterOTP.trim() === "") {
-                alert("Please enter the OTP.");
+                document.getElementById("warningModal").innerHTML = "Hãy nhập mã OTP";
                 return;
             }
 
@@ -275,7 +293,7 @@
                 success: function (response) {
                     // Handle the success response
                     if (response === false) {
-                        alert("OTP wrong, try again!");
+                        document.getElementById("warningModal").innerHTML = "Mã OTP không đúng!";
                     } else {
                         var email = $("#Email").val();
                         window.location.href = '/Home/Tracking?email=' + encodeURIComponent(email);
@@ -283,7 +301,7 @@
                 },
                 error: function (error) {
                     // Handle the error response
-                    alert("Error verifying OTP. Please try again.");
+                    document.getElementById("warningModal").innerHTML = "Không thể xác thực OTP. Hãy thử lại!";
                     console.error("Error:", error);
                 }
             });
