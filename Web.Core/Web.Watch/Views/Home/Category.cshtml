@@ -11,13 +11,13 @@
 <div class="container py-5">
     <div class="row">
 
-        <div class="col-lg-3">
-            <h1 class="h2 pb-4">Danh mục</h1>
-            <ul class="list-unstyled templatemo-accordion">
+        <ul class="col-lg-3">
+            <h1 class="h2">Danh mục</h1>
+            <ul class="list-unstyled templatemo-accordion container">
                 <span class="collapsed d-flex justify-content-between h3 text-decoration-none" onclick="window.location.href='/danh-muc/all-1'" style=" padding-bottom: 16px; font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
                     Tất cả
                 </span>
-                
+
                 @foreach (var menu in menus)
                 {
                     <li class="pb-3">
@@ -45,7 +45,41 @@
                 }
 
             </ul>
-        </div>
+            <h1 class="h2">Bộ lọc</h1>
+            <ul class="list-unstyled templatemo-accordion container">
+                <li>
+                    <span class="collapsed d-flex justify-content-between h3 text-decoration-none" style="font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
+                        Khoảng giá:
+                    </span>
+                    <label for="minRange" class="form-label" id="minRangeValue">Thấp nhất:</label>
+                    <input type="range" class="form-range" id="minRange">
+                    <label for="maxRange" class="form-label" id="maxRangeValue">Cao nhất:</label>
+                    <input type="range" class="form-range" id="maxRange">
+                </li>
+                <li>
+                    <span class="collapsed d-flex justify-content-between h3 text-decoration-none" style="font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
+                        Đánh giá:
+                    </span>
+                    @{
+                        <div>
+                            <input hidden id="starFilterInp" />
+                            <ul class="list-unstyled mb-1 p">
+                                <li>
+                                    <i class="text-warning fa fa-star" id="starCate1" onclick="setstarCate(1)"></i>
+                                    <i class="text-warning fa fa-star" id="starCate2" onclick="setstarCate(2)"></i>
+                                    <i class="text-warning fa fa-star" id="starCate3" onclick="setstarCate(3)"></i>
+                                    <i class="text-warning fa fa-star" id="starCate4" onclick="setstarCate(4)"></i>
+                                    <i class="text-warning fa fa-star" id="starCate5" onclick="setstarCate(5)"></i>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                </li>
+                <li style=" position: relative;">
+                    <button class="btn btn-success btn-lg" type="button" style="position: absolute; right: 0;">Lọc</button>
+                </li>
+            </ul>
+        </ul>
 
         <div class="col-lg-9">
             <div class="row">
@@ -135,5 +169,85 @@
         element.classList.remove('text-dark');
         window.scrollTo(0, 0);
         
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        //tạm:
+        var jumpRange = 50000;
+        var minMoney = 0;
+        var maxMoney = 20000000;
+        var minRangeSlider = document.getElementById('minRange');
+        var minRangeValue = document.getElementById('minRangeValue');
+        var maxRangeSlider = document.getElementById('maxRange');
+        var maxRangeValue = document.getElementById('maxRangeValue');
+
+        //Mặc định
+        minRangeValue.innerHTML = 'Thấp nhất: ' + minMoney;
+        maxRangeValue.innerHTML = 'Cao nhất: ' + maxMoney;
+        minRangeSlider.value = 0;
+        maxRangeSlider.value = 100;
+
+        
+        minRangeSlider.addEventListener('input', function () {
+            var value = (maxMoney - minMoney) / 100 * minRangeSlider.value;
+            minRangeValue.innerHTML = 'Thấp nhất: ' + value;
+            console.log(minRangeSlider.value + " " + maxRangeSlider.value);
+
+            var valMin = parseInt(minRangeSlider.value, 10);
+            var valMax = parseInt(maxRangeSlider.value, 10);
+            if (valMin >= valMax) {
+                maxRangeSlider.value = Math.min(100, valMin + 1); 
+                var value = maxMoney / 100 * maxRangeSlider.value;
+                maxRangeValue.innerHTML = 'Cao nhất: ' + value;
+                valMax = parseInt(maxRangeSlider.value, 10);
+            }
+            if (valMax == 100) {
+
+                minRangeSlider.value = Math.min(99, minRangeSlider.value);
+                var value = (maxMoney - minMoney) / 100 * minRangeSlider.value;
+                minRangeValue.innerHTML = 'Thấp nhất: ' + value;
+            }
+        });
+
+        maxRangeSlider.addEventListener('input', function () {
+            var value = maxMoney / 100 * maxRangeSlider.value;
+            maxRangeValue.innerHTML = 'Cao nhất: ' + value;
+
+            var valMin = parseInt(minRangeSlider.value, 10);
+            var valMax = parseInt(maxRangeSlider.value, 10);
+            if (valMin >= valMax) {
+                minRangeSlider.value = Math.max(0, valMax - 1);
+                var value = (maxMoney - minMoney) / 100 * minRangeSlider.value;
+                minRangeValue.innerHTML = 'Thấp nhất: ' + value;
+                valMin = parseInt(minRangeSlider.value, 10);
+            }
+            if (valMin == 0) {
+                maxRangeSlider.value = Math.max(1, maxRangeSlider.value);
+                var value = maxMoney / 100 * maxRangeSlider.value;
+                maxRangeValue.innerHTML = 'Cao nhất: ' + value;
+            }
+
+        });
+    });
+</script>
+
+<script>
+    function setstarCate(count) {
+        for (let i = 1; i <= 5; i++) {
+            let elem = document.getElementById('starCate' + i);
+            elem.classList.remove("text-warning");
+            elem.classList.remove("text-muted");
+            if (i <= count) {
+
+                elem.classList.add("text-warning");
+            }
+            else {
+                elem.classList.add("text-muted");
+            }
+        }
+        document.getElementById("starFilterInp").value = count.toString();
+
     }
 </script>
