@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Web.Watch.Models
+﻿namespace Web.Watch.Models
 {
     public class PaymentInfomation
     {
+        public PaymentInfomation() { }
         public PaymentInfomation(string _Amount,
                                 string _BankCode,
                                 string _BankTranNo,
@@ -15,8 +11,8 @@ namespace Web.Watch.Models
                                 string _PayDate,
                                 string _ResponseCode,
                                 string _TransactionNo,
-                                string _TransactionStatus) 
-        { 
+                                string _TransactionStatus)
+        {
             Amount = _Amount;
             BankCode = _BankCode;
             BankTranNo = _BankTranNo;

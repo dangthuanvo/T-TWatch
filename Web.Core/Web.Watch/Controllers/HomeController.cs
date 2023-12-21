@@ -1,10 +1,8 @@
 ﻿using PayPal.Api;
-﻿using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Security.Policy;
 using System.Web.Mvc;
 using Web.Core.Dto;
 using Web.Core.Util;
@@ -210,6 +208,24 @@ namespace Web.Watch.Controllers
         {
             return View(this.orderService.GetById(id));
         }
+        public long GenerateSecretCode()
+        {
+            DateTime currentDateTime = DateTime.Now;
+
+            // Format the date and time to the desired format: YYMMDDHHmmss
+            string formattedDateTime = currentDateTime.ToString("yyMMddHHmmss");
+
+            // Convert the formatted string to a long
+            if (long.TryParse(formattedDateTime, out long secretCode))
+            {
+                return secretCode;
+            }
+            else
+            {
+                // Handle parsing failure if necessary
+                throw new InvalidOperationException("Failed to generate secret code.");
+            }
+        }
         [HttpPost]
         public ActionResult Order(OrderDto order)
         {
@@ -227,7 +243,8 @@ namespace Web.Watch.Controllers
             //1: COD
             //2: VNPay
             //3: Paypal
-            string payId = Guid.NewGuid().ToString();
+            MvcApplication.SC = GenerateSecretCode();
+            order.SecretCode = MvcApplication.SC;
             var orderDTO = this.orderService.Insert(order);
             foreach (var item in cart)
             {
@@ -235,19 +252,6 @@ namespace Web.Watch.Controllers
                 product.Quantity -= (int)item.Qty;
                 productService.Update(product.Id, product);
             }
-            if (order.PaymentMethod == "1")
-            {
-                //next
-            }
-            else if (order.PaymentMethod == "2")
-            {
-                VNPayProcess(order, payId);
-            }
-            else if (order.PaymentMethod == "3")
-            {
-                return RedirectToAction("OrderFailed");
-            }
-
             try
             {
                 VoucherDto voucher = voucherService.GetById((int)order.VoucherId);
@@ -265,13 +269,18 @@ namespace Web.Watch.Controllers
             {
                 if (order.PaymentMethod == "VnPay")
                 {
-                    return RedirectToAction("PaymentWithVnpay");
+                    PaymentWithVnpay(orderDTO, MvcApplication.SC.ToString());
                 }
                 else
                 {
                     if (order.PaymentMethod == "COD")
                     {
-                        return RedirectToAction("OrderSuccess");
+                        var paymentinfo = new PaymentInfomation()
+                        {
+                            TransactionStatus = "00",
+                            ResponseCode = "00"
+                        };
+                        return View("OrderSuccess", paymentinfo);
                     }
                 }
             }
@@ -287,7 +296,7 @@ namespace Web.Watch.Controllers
             return vnp_Returnurl + " " + vnp_Url + " " + vnp_TmnCode + " " + vnp_HashSecret;
         }
 
-        protected void VNPayProcess(OrderDto order, string id)
+        protected void PaymentWithVnpay(OrderDto order, string id)
         {
             //Get Config Info
             string vnp_Returnurl = ConfigurationManager.AppSettings["vnp_Returnurl"]; //URL nhan ket qua tra ve 
@@ -309,7 +318,7 @@ namespace Web.Watch.Controllers
             vnpay.AddRequestData("vnp_Version", VnPayLibrary.VERSION);
             vnpay.AddRequestData("vnp_Command", "pay");
             vnpay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
-            vnpay.AddRequestData("vnp_Amount", (order.TotalAmount * 100).ToString()); 
+            vnpay.AddRequestData("vnp_Amount", (order.TotalAmount * 100).ToString());
             //Số tiền thanh toán. Số tiền không mang các ký tự phân tách thập phân, phần nghìn, ký tự tiền tệ.
             //Để gửi số tiền thanh toán là 100,000 VND (một trăm nghìn VNĐ) thì merchant cần nhân thêm 100 lần (khử phần thập phân), sau đó gửi sang VNPAY là: 10000000
 
@@ -321,7 +330,7 @@ namespace Web.Watch.Controllers
             vnpay.AddRequestData("vnp_OrderType", "other"); //default value: other
 
             vnpay.AddRequestData("vnp_ReturnUrl", vnp_Returnurl);
-            vnpay.AddRequestData("vnp_TxnRef", id.ToString()); 
+            vnpay.AddRequestData("vnp_TxnRef", id);
             // Mã tham chiếu của giao dịch tại hệ thống của merchant.
             //  Mã này là duy nhất dùng để phân biệt các đơn hàng gửi sang VNPAY.
             // Không được trùng lặp trong ngày
@@ -376,7 +385,7 @@ namespace Web.Watch.Controllers
             }
             return res;
         }
-        public ActionResult OrderSuccess(string vnp_Amount,string vnp_BankCode, string vnp_BankTranNo,string vnp_CardType, string vnp_OrderInfo,string vnp_PayDate, string vnp_ResponseCode, string vnp_TransactionNo, string vnp_TransactionStatus)
+        public ActionResult OrderSuccess(string vnp_Amount, string vnp_BankCode, string vnp_BankTranNo, string vnp_CardType, string vnp_OrderInfo, string vnp_PayDate, string vnp_ResponseCode, string vnp_TransactionNo, string vnp_TransactionStatus)
         {
             PaymentInfomation info = new PaymentInfomation(vnp_Amount, vnp_BankCode, vnp_BankTranNo, vnp_CardType, vnp_OrderInfo, vnp_PayDate, vnp_ResponseCode, vnp_TransactionNo, vnp_TransactionStatus);
             this.SetSEO_Main();
@@ -413,10 +422,28 @@ namespace Web.Watch.Controllers
                 return null;
             }
         }
+        [HttpPost]
+        public ActionResult QueryUserByPhonenumber(string phonenumber)
+        {
+
+            List<CustomerDto> customers = this.customerService.GetAll();
+            var customer = customers.FirstOrDefault(c => string.Equals(c.PhoneNumber, phonenumber, StringComparison.OrdinalIgnoreCase));
+
+            if (customer != null)
+            {
+                return Json(customer);
+            }
+            else
+            {
+                // Return a 404 status code if the customer is not found
+                return null;
+            }
+        }
         public ActionResult PaymentWithPaypal(OrderDto order, string Cancel = null)
         {
             //getting the apiContext  
             APIContext apiContext = PaypalConfiguration.GetAPIContext();
+            PaymentInfomation paymentinfo = null;
             try
             {
                 //A resource representing a Payer that funds a payment Payment Method as paypal  
@@ -459,16 +486,33 @@ namespace Web.Watch.Controllers
                     //If executed payment failed then we will show payment failure message to user  
                     if (executedPayment.state.ToLower() != "approved")
                     {
-                        return View("OrderFailure");
+                        paymentinfo = new PaymentInfomation()
+                        {
+                            TransactionStatus = "01",
+                            ResponseCode = "01"
+                        };
+                        //orderService.DeleteById(orderService.GetBySecretCode(MvcApplication.SC).Id);
+                        return View("OrderSuccess", paymentinfo);
                     }
                 }
             }
             catch (Exception ex)
             {
-                return View("OrderFailure");
+                paymentinfo = new PaymentInfomation()
+                {
+                    TransactionStatus = "01",
+                    ResponseCode = "01"
+                };
+                //orderService.DeleteById(orderService.GetBySecretCode(MvcApplication.SC).Id);
+                return View("OrderSuccess", paymentinfo);
             }
             //on successful payment, show success page to user.  
-            return View("OrderSuccess");
+            paymentinfo = new PaymentInfomation()
+            {
+                TransactionStatus = "00",
+                ResponseCode = "00"
+            };
+            return View("OrderSuccess", paymentinfo);
         }
         private PayPal.Api.Payment payment;
         private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)

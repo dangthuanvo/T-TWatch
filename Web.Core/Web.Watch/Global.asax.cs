@@ -7,6 +7,7 @@ namespace Web.Watch
     {
         public static string currentAdmin { get; set; }
         public static string OTP { get; set; }
+        public static long SC { get; set; }
         public void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();

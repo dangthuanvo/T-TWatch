@@ -8,6 +8,7 @@ namespace Web.Core.Model
     public class Product
     {
         public int Id { get; set; }
+
         public int? MenuId { get; set; }
         public int? CategoryId { get; set; }
         public string Name { get; set; }

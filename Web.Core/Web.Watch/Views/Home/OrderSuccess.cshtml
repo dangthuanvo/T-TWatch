@@ -15,7 +15,7 @@
                             <a href="/">Trang chủ</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            Đặt hàng thành công
+                            Thông tin đặt hàng
                         </li>
                     </ul>
                 </nav>
@@ -35,16 +35,18 @@
                 }
                 else
                 {
+                    Web.Watch.Service.OrderService orderService = new Web.Watch.Service.OrderService();
+                    orderService.DeleteById(orderService.GetBySecretCode(MvcApplication.SC).Id);
                     <h3 class="text-danger">Đặt hàng không thành công</h3>
                 }
 
 
                 <hr />
                 <div class="row justify-content-center">
-                    <span>@Model.Amount</span>
+                    @*<span>@Model.Amount</span>
                     <span>@Model.BankCode</span>
                     <span>@Model.CardType</span>
-                    <span>@Model.TransactionStatus</span>
+                    <span>@Model.TransactionStatus</span>*@
                     <div class="col-md-6" style="font-size:14px">
                         Cảm ơn quý khách hàng đã đặt hàng trên hệ thống T&TWatch.
                         Chúng tôi sẽ liên hệ tới quý khách hàng trong thời gian sớm nhất.

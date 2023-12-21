@@ -5,9 +5,10 @@ namespace Web.Core.Dto
 {
     public class OrderDto
     {
-        
+
         public int Id { get; set; }
         public string CustomerCode { get; set; }
+        public long SecretCode { get; set; }
         public DateTime OrderDate { get; set; }
         public int? VoucherId { get; set; }
         public string OrderTime { get; set; }
