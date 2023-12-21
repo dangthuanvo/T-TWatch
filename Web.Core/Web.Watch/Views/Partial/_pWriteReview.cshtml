@@ -24,7 +24,7 @@
                     <span style="font-size: 20px;" id="nameBuyer"></span>
                 </div>
                 <div style="display: none;" id="ReviewArea">
-                    <input type="hidden" id="ratingArea" value="5"/>
+                    <input type="hidden" id="ratingArea" value="5" />
                     <div class="row d-flex" style="padding-bottom: 10px; ">
                         <div></div>
                         <div class="row" style="padding-left: 20px">
@@ -52,7 +52,7 @@
                             <textarea class="form-control" aria-label="With textarea" id="reviewArea"></textarea>
                         </div>
                         <div style="padding-top: 10px; text-align: right;">
-                            <button class="btn btn-success btn-lg" type="button" onclick="submitComment()">Gửi bình luận</button>
+                            <button class="btn btn-success btn-lg" type="button" data-toggle="modal" data-target="#OTPModalReview">Gửi bình luận</button>
                         </div>
                     </div>
 
@@ -60,11 +60,41 @@
                 </div>
 
             </div>
+        </div>
+
     </div>
 
-</div>
+    <!--Modal check OTP-->
+    <div class="modal fade" id="OTPModalReview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Xác thực OTP</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span>Mã OTP đã được gửi về địa chỉ email của bạn.</span><br />
+                    <span>Email: <span id="emailModal"></span></span><br />
+                    <span>Nhập mã OTP:</span><br/>
+                    <span class="text-danger" hidden id="warningModal">Mã OTP không đúng!</span>
+                    <div class="input-group mb-3">
+                        <input type="text" id="OTPInput" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    </div>
 
-<script>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-success btn-lg" onclick="submitComment()">Gửi bình luận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End model -->
+
+
+    <script>
     function setstar(count) {
         for (let i = 1; i <= 5; i++)
         {
@@ -103,35 +133,40 @@
     }
 
     function submitComment() {
-        var productId =@Model.Id;
-        var Email = document.getElementById("inputEmail").value;
-        var comment = document.getElementById("reviewArea").value;
-        var star = document.getElementById("ratingArea").value;
+        var OTP = document.getElementById("OTPInput").value;
+        if (OTP == '123456') {
+            var productId =@Model.Id;
+            var Email = document.getElementById("inputEmail").value;
+            var comment = document.getElementById("reviewArea").value;
+            var star = document.getElementById("ratingArea").value;
 
-        //alert(Email);
-        //alert(comment);
-        //alert(star);
-        $.ajax({
-            type: "POST",
-            url: "/Home/submitComment",
-            data: { productId: productId, email: Email, comment : comment, star : star },
-            success: function (response) {
-                if (response === true) {
-                    setTimeout(function ()
-                    {
-                      window.location.href = "/san-pham/@Model.Alias";
-                    }, 10);
-                }
-                else
-                {
+            //alert(Email);
+            //alert(comment);
+            //alert(star);
+            $.ajax({
+                type: "POST",
+                url: "/Home/submitComment",
+                data: { productId: productId, email: Email, comment: comment, star: star },
+                success: function (response) {
+                    if (response === true) {
+                        setTimeout(function () {
+                            window.location.href = "/san-pham/@Model.Alias";
+                        }, 10);
+                    }
+                    else {
 
+                    }
+                },
+                error: function () {
+                    // Handle AJAX error
+                    alert("An error occurred during the AJAX request.");
                 }
-            },
-            error: function () {
-                // Handle AJAX error
-                alert("An error occurred during the AJAX request.");
-            }
-        });
+            });
+        }
+        else {
+            document.getElementById("warningModal").removeAttribute("hidden");
+        }
+
     }
 
     //Check data sdt thay đổi
@@ -139,7 +174,7 @@
 
 
     sdt.addEventListener("input", function (e) {
-        if (sdt.value.length == 25) {
+        if (sdt.value.length > 10) {
             searchEmail(sdt.value);
         }
         else {
@@ -159,12 +194,13 @@
             success: function (response) {
                 if (response === true) {
                     $.ajax({
-                        url: "@Url.Action("QueryUserByEmail", "Home")", 
+                        url: "@Url.Action("QueryUserByEmail", "Home")",
                         method: "POST",
                         data: { Email: Email },
                         success: function (data) {
                             document.getElementById("nameBuyer").textContent = "Khách hàng: " + data.FullName;
                             document.getElementById("ReviewArea").style.display = "inline";
+                            document.getElementById("emailModal").innerHTML = Email;
                         },
                         error: function () {
                             alert("Error querying the database.");
@@ -183,4 +219,4 @@
     }
 
 
-</script>
+    </script>
