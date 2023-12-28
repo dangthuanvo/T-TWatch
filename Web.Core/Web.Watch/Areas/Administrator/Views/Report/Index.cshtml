@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Báo cáo tổng hợp";
 }
+<input type="hidden" id="modelData" value='@Json.Encode(Model))' />
 
 <script>
     $("#menu_report").addClass("menu_active");
@@ -42,6 +43,9 @@
                             </div>
                             <input type="text" class="form-control pull-right input-sm" id="reservation">
                         </div>
+                        <button type="button" class="btn btn-success" id="btnexcel">
+                            <i class="fa fa-file-excel-o"></i> Export to Excel
+                        </button>
                     </div>
                 </div>
             </div>
@@ -75,7 +79,7 @@
                                 <td class="text-center">
                                     @if (item.Status == 10)
                                     {
-                                        <label class="label label-warning">Chưa thanh toán</label>
+                                        <label class="label label-warning">Đã tiếp nhận</label>
                                     }
                                     else if (item.Status == 20)
                                     {
@@ -84,6 +88,14 @@
                                     else if (item.Status == 30)
                                     {
                                         <label class="label label-danger">Đã hủy</label>
+                                    }
+                                    else if (item.Status == 40)
+                                    {
+                                        <label class="label label-info">Đã giao cho đơn vị vận chuyển</label>
+                                    }
+                                    else if (item.Status == 50)
+                                    {
+                                        <label class="label label-info">Đã hoàn thành</label>
                                     }
                                 </td>
                             </tr>
@@ -122,3 +134,39 @@
         })
     });
 </script>
+
+<script>
+    $(document).ready(function () {
+        // Attach click event handler to the button
+        var idList = [];
+        var startDate = "@(((DateTime)ViewBag.startDate).ToString("yyyy-MM-dd"))"; // Fix date format
+        var endDate = "@(((DateTime)ViewBag.toDate).ToString("yyyy-MM-dd"))"; // Fix date format
+
+        // Iterate through the Model to extract Id values
+        @foreach (var item in Model)
+        {
+            <text>idList.push(@item.Id);</text>
+        }
+
+        // Attach click event handler to the button
+        $("#btnexcel").on("click", function () {
+            // Make an AJAX request to call the ExportExcel function in ReportController
+            $.ajax({
+                url: "/Administrator/Report/ExportExcel", // Adjust the URL based on your project structure
+                type: "POST", // or "GET" depending on your server setup
+                data: { orderIds: idList, sDate: startDate, eDate: endDate },
+                success: function (data) {
+                    // Handle success, if needed
+                    if (data !== '') {
+                        location.href = "/Resources/Report" + data;
+                    }
+                },
+                error: function (error) {
+                    // Handle error, if needed
+                    console.error("Error calling ExportExcel function:", error);
+                }
+            });
+        });
+    });
+</script>
+

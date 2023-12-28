@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Web.Core.Dto;
 
 namespace Web.Core.Service
@@ -19,7 +17,8 @@ namespace Web.Core.Service
                 highlight.TotalNewOrder = context.Orders
                     .Where(x => x.OrderDate.Day == dateNow.Day &&
                                 x.OrderDate.Month == dateNow.Month &&
-                                x.OrderDate.Year == dateNow.Year)
+                                x.OrderDate.Year == dateNow.Year
+                                && x.Status == 50)
                     .Count();
 
                 highlight.DailySales = context.Orders
@@ -35,7 +34,8 @@ namespace Web.Core.Service
 
                 highlight.SalesRevenue = context.Orders
                    .Where(x => x.OrderDate.Month == dateNow.Month &&
-                               x.OrderDate.Year == dateNow.Year)
+                               x.OrderDate.Year == dateNow.Year
+                               && x.Status == 50)
                     .Sum(x => x.TotalAmount == null ? 0 : x.TotalAmount) ?? 0;
 
                 highlight.Revenues = new List<double>();
@@ -44,7 +44,8 @@ namespace Web.Core.Service
                 {
                     double total = context.Orders
                                 .Where(x => x.OrderDate.Month == i &&
-                                            x.OrderDate.Year == dateNow.Year)
+                                            x.OrderDate.Year == dateNow.Year
+                                            && x.Status == 50)
                                 .Sum(x => x.TotalAmount == null ? 0 : x.TotalAmount) ?? 0;
 
                     highlight.Revenues.Add(total);
@@ -74,14 +75,17 @@ namespace Web.Core.Service
             using (var context = new MyContext())
             {
                 var query = context.Orders.AsQueryable();
+                DateTime tDate = new DateTime();
+                DateTime sDate = new DateTime();
 
                 if (startDate.HasValue && toDate.HasValue)
                 {
-                    DateTime tDate = toDate.Value.AddDays(1);
-                    query = query.Where(x => x.OrderDate >= startDate.Value && x.OrderDate < tDate);
+                    tDate = toDate.Value.AddDays(1).Date;
+                    sDate = startDate.Value.Date;
                 }
 
                 return query
+                    .Where(x => x.Status == 50 && x.OrderDate >= sDate && x.OrderDate < tDate)
                     .OrderByDescending(x => x.OrderDate)
                     .Select(x => new OrderDto()
                     {
@@ -116,7 +120,8 @@ namespace Web.Core.Service
                 {
                     double total = context.Orders
                                 .Where(x => x.OrderDate.Month == i &&
-                                            x.OrderDate.Year == date.Year)
+                                            x.OrderDate.Year == date.Year
+                                            && x.Status == 50)
                                 .Sum(x => x.TotalAmount == null ? 0 : x.TotalAmount) ?? 0;
 
                     datas.Add(total);
