@@ -89,6 +89,9 @@ namespace Web.Core.Service
                         case "price-desc":
                             query = query.OrderByDescending(x => x.Price);
                             break;
+                        case "price-diff-desc":
+                            query = query.OrderByDescending(x => x.Price - x.DiscountPrice);
+                            break;
                     }
                 }
                 return query

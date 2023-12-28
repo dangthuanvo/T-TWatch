@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -17,7 +18,7 @@ namespace Web.Core.Service
                 string smtpServer = "smtp.gmail.com";
                 int smtpPort = 587;
                 string smtpUsername = "dangthuanvo1611@gmail.com";
-                string smtpPassword = "pwuebwfhtmnujdwt";
+                string smtpPassword = ConfigurationManager.AppSettings["SmtpPassword"];
                 string body = System.IO.File.ReadAllText(AppContext.BaseDirectory.Replace(@"\Web.Watch", "") + "\\Web.Core\\" + "Service\\EmailTemplate\\SendMailTemplate.html");
                 string listProduct = null;
                 string first_name = customer.FullName;
@@ -132,7 +133,7 @@ namespace Web.Core.Service
                 string smtpServer = "smtp.gmail.com";
                 int smtpPort = 587;
                 string smtpUsername = "dangthuanvo1611@gmail.com";
-                string smtpPassword = "pwuebwfhtmnujdwt";
+                string smtpPassword = ConfigurationManager.AppSettings["SmtpPassword"];
                 string body = System.IO.File.ReadAllText(AppContext.BaseDirectory.Replace(@"\Web.Watch", "") + "\\Web.Core\\" + "Service\\EmailTemplate\\SendOTPTemplate.html");
                 string company_name = "T&TWatch";
                 string company_address = "dangthuanvo1611@gmail.com";
