@@ -72,14 +72,7 @@
 
             <div class="col-lg-2 pt-5">
                 <h2 class="h2 text-light border-bottom pb-3 border-light">Sản phẩm</h2>
-                <ul class="list-unstyled text-light footer-link-list">
-                    <li><a class="text-decoration-none" href="#">Luxury</a></li>
-                    <li><a class="text-decoration-none" href="#">Sport Wear</a></li>
-                    <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
-                    <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
-                    <li><a class="text-decoration-none" href="#">Popular Dress</a></li>
-                    <li><a class="text-decoration-none" href="#">Gym Accessories</a></li>
-                    <li><a class="text-decoration-none" href="#">Sport Shoes</a></li>
+                <ul class="list-unstyled text-light footer-link-list" id="menuList">
                 </ul>
             </div>
 
@@ -99,4 +92,23 @@
         </div>
     </div>
 </footer>
-<!-- End Footer -->
+
+<script>
+    $.ajax({
+        url: '/Home/GetAllMenu',
+        type: 'POST',
+        success: function (result) {
+            console.log(result);
+            var menu = document.getElementById("menuList");
+            for (let i = 0; i < result.length; i++) {
+                var child = document.createElement("li");
+                child.innerHTML = "<a class=\"text-decoration-none\" href=\"/danh-muc/" + result[i].Alias + "\">" + result[i].Name + "</a>"
+                menu.appendChild(child);
+            }
+
+        },
+        error: function (error) {
+            console.log('Error:', error);
+        }
+    });
+</script>

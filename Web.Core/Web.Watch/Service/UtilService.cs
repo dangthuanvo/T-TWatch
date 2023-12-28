@@ -18,6 +18,11 @@ namespace Web.Watch.Service
             return new MenuService().GetAllActive();
         }
 
+        public static List<MenuDto> GetMenusHomePage()
+        {
+            return new MenuService().GetAllShowHomePage();
+        }
+
         public static List<ArticleDto> GetArticle()
         {
             return new ArticleService().GetAll();

@@ -252,6 +252,7 @@
     <Compile Include="Models\PaymentInfomation.cs" />
     <Compile Include="Models\Payments\VnPayLibrary.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
+    <Content Include="Plugins\css\custom.css" />
     <Content Include="Plugins\js\datatable.js" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\VoucherService.cs" />
@@ -1657,6 +1658,7 @@
     <None Include="Properties\PublishProfiles\phutuctrantruong-001-site1 - Web Deploy.pubxml" />
     <Content Include="Views\Partial\_pWriteReview.cshtml" />
     <Content Include="Views\Home\OrderFailure.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web.Core\Web.Core.csproj">
