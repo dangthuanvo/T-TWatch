@@ -89,6 +89,9 @@ namespace Web.Core.Service
                         case "price-desc":
                             query = query.OrderByDescending(x => x.Price);
                             break;
+                        case "price-diff-desc":
+                            query = query.OrderByDescending(x => x.Price - x.DiscountPrice);
+                            break;
                     }
                 }
                 return query
@@ -106,7 +109,9 @@ namespace Web.Core.Service
                         MetaContentType = x.MetaContentType,
                         MetaDescription = x.MetaDescription,
                         MetaRevisitAfter = x.MetaRevisitAfter,
-                        MetaRobots = x.MetaRobots
+                        MetaRobots = x.MetaRobots,
+                        Rate = x.Rate,  
+                        
                     })
                     .ToList();
             }
@@ -130,6 +135,7 @@ namespace Web.Core.Service
                             Price = x.Price,
                             Name = x.Name,
                             MetaDescription = x.MetaDescription,
+                            Rate = x.Rate   
                         })
                         .ToString(); // Log the generated SQL query
                 Console.WriteLine("SQL Query: " + query);
@@ -147,6 +153,7 @@ namespace Web.Core.Service
                         Price = x.Price,
                         Name = x.Name,
                         MetaDescription = x.MetaDescription,
+                        Rate= x.Rate
                     })
                     .ToList();
             }
@@ -171,7 +178,6 @@ namespace Web.Core.Service
                         Name = x.Name,
                         ParentMenu = x.ParentMenu,
                         ShowHomePage = x.ShowHomePage,
-
                         ViewType = x.ViewType,
                         MetaContentLanguage = x.MetaContentLanguage,
                         MetaContentType = x.MetaContentType,
@@ -211,7 +217,8 @@ namespace Web.Core.Service
                             DiscountPrice = x.DiscountPrice,
                             Image = x.Image,
                             Price = x.Price,
-                            Name = x.Name
+                            Name = x.Name,
+                            Rate = x.Rate
                         })
                         .ToList();
                 }
@@ -255,7 +262,8 @@ namespace Web.Core.Service
                             Image = x.Image,
                             Quantity = x.Quantity,
                             Price = x.Price,
-                            Name = x.Name
+                            Name = x.Name,
+                            Rate = x.Rate
                         })
                         .ToList();
                 }
@@ -302,7 +310,8 @@ namespace Web.Core.Service
                         Image = x.Image,
                         Quantity = x.Quantity,
                         Price = x.Price,
-                        Name = x.Name
+                        Name = x.Name,
+                        Rate = x.Rate
                     })
                     .ToList();
             }

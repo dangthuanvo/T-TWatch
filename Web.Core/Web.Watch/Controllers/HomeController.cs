@@ -46,6 +46,10 @@ namespace Web.Watch.Controllers
 
             return View();
         }
+        public ActionResult About()
+        {
+            return View();
+        }
         public ActionResult Category(string alias, string orderBy = "")
         {
             ViewBag.orderBy = orderBy;
@@ -590,6 +594,14 @@ namespace Web.Watch.Controllers
             };
             // Create a payment using a APIContext  
             return this.payment.Create(apiContext);
+        }
+
+
+        [HttpPost]
+        public ActionResult GetAllMenu()
+        {
+            var menu = menuService.GetAllActive();
+            return Json(menu, JsonRequestBehavior.AllowGet);
         }
         public void SetSEO_Main()
         {

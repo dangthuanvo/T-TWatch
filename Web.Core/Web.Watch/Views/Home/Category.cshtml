@@ -1,5 +1,6 @@
 ﻿@using Web.Core.Dto;
 @using Web.Watch.Service;
+@using Web.Core.Util;
 @model MenuDto
 @{
     WebsiteDto website = UtilService.GetWebsite();
@@ -11,9 +12,9 @@
 <div class="container py-5">
     <div class="row">
 
-        <ul class="col-lg-3">
-            <h1 class="h2">Danh mục</h1>
-            <ul class="list-unstyled templatemo-accordion container">
+        <div class="col-lg-3">
+            <h1 class="h2 pb-4">Danh mục</h1>
+            <ul class="list-unstyled templatemo-accordion">
                 <span class="collapsed d-flex justify-content-between h3 text-decoration-none" onclick="window.location.href='/danh-muc/all-1'" style=" padding-bottom: 16px; font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
                     Tất cả
                 </span>
@@ -46,11 +47,13 @@
 
             </ul>
             <h1 class="h2">Bộ lọc</h1>
-            <ul class="list-unstyled templatemo-accordion container">
+            <ul class="list-unstyled templatemo-accordion">
                 <li>
                     <span class="collapsed d-flex justify-content-between h3 text-decoration-none" style="font-family: 'Roboto', sans-serif; font-size: 22px !important; cursor:pointer">
                         Khoảng giá:
                     </span>
+                    <input hidden id="minPrice" />
+                    <input hidden id="maxPrice" />
                     <label for="minRange" class="form-label" id="minRangeValue">Thấp nhất:</label>
                     <input type="range" class="form-range" id="minRange">
                     <label for="maxRange" class="form-label" id="maxRangeValue">Cao nhất:</label>
@@ -65,21 +68,21 @@
                             <input hidden id="starFilterInp" />
                             <ul class="list-unstyled mb-1 p">
                                 <li>
-                                    <i class="text-warning fa fa-star" id="starCate1" onclick="setstarCate(1)"></i>
-                                    <i class="text-warning fa fa-star" id="starCate2" onclick="setstarCate(2)"></i>
-                                    <i class="text-warning fa fa-star" id="starCate3" onclick="setstarCate(3)"></i>
-                                    <i class="text-warning fa fa-star" id="starCate4" onclick="setstarCate(4)"></i>
-                                    <i class="text-warning fa fa-star" id="starCate5" onclick="setstarCate(5)"></i>
+                                    <i class="text-secondary fa fa-star" id="starCate1" onclick="setstarCate(1)"></i>
+                                    <i class="text-secondary fa fa-star" id="starCate2" onclick="setstarCate(2)"></i>
+                                    <i class="text-secondary fa fa-star" id="starCate3" onclick="setstarCate(3)"></i>
+                                    <i class="text-secondary fa fa-star" id="starCate4" onclick="setstarCate(4)"></i>
+                                    <i class="text-secondary fa fa-star" id="starCate5" onclick="setstarCate(5)"></i>
                                 </li>
                             </ul>
                         </div>
                     }
                 </li>
                 <li style=" position: relative;">
-                    <button class="btn btn-success btn-lg" type="button" style="position: absolute; right: 0;">Lọc</button>
+                    <button class="btn btn-success btn-lg" type="button" style="position: absolute; right: 0;" onclick="StartFilter()">Lọc</button>
                 </li>
             </ul>
-        </ul>
+        </div>
 
         <div class="col-lg-9">
             <div class="row">
@@ -94,6 +97,7 @@
                                     <option value="name-desc" @(ViewBag.orderBy == "name-desc" ? "selected" : "")>Tên (Z - A)</option>
                                     <option value="price-asc" @(ViewBag.orderBy == "price-asc" ? "selected" : "")>Giá (Low &gt; High)</option>
                                     <option value="price-desc" @(ViewBag.orderBy == "price-desc" ? "selected" : "")>Giá (High &gt; Low)</option>
+                                    <option value="price-diff-desc" @(ViewBag.orderBy == "price-diff-desc" ? "selected" : "")>Giảm giá nhiều nhất</option>
                                 </select>
                             </div>
                         </form>
@@ -101,43 +105,54 @@
                 </div>
             </div>
             <div class="row" id="listProducts">
+                <input hidden id="totalProducts" value="@Model.Products.Count" />
                 @{
-                    int numProduct = 0;
+                                int numProduct = 0;
+                                double maxPrice = 0;
+                                double minPrice = double.MaxValue;
 
-                    foreach (var product in Model.Products)
-                    {
-                        if (++numProduct <= pageSize)
-                        {
-                            <div class="col-md-4" id="product @numProduct" style="height: 500px; width: 260px;" >
-                                @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-md-4" id="product @numProduct"  style="display: none; height: 500px; width: 260px;">
-                                @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
-                            </div>
-                        }
+                                foreach (var product in Model.Products)
+                                {
+                                    maxPrice = Math.Max(maxPrice, (double)product.DiscountPrice);
+                                    minPrice = Math.Min(minPrice, (double)product.DiscountPrice);
+                                    if (++numProduct <= pageSize)
+                                    {
+                                            <div class="col-md-4" id="product @numProduct">
+                                                <input hidden id="price @numProduct" value="@product.DiscountPrice" />
+                                                <input hidden id="rateNum @numProduct" value="@product.Rate" />
+                                                @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                                            </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-4" id="product @numProduct" style="display: none">
+                                            <input hidden id="price @numProduct" value="@product.DiscountPrice" />
+                                            <input hidden id="rateNum @numProduct" value="@product.Rate" />
+                                            @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                                        </div>
+                                    }
 
-                    }
+                                }
+                    <input hidden id="maxPriceTotal" value="@maxPrice"/>
+                    <input hidden id="minPriceTotal" value="@minPrice"/>
                 }
             </div>
-            <div div="row">
+            <div div="row" id="MoreBar" style="display: inline">
                 <ul class="pagination pagination-lg justify-content-end">
                     @{
                         int count = Convert.ToInt32(Math.Ceiling((double)Model.Products.Count / 9));
                         for (int i = 1; i <= count; i++)
                         {
-                                        <li class="page-item">
-                                            @if (i == 1)
-                                            {
-                                            <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" id="page-link @i" onclick="showProducts(@i, @pageSize, @count)">1</a>
-                                            }
-                                            else
-                                            {
-                                            <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" id="page-link @i" onclick="showProducts(@i, @pageSize, @count)">@i</a>
-                                            }
-                                        </li>
+                            <li class="page-item">
+                                @if (i == 1)
+                                {
+                                    <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" id="page-link @i" onclick="showProducts(@i, @pageSize, @count)">1</a>
+                                }
+                                else
+                                {
+                                    <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" id="page-link @i" onclick="showProducts(@i, @pageSize, @count)">@i</a>
+                                }
+                            </li>
                         }
                     }
 
@@ -148,7 +163,7 @@
 </div>
 <script>
     function showProducts(pageIndex, pageSize, totalPageLink) {
-        var numberChild = document.getElementById('listProducts').childElementCount;
+        var numberChild = document.getElementById('totalProducts').value;
         var startIndex = (pageIndex - 1) * pageSize + 1;
         var endIndex = (startIndex + pageSize - 1) < numberChild ? (startIndex + pageSize - 1) : numberChild;
         for (let i = 1; i <= numberChild; i++) {
@@ -168,7 +183,7 @@
         element.classList.add('active')
         element.classList.remove('text-dark');
         window.scrollTo(0, 0);
-        
+
     }
 </script>
 
@@ -176,8 +191,13 @@
     document.addEventListener('DOMContentLoaded', function () {
         //tạm:
         var jumpRange = 50000;
-        var minMoney = 0;
-        var maxMoney = 20000000;
+        var minMoney = parseFloat(document.getElementById("minPriceTotal").value);
+        var maxMoney = parseFloat(document.getElementById("maxPriceTotal").value);
+
+        //init default
+        document.getElementById("starFilterInp").value = 0;
+        document.getElementById("minPrice").value = minMoney;
+        document.getElementById("maxPrice").value = maxMoney;
         var minRangeSlider = document.getElementById('minRange');
         var minRangeValue = document.getElementById('minRangeValue');
         var maxRangeSlider = document.getElementById('maxRange');
@@ -189,26 +209,29 @@
         minRangeSlider.value = 0;
         maxRangeSlider.value = 100;
 
-        
+
         minRangeSlider.addEventListener('input', function () {
             var value = (maxMoney - minMoney) / 100 * minRangeSlider.value;
             minRangeValue.innerHTML = 'Thấp nhất: ' + value;
-            console.log(minRangeSlider.value + " " + maxRangeSlider.value);
 
             var valMin = parseInt(minRangeSlider.value, 10);
             var valMax = parseInt(maxRangeSlider.value, 10);
             if (valMin >= valMax) {
-                maxRangeSlider.value = Math.min(100, valMin + 1); 
+                maxRangeSlider.value = Math.min(100, valMin + 1);
                 var value = maxMoney / 100 * maxRangeSlider.value;
                 maxRangeValue.innerHTML = 'Cao nhất: ' + value;
                 valMax = parseInt(maxRangeSlider.value, 10);
+                document.getElementById("maxPrice").value = value;
             }
             if (valMax == 100) {
 
                 minRangeSlider.value = Math.min(99, minRangeSlider.value);
                 var value = (maxMoney - minMoney) / 100 * minRangeSlider.value;
                 minRangeValue.innerHTML = 'Thấp nhất: ' + value;
+                document.getElementById("minPrice").value = value;
             }
+            
+            
         });
 
         maxRangeSlider.addEventListener('input', function () {
@@ -222,11 +245,13 @@
                 var value = (maxMoney - minMoney) / 100 * minRangeSlider.value;
                 minRangeValue.innerHTML = 'Thấp nhất: ' + value;
                 valMin = parseInt(minRangeSlider.value, 10);
+                document.getElementById("minPrice").value = value;
             }
             if (valMin == 0) {
                 maxRangeSlider.value = Math.max(1, maxRangeSlider.value);
                 var value = maxMoney / 100 * maxRangeSlider.value;
                 maxRangeValue.innerHTML = 'Cao nhất: ' + value;
+                document.getElementById("maxPrice").value = value;
             }
 
         });
@@ -250,4 +275,35 @@
         document.getElementById("starFilterInp").value = count.toString();
 
     }
+    function StartFilter() {
+        let starNum = parseFloat(document.getElementById("starFilterInp").value);
+        let minPrice = parseFloat(document.getElementById("minPrice").value);
+        let maxPrice = parseFloat(document.getElementById("maxPrice").value);
+        document.getElementById("MoreBar").style.display = "none";
+        var numberChild = document.getElementById('totalProducts').value;
+        for (let i = 1; i <= numberChild; i++) {
+            var product = document.getElementById("product " + i);
+            //console.log(product.getElementById("rateNum").value);
+            var rate = parseFloat(document.getElementById("rateNum " + i).value);
+            var price = parseFloat(document.getElementById("price " + i).value);
+            if (starNum == 0) {
+                if (price >= minPrice && price <= maxPrice) {
+                    product.style.display = "inline";
+                }
+                else {
+                    product.style.display = "none";
+                }
+            }
+            else {
+                if (price >= minPrice && price <= maxPrice && rate >= starNum && rate <= starNum + 1) {
+                    product.style.display = "inline";
+                }
+                else {
+                    product.style.display = "none";
+                }
+            }
+
+        }
+    }
 </script>
+

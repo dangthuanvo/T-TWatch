@@ -1,0 +1,107 @@
+﻿@using Web.Core.Dto;
+@using Web.Watch.Service;
+@{
+    WebsiteDto web = UtilService.GetWebsite();
+    List<MenuDto> menus = UtilService.GetMenusHomePage();
+}
+@{
+    ViewBag.Title = "About";
+}
+
+<section class="bg-success py-5">
+    <div class="container">
+        <div class="row align-items-center py-5">
+            <div class="col-md-8 text-white">
+                <h1>About Us</h1>
+                <p class="pAbout">
+                    @web.UserDef1
+                </p>
+                <pc lass="pAbout">
+                    @web.UserDef2
+                    </p class="pAbout">
+                    <p class="pAbout">
+                        @web.UserDef3
+                    </p>
+                    <p class="pAbout">
+                        @web.UserDef4
+                    </p>
+                    <p class="pAbout">
+                        @web.UserDef5
+                    </p>
+            </div>
+            <div class="col-md-4">
+                <img src="~/Resources/files/logo.PNG" alt="About Hero">
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Close Banner -->
+<!-- Start Section -->
+<div class="bg-light">
+    <section class="container py-5">
+        <div class="row text-center pt-5 pb-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Dịch vụ của chúng tôi</h1>
+                <p>
+                    T-TWatch luôn mang đến cho quý khách hàng một trải nghiệm mua sắm toàn diện nhất với đầy đủ các dịch vụ.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6 col-lg-4 pb-5">
+                <div class="h-100 py-5 services-icon-wap shadow">
+                    <div class="h1 text-success text-center"><i class="fas fa-check-circle"></i></div>
+                    <h2 class="h5 mt-4 text-center">Bảo hành toàn diện</h2>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 pb-5">
+                <div class="h-100 py-5 services-icon-wap shadow">
+                    <div class="h1 text-success text-center"><i class="fa fa-percent"></i></div>
+                    <h2 class="h5 mt-4 text-center">Khuyến mãi</h2>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 pb-5">
+                <div class="h-100 py-5 services-icon-wap shadow">
+                    <div class="h1 text-success text-center"><i class="fa fa-user"></i></div>
+                    <h2 class="h5 mt-4 text-center">Hỗ trợ 24/7</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</div>
+<!-- End Section -->
+<!-- Start Brands -->
+<section class=" py-5">
+    <div class="container my-4">
+        <div class="row text-center py-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Khu vực thương hiệu</h1>
+                <p>
+                    Đưa khách hàng đến gần hơn với với thế giới của các thương hiệu toàn cầu
+                </p>
+            </div>
+        </div>
+
+        @for (int i = 0; i < menus.Count; i += 4)
+        {
+            <div class="row">
+                @for (int j = 0; j < 4 && j < menus.Count - i; j++)
+                {
+                    <div class="col text-center align-self-center">
+                        <a href="/danh-muc/@menus[i + j].Alias"><img class="brand-image" src=@menus[i + j].Image height="80"></a>
+
+                        <!--
+                        <h5 class="text-center mt-3 mb-3" href="/menus[i + j].Alias">menus[i + j].Name</h5>
+                        <p class="text-center"><a class="btn btn-success" href="/menus[i + j].Alias">Detail</a></p>-->
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+</section>
+<!--End Brands-->
