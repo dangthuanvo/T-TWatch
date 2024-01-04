@@ -5,9 +5,9 @@ namespace Web.Core.Service
 {
     public class MyContext : DbContext
     {
-        public static string connect0 = "data source=.\\\\SQLEXPRESS;initial catalog=WatchStore;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework";
+        public static string connect0 = "data source=.\\SQLEXPRESS;initial catalog=WatchStore;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework";
         public static string connect = "Data Source=SQL5112.site4now.net;Initial Catalog=db_aa2fad_ttwatch;User Id=db_aa2fad_ttwatch_admin;Password=TTwatch123";
-        public MyContext() : base(connect)
+        public MyContext() : base(connect0)
         {
         }
 
