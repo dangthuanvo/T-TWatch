@@ -17,20 +17,18 @@
             </div>
         </div>
         <div class="card-body">
-            <a href="/san-pham/@product.Alias" class="h3 text-decoration-none">@product.Name</a>
-            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                <li>
-                    @if (string.IsNullOrEmpty(@product.MetaDescription))
-                    {
-                        <p class="card-text">No MetaDescription </p>
-                    }
-                    else
-                    {
-                        <p class="card-text">@product.MetaDescription [MD] </p>
-                    }
-                </li>
+            <div style="height: 155px">
+                <a href="/san-pham/@product.Alias" class="h3 text-decoration-none" style="font-size: 100%">@product.Name</a>
+                @if (string.IsNullOrEmpty(@product.MetaDescription))
+                {
+                    <p class="card-text"> </p>
+                }
+                else
+                {
+                    <p class="card-text" style="font-size: 100%">@product.MetaDescription </p>
+                }
+            </div>
 
-            </ul>
             <ul class="list-unstyled d-flex justify-content-center mb-1">
                 <li>
                     @{
