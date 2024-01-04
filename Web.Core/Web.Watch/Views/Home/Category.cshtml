@@ -213,7 +213,7 @@
         minRangeSlider.addEventListener('input', function () {
             var value = (maxMoney - minMoney) / 100 * minRangeSlider.value;
             minRangeValue.innerHTML = 'Thấp nhất: ' + value;
-
+            document.getElementById("minPrice").value = value;
             var valMin = parseInt(minRangeSlider.value, 10);
             var valMax = parseInt(maxRangeSlider.value, 10);
             if (valMin >= valMax) {
@@ -237,7 +237,7 @@
         maxRangeSlider.addEventListener('input', function () {
             var value = maxMoney / 100 * maxRangeSlider.value;
             maxRangeValue.innerHTML = 'Cao nhất: ' + value;
-
+            document.getElementById("maxPrice").value = value;
             var valMin = parseInt(minRangeSlider.value, 10);
             var valMax = parseInt(maxRangeSlider.value, 10);
             if (valMin >= valMax) {
@@ -281,13 +281,18 @@
         let maxPrice = parseFloat(document.getElementById("maxPrice").value);
         document.getElementById("MoreBar").style.display = "none";
         var numberChild = document.getElementById('totalProducts').value;
+        //console.log(minPrice + "/" + maxPrice);
         for (let i = 1; i <= numberChild; i++) {
             var product = document.getElementById("product " + i);
             //console.log(product.getElementById("rateNum").value);
             var rate = parseFloat(document.getElementById("rateNum " + i).value);
             var price = parseFloat(document.getElementById("price " + i).value);
+
+
+            //console.log(i + "=" + price);
             if (starNum == 0) {
                 if (price >= minPrice && price <= maxPrice) {
+                    //console.log(i + "=" + price);
                     product.style.display = "inline";
                 }
                 else {
